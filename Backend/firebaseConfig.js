@@ -1,5 +1,8 @@
+const dotenv = require("dotenv");
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection } = require('firebase/firestore/lite');
+const { getFirestore} = require('firebase/firestore/lite');
+
+dotenv.config();
 
 const firebaseConfig = {
   apiKey: "AIzaSyAF6X95XPR9MesdK6eVLHDLjHB5TbF3Y68",
@@ -14,6 +17,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const User = collection(db, "User")
+module.exports = db;
 
-module.exports = User;
+// const dotenv = require("dotenv");
+// dotenv.config();
+
+// const firebaseConfig = {
+//   apiKey:process.env.API_KEY,
+//   authDomain:process.env.AUTH_DOMAIN,
+//   projectId:process.env.PROJECT_ID,
+//   storageBucket:process.env.STORAGE_BUCKET,
+//   messagingSenderId:process.env.MESSAGING_SENDER_ID,
+//   appId:process.env.APP_ID,
+//   measurementId:process.env.MEASUREMENT_ID
+// };
