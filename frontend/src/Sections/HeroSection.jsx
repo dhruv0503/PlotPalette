@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from '../components/Carousel';
 import * as Tabs from '@radix-ui/react-tabs';
+import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
 
 const slides = ["https://i.ibb.co/ncrXc2V/1.png",
@@ -11,13 +12,15 @@ const slides = ["https://i.ibb.co/ncrXc2V/1.png",
 
 function HeroSection() {
   return (
-    <section className=' bg-amber-300 flex'>
-      <div  className='max-w-lg max-h-lg'>
-      <Carousel autoplay={true} >
-        {slides.map((a) => (
-          <img src={a} />
-        ))}
-        </Carousel>
+    <section className=' bg-amber-300 flex p-2'>
+      <div className="shadow-blackA4 w-[600px] overflow-hidden rounded-md shadow-[0_2px_10px]">
+        <AspectRatio.Root ratio={16/9}>
+          <Carousel autoplay={true} >
+            {slides.map((a) => (
+              <img src={a} />
+            ))}
+          </Carousel>
+        </AspectRatio.Root>
       </div>
 
       <div className='px-20 py-10'>
