@@ -2,16 +2,14 @@ const express = require("express")
 const app = express();
 const userRouter = require("./Routes/userRoutes")
 const authRouter = require("./Routes/authRoutes")
+const movieRouter = require("./Routes/movieRoutes")
 const expressError = require("./util/expressError")
 
 app.use(express.json())
 
-app.use("/users", userRouter);
-app.use("/", authRouter);
-
-app.get("/", () => {
-    res.send("Welcome to Plot Palette")
-})
+app.use("/api", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/movies", movieRouter)
 
 app.all('*', (req, res, next) =>{
     next(new expressError('Page Not Found', 404))

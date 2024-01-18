@@ -2,8 +2,6 @@ const { db, auth } = require("../firebaseConfig");
 const expressError = require("../util/expressError");
 const { collection, getDocs, query, where } = require("firebase/firestore/lite");
 
-console.log(auth.currentUser, "Hello");
-
 module.exports.authorizeRoles = (role) => {
     return async (req, res, next) => {
         const user = auth.currentUser;
@@ -17,7 +15,7 @@ module.exports.authorizeRoles = (role) => {
                 const currentRole = userDoc.data().role;
 
                 if (role !== currentRole) {
-                    return next(new expressError(`Role: ${user.role} is not allowed to access this resource`, 403));
+                    return next(new expressError(`Role: ${currentRole} is not allowed to access this resource`, 403));
                 }
 
                 next();
