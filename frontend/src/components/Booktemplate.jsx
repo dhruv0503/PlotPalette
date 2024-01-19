@@ -16,7 +16,7 @@ function Booktemplate() {
                 </div>
                
             </div>
-            <div className='col-span-2 px-10'>
+            <div className='col-span-2 px-10 font-bold '>
                 <Strong className='text-lg'>Name of the book</Strong>
                 <hr className='h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
 
