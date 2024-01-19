@@ -4,6 +4,9 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AccountPage from './pages/Accountpage';
 import SignIn from './pages/SignIn';
 import Template from './pages/Template';
+import Movies from './pages/Movies';
+import Books from './pages/Books';
+import Aboutsus from './pages/Aboutsus';
 function App() {
   return (
     <>
@@ -13,6 +16,9 @@ function App() {
           <Route element={<AccountPage />} path='/account' />
           <Route element={<SignIn />} path='/signin' />
           <Route element={<Template />} path='/temp' />
+          <Route element={<Books />} path='/books' />
+          <Route element={<Movies />} path='/movies' />
+          <Route element={<Aboutsus />} path='/about' />
         </Routes>
       </Router>
     </>

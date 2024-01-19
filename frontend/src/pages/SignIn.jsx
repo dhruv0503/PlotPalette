@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Tabs from '@radix-ui/react-tabs';
+import Bookim from "../assets/Bookim.jpg"
+function SignIn() {
+  const [pass, setpass] = useState("");
 
- function SignIn() {
   return (
-    <div className="bg-amber-300 h-screen w-screen grid grid-cols-2">
-      <div>
-        
+    <div className='bg-amber-300 h-screen w-screen'>
+      <div className="  p-10 border border-black flex">
+      <div className=''>
+        <img className='h-[410px] w-[500px]' src={Bookim} alt="" />
       </div>
-      <div className='p-10'>
+      <div className=''>
         <Tabs.Root
-          className="flex flex-col w-[300px] shadow-[0_2px_10px] shadow-blackA2"
+          className="flex flex-col w-[400px] h-[410px] "
           defaultValue="tab1"
         >
           <Tabs.List className="shrink-0 flex border-b border-mauve6" aria-label="Manage your account">
@@ -27,7 +30,7 @@ import * as Tabs from '@radix-ui/react-tabs';
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content
-            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+            className="grow p-5 bg-white  outline-none "
             value="tab1"
           >
             <p className="mb-5 text-mauve11 text-[15px] leading-normal">
@@ -38,9 +41,9 @@ import * as Tabs from '@radix-ui/react-tabs';
                 Name
               </label>
               <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
+                  className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
                 id="name"
-                defaultValue="Pedro Duarte"
+               
               />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
@@ -50,7 +53,7 @@ import * as Tabs from '@radix-ui/react-tabs';
               <input
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
-                defaultValue="@peduarte"
+            
               />
             </fieldset>
             <div className="flex justify-end mt-5">
@@ -60,7 +63,7 @@ import * as Tabs from '@radix-ui/react-tabs';
             </div>
           </Tabs.Content>
           <Tabs.Content
-            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+            className="grow p-5 bg-white  "
             value="tab2"
           >
             <p className="mb-5 text-mauve11 text-[15px] leading-normal">
@@ -115,7 +118,7 @@ import * as Tabs from '@radix-ui/react-tabs';
         </Tabs.Root>
 
       </div>
-     
+  </div>
     </div>
   )
 }

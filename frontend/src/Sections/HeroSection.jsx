@@ -12,7 +12,7 @@ const slides = ["https://i.ibb.co/ncrXc2V/1.png",
 
 function HeroSection() {
   return (
-    <section className=' bg-red-200 flex p-2'>
+    <section className=' bg-yellow-600 md:grid md:grid-cols-2 p-2'>
       <div className="shadow-blackA4 w-[600px] overflow-hidden rounded-md shadow-[0_2px_10px]">
         <AspectRatio.Root ratio={16/9}>
           <Carousel autoplay={true} >
@@ -129,6 +129,7 @@ function HeroSection() {
           </Tabs.Content>
         </Tabs.Root>
       </div>
+
     </section>
 
   )

@@ -2,18 +2,21 @@ import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
 import { CaretDownIcon } from '@radix-ui/react-icons';
+import { useNavigate } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
 
 
 
 function Navbar() {
+    const navigate = useNavigate();
+
     return (
         <NavigationMenu.Root className="relative z-[1] flex fixed bg-black">
-            <NavigationMenu.List className=" m-5 flex list-none items-center text-white p-1 ">
+            <NavigationMenu.List className=" m-5 grid grid-cols-2 list-none items-center text-white p-1 ">
                 <div className='flex '>
                     <NavigationMenu.Item >
                         <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            Learn{' '}
+                            LOGO{' '}
                             <CaretDownIcon
                                 className="text-white relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
@@ -58,7 +61,7 @@ function Navbar() {
 
                     <NavigationMenu.Item>
                         <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            Overview{' '}
+                            MOVIES{' '}
                             <CaretDownIcon
                                 className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
@@ -91,16 +94,16 @@ function Navbar() {
                     <NavigationMenu.Item>
                         <NavigationMenu.Link
                             className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
-                            href="https://github.com/radix-ui"
+                            
                         >
-                            Github
+                            BOOKS
                         </NavigationMenu.Link>
                     </NavigationMenu.Item>
                 </div>
-                <div className=' ml-[600px]  flex items-center'>
+                <div className=' flex items-center'>
                     <Searchbar />
                     <NavigationMenu.Item>
-                        <NavigationMenu.Trigger className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
+                        <NavigationMenu.Trigger  onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
                             Account{' '}
                         </NavigationMenu.Trigger>
 
