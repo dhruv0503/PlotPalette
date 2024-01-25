@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import * as Tabs from '@radix-ui/react-tabs';
 import Bookim from "../assets/Bookim.jpg"
+ import Footer from "../components/Footer.jsx"
+
 function SignIn() {
   const [pass, setpass] = useState("");
+  const [email, setemail] = useState("");
+  const [name, setname] = useState("");
+
+  const handleLogin = () => {
+     console.log(pass ,name)
+  }
+  const handleSignUp = () => {
+     console.log(name , pass , email)
+  }
 
   return (
-    <div className='bg-amber-300 h-screen w-screen'>
+    <div className='bg-amber-300 '>
       <div className="  p-10 border border-black flex">
       <div className=''>
         <img className='h-[410px] w-[500px]' src={Bookim} alt="" />
@@ -38,9 +49,10 @@ function SignIn() {
             </p>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
-                Name
+                UserName
               </label>
-              <input
+                <input
+                  value={name} onChange={(e)=>setname(e.target.value)}
                   className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
                 id="name"
                
@@ -48,16 +60,16 @@ function SignIn() {
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
-                Username
+                  Password
               </label>
-              <input
+                <input value={pass} onChange={(e) => setpass(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
             
               />
             </fieldset>
             <div className="flex justify-end mt-5">
-              <button className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
+              <button onClick={handleLogin} className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
                 Save changes
               </button>
             </div>
@@ -74,12 +86,13 @@ function SignIn() {
                 className="text-[13px] leading-none mb-2.5 text-violet12 block"
                 htmlFor="currentPassword"
               >
-                Current password
+                Email
               </label>
-              <input
+                <input 
+                  value={email} onChange={(e) => setemail(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="currentPassword"
-                type="password"
+                
               />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
@@ -87,12 +100,13 @@ function SignIn() {
                 className="text-[13px] leading-none mb-2.5 text-violet12 block"
                 htmlFor="newPassword"
               >
-                New password
+               UserName
               </label>
-              <input
+                <input
+                  value={name} onChange={(e) => setname(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="newPassword"
-                type="password"
+                
               />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
@@ -100,16 +114,17 @@ function SignIn() {
                 className="text-[13px] leading-none mb-2.5 text-violet12 block"
                 htmlFor="confirmPassword"
               >
-                Confirm password
+              Password
               </label>
-              <input
+                <input
+                  value={pass} onChange={(e) => setpass(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="confirmPassword"
-                type="password"
+                
               />
             </fieldset>
             <div className="flex justify-end mt-5">
-              <button className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
+              <button onClick={handleSignUp} className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
                 Change password
               </button>
             </div>
@@ -118,7 +133,8 @@ function SignIn() {
         </Tabs.Root>
 
       </div>
-  </div>
+      </div>
+      <Footer/>
     </div>
   )
 }
