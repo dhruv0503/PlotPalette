@@ -7,7 +7,8 @@ module.exports.signUp = async(req, res, next) => {
     const data = req.body;
     const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
     delete data.password;
-    const docRef = await addDoc(User,{...data, "uid" : newUser.user.uid, "role" : "User"})
+    const formattedTime = new Date(Date.now()).toLocaleString();
+    const docRef = await addDoc(User,{...data, "uid" : newUser.user.uid, "role" : "User", "joinedOn" : formattedTime});
     res.send({"msg" : `User Added with id ${docRef.id}`, newUser});
 }
 

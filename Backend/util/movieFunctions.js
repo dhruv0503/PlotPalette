@@ -19,13 +19,17 @@ module.exports.hasSubcollection = async(parentDocPath, subcollectionName) => {
     const parentDocRef = doc(db, parentDocPath);
     const subcollectionRef = collection(parentDocRef, subcollectionName);
     const subcollectionSnapshot = await getDocs(subcollectionRef);
-    const subcollectionData = subcollectionSnapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+    const subcollectionData = subcollectionSnapshot.docs.map(doc => ({ "uid" : doc.id, ...doc.data() }));
     
     return  subcollectionData ;
 }
 
 module.exports.findObjectById = (array, id)=>{
-    const result = array.find(doc => doc.id == id);
-    console.log(result);
+    const result = array.find(doc => doc.tmdbId == id);
     return result;
 }
+
+module.exports.removeField = (obj, fieldToRemove) => {
+    const { [fieldToRemove]: removedField, ...rest } = obj;
+    return rest;
+  };
