@@ -1,6 +1,7 @@
 const { db } = require("../firebaseConfig")
 const {collection, getDoc, getDocs, doc, updateDoc } = require("firebase/firestore/lite")
 const User = collection(db, "User");
+const movieFunctions = require("../util/movieFunctions")
 
 const getUserById = async (id) => {
     const docRef = doc(User, id);
@@ -25,3 +26,17 @@ module.exports.makeAdmin = async (req, res, next) => {
     await updateDoc(doc(User, id), { role: "Admin" });
     res.send(`User with id: ${id} is now an admin`);
 };
+
+module.exports.optionsList = async(req,res,next) => {
+    const { id, parameter } = req.params;
+    const parentDocPath =  `User/${id}`;
+    const response = await movieFunctions.hasSubcollection(parentDocPath, 'movies');
+    let list = [];
+    response.map(obj => {
+        if(obj[parameter]){
+            const newObject = movieFunctions.removeField(obj, 'uid')
+            list.push(newObject);
+        }
+    })
+    res.send(list);
+}

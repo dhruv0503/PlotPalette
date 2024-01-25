@@ -3,8 +3,6 @@ const { getFirestore} = require('firebase/firestore/lite');
 const { getAuth } = require("firebase/auth")
 require("dotenv").config();
 
-
-
 const firebaseConfig = {
   "apiKey" : process.env.API_KEY,
   "authDomain" : process.env.AUTH_DOMAIN,
@@ -16,10 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth()
+const auth = getAuth();
 const db = getFirestore(app);
 
 module.exports = {db, auth};
-
-// const dotenv = require("dotenv");
-// dotenv.config();

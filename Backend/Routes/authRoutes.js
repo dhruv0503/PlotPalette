@@ -5,7 +5,7 @@ const wrapAsync = require("../util/catchAsync")
 
 router.route("/signup").post(wrapAsync(authController.signUp));
 
-router.route("/signin").post(wrapAsync(authController.signIn));
+router.route("/signin").get(wrapAsync(authController.signIn));
 
 router.route("/signout").get(wrapAsync(authController.signOut))
 
