@@ -11,6 +11,13 @@ module.exports = {
         ...green,
         ...mauve,
         ...violet,
+        custom:{
+          10: '#EDE9E3',
+          20: '#E7D7C9',
+          30: '#BE8F6E',
+          40: '#87816E',
+          50: '#241F19',
+        },
       },
     },
   },

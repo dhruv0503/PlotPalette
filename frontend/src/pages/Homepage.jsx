@@ -9,7 +9,7 @@ function Homepage() {
     <>
       <Navbar />
       <HeroSection />
-      <Accordian />
+      {/* <Accordian /> */}
       <Footer/>
     </>
   )

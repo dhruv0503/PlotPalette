@@ -11,8 +11,8 @@ function Navbar() {
     const navigate = useNavigate();
 
     return (
-        <NavigationMenu.Root className="relative z-[1] flex fixed bg-black">
-            <NavigationMenu.List className=" m-5 grid grid-cols-2 list-none items-center text-white p-1 ">
+        <NavigationMenu.Root className="relative z-[1] flex fixed bg-custom-50">
+            <NavigationMenu.List className=" m-5 grid grid-cols-2 list-none items-center text-custom-10 p-1 ">
                 <div className='flex '>
                     <NavigationMenu.Item >
                         <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
