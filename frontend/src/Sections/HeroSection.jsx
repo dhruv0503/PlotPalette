@@ -1,17 +1,22 @@
 import React from 'react';
-import Carousel from '../components/Carousel';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 import { MovieCard } from '../components/CustomCard';
 
-
 function HeroSection() {
+  const im = "https://images-na.ssl-images-amazon.com/images/M/MV5BMTYxMDg1Nzk1MV5BMl5BanBnXkFtZTcwMDk0MTUzNA@@._V1_SX1500_CR0,0,1500,999_AL_.jpg";
   return (
     <section className=' bg-custom-10  p-2'>
-      <h1>Hello monsterlessons</h1>
-      <div className=' w-[500px] h-[280px] m:auto'>
-       <Carousel />
-      </div>
+       
+      <div className=" relative ">
+        <img className=' h-[500px] w-[1200px]'
+          src={im}
+          alt="background"
+          
+        />
+        </div>
+
+    
 
     </section>
 
