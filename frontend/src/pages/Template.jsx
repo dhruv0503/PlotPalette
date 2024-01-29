@@ -6,7 +6,7 @@ function Template() {
   return (
       <>
       <Navbar />
-      <Booktemplate/> 
+      <Booktemplate /> 
       </>
   )
 }

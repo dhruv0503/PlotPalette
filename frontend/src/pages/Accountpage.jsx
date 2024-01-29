@@ -6,7 +6,7 @@ import { IoBookSharp } from "react-icons/io5";
 function AccountPage() {
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className='bg-custom-10 grid-cols-4 grid '>
                
                 <div className=' col-span-3 flex m-3 gap-2'>
@@ -78,6 +78,7 @@ function AccountPage() {
                     </table>
                 </div>
             </div >
+        
             <Footer/>
         </>
     )
