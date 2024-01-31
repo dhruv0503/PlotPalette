@@ -2,7 +2,6 @@ const { db } = require("../firebaseConfig")
 const {collection, getDoc, getDocs, doc, updateDoc } = require("firebase/firestore/lite")
 const User = collection(db, "User");
 const movieFunctions = require("../util/movieFunctions")
-
 const getUserById = async (id) => {
     const docRef = doc(User, id);
     const docSnap = await getDoc(docRef);
