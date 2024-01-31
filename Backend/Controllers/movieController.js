@@ -1,11 +1,13 @@
 require("dotenv").config();
-const axios = require("axios")
-const { db, auth } = require("../firebaseConfig")
-const {query, where, collection, doc, addDoc, updateDoc, getDocs, increment } = require("firebase/firestore/lite")
+const axios = require("axios");
+const { db, auth } = require("../firebaseConfig");
+const {query, where, collection, doc, addDoc, updateDoc, getDocs, increment, arrayUnion, arrayRemove } = require("firebase/firestore/lite");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
-const expressError = require("../util/expressError")
-const movieFunctions = require("../util/movieFunctions")
+const expressError = require("../util/expressError");
+const movieFunctions = require("../util/movieFunctions");
+const utilityFunctions = require("../util/utlityFunctions");
+const { uid } = require("uid")
 
 module.exports.getMovie = async(req, res, next) => {
     const {tmdbId} = req.params;
@@ -33,82 +35,84 @@ module.exports.getMovieList = async (req, res, next) => {
 }
 
 module.exports.movieOptions = async (req, res, next) => {
-    //getDocId
     const user = auth.currentUser;
-    const userQuery = query(collection(db, 'User'), where('uid', '==', user.uid));
-    const querySnapshot = await getDocs(userQuery);
-    const id = querySnapshot.docs[0].id;
-
-    //inputs
     const {tmdbId} = req.params;
-    const parentDocPath =  `User/${id}`;
+
+    const userObj = await utilityFunctions.getUser(user);
+    const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
+
+    const parentDocPath =  `User/${userObj.id}`;
     const subCollectionName = 'movies';
+    const uniqueId = uid();
 
-    //Movie Doc Query
-    const query2 = query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
-    const movie = await getDocs(query2);
-    const movieId = movie.docs[0].id;
-    const data = movie.docs[0].data();
-
-    //if movie in subCollection
     const response = await movieFunctions.hasSubcollection(parentDocPath, subCollectionName);
     if (response.length > 0) {
         const result = movieFunctions.findObjectById(response, tmdbId);
         if (result !== undefined) {
-            const oldOptions = {
-                "rating" : result.rating,
-                "favourite" : result.favourite,
-                "watched" : result.watched,
-                "watchLater" : result.watchLater
-            }
-            const { rating = oldOptions.rating,
-                favourite = oldOptions.favourite,
-                watched = oldOptions.watched,
-                watchLater = oldOptions.watchLater
+            const oldReviewCheck = result.review !== undefined;
+            const {
+                rating = result.rating,
+                favourite = result.favourite,
+                watched = result.watched,
+                watchLater = result.watchLater,
+                reviewText =  oldReviewCheck ? result.review.text : undefined
             } = req.body;
-            // checks for previous updates
-            const favCheck = oldOptions.favourite == favourite;
-            const ratingCheck = oldOptions.rating === 0 && rating !== 0;
-            //updating user's subcollection
-            const userUpdates = {
-                "rating": rating,
-                "favourite": favourite,
-                "watched" : watched,
-                "watchLater" : watchLater
+            
+            const favCheck = result.favourite == favourite;
+            const ratingCheck = result.rating === 0 && rating !== 0;
+            const reviewCheck = reviewText !== undefined;
+
+            const userUpdates = { rating, favourite, watched, watchLater }
+
+            if(reviewCheck){
+                userUpdates.review = oldReviewCheck ? { "uid": result.review.uid, "text": reviewText } : { "uid": uniqueId, "text": reviewText }
             }
-            const updatedDoc = await updateDoc(doc(User, id, subCollectionName, result.uid), userUpdates);
+
+            let reviews = movieObj.reviews;
+            if(oldReviewCheck){
+                reviews.forEach(element => {
+                    if(element.uid == result.review.uid) element.text = reviewText
+                });
+            }
+            else reviews.push({ "uid" : uniqueId, "text" : reviewText })
+
+            const updatedDoc = await updateDoc(doc(User, userObj.id, subCollectionName, result.uid), userUpdates);
             //updating movie doc
             const movieUpdates = {
-                "rating" : rating === 0 ? 0 : ((data.rating * data.numRating ) - oldOptions.rating + rating) / (data.numRating),
+                "rating" : rating === 0 ? 0 : ((movieObj.rating * movieObj.numRating ) - result.rating + rating) / (movieObj.numRating),
                 "favourite" : increment(favCheck ? 0 : favourite ? 1 : -1),
-                "numRating" : increment(ratingCheck ? 1 : 0)
+                "numRating" : increment(ratingCheck ? 1 : 0),
+                "reviews" : reviews,
+                "reviewCount" : increment(oldReviewCheck ? 0 : reviewCheck ? 1 : 0)
             }
-            await updateDoc(doc(Movie, movieId),movieUpdates );
+            await updateDoc(doc(Movie, movieObj.movieId),movieUpdates );
             res.send(updatedDoc);
             return;
         }
     }
+    const { rating = 0, favourite = false, watched = false, watchLater = false, reviewText = ''} = req.body;
+    const reviewCheck = reviewText.length > 0;
 
-    const { rating = 0, favourite = false, watched = false, watchLater = false} = req.body;
-    //Movie not in subCollection, put it in subCollection and update watch option parameters
+    if(reviewCheck){
+        movieObj.reviews.push({ "uid" : uniqueId, "text" : reviewText })
+    }
+
     const movieUpdates = {
-        "rating" : rating === 0 ? data.rating : ((data.rating * data.numRating) + rating) / (data.numRating + 1),
+        "rating" : rating === 0 ? movieObj.rating : ((movieObj.rating * movieObj.numRating) + rating) / (movieObj.numRating + 1),
         "favourite" : increment(favourite ? 1 : 0),
-        "numRating" : increment(rating === 0 ? 0 : 1)
+        "numRating" : increment(rating === 0 ? 0 : 1),
+        "reviews" : movieObj.reviews,
+        "reviewCount" : increment(reviewCheck ? 1 : 0)
     }
-    await updateDoc(doc(Movie, movieId), movieUpdates );
 
-    const obj = { 
-        "rating": rating,
-        "favourite": favourite,
-        "watched" : watched,
-        "watchLater" : watchLater,
-        "id" : movieId,
-        "tmdbId" : tmdbId
-    }
-    const parentDoc = doc(User, id);
+    await updateDoc(doc(Movie, movieObj.movieId), movieUpdates );
+
+    const obj = { rating, favourite, watched, watchLater, tmdbId, "id" : movieObj.movieId }
+
+    if(reviewCheck) obj.review = { "uid" : uniqueId, "text" : reviewText }
+
+    const parentDoc = doc(User, userObj.id);
     const subcollectionRef = collection(parentDoc, subCollectionName);
     const subCollection = await addDoc(subcollectionRef, obj);
     res.send(subCollection);
 };
-
