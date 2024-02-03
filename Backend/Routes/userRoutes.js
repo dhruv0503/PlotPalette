@@ -5,9 +5,11 @@ const wrapAsync = require("../util/catchAsync");
 const { authorizeRoles } = require("../middleware/auth");
 
 router.route("/all").get(authorizeRoles("Admin"),wrapAsync(userController.getAllUsers));
+
 router.route("/options/:parameter/:id").get(wrapAsync(userController.optionsList));
+
 router.route("/:id")
-.get(wrapAsync(userController.findUser))
-.put(authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
+    .get(wrapAsync(userController.findUser))
+    .put(authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
 
 module.exports = router;

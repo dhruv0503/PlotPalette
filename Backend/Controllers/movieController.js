@@ -1,13 +1,12 @@
 require("dotenv").config();
 const axios = require("axios");
 const { db, auth } = require("../firebaseConfig");
-const {query, where, collection, doc, addDoc, updateDoc, getDocs, increment, arrayUnion, arrayRemove } = require("firebase/firestore/lite");
+const {query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc} = require("firebase/firestore/lite");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const expressError = require("../util/expressError");
 const movieFunctions = require("../util/movieFunctions");
 const utilityFunctions = require("../util/utlityFunctions");
-const { uid } = require("uid")
 
 module.exports.getMovie = async(req, res, next) => {
     const {tmdbId} = req.params;
@@ -19,8 +18,11 @@ module.exports.getMovie = async(req, res, next) => {
         const path = "https://image.tmdb.org/t/p/original"
         const response = await movieFunctions.getMovieById(tmdbId);
         const data = response[0];
-        const newMovie = await addDoc(Movie, {"tmdbId" : data.id, "title" : data.title, "language" : data.original_language, "overview" : data.overview, "poster_path" : path + data.poster_path, "release_date" : data.release_date, "reviewCount" : 0, "rating" : 0,"numRating" : 0, "favourite" : 0, "reviews" : []});
-        res.send(newMovie);
+
+        const movieObj = {"tmdbId" : data.id, "title" : data.title, "language" : data.original_language, "overview" : data.overview, "poster_path" : path + data.poster_path, "release_date" : data.release_date, "reviewCount" : 0, "rating" : 0,"numRating" : 0, "favourite" : 0, "reviews" : []}
+
+        const newMovie = await addDoc(Movie, movieObj);
+        res.send({"id" : newMovie.id, ...movieObj});
     }
 }
 
@@ -41,78 +43,65 @@ module.exports.movieOptions = async (req, res, next) => {
     const userObj = await utilityFunctions.getUser(user);
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
 
-    const parentDocPath =  `User/${userObj.id}`;
     const subCollectionName = 'movies';
-    const uniqueId = uid();
 
-    const response = await movieFunctions.hasSubcollection(parentDocPath, subCollectionName);
+    const response = await movieFunctions.hasSubcollection(userObj.id, subCollectionName);
     if (response.length > 0) {
         const result = movieFunctions.findObjectById(response, tmdbId);
         if (result !== undefined) {
-            const oldReviewCheck = result.review !== undefined;
             const {
                 rating = result.rating,
                 favourite = result.favourite,
                 watched = result.watched,
                 watchLater = result.watchLater,
-                reviewText =  oldReviewCheck ? result.review.text : undefined
             } = req.body;
-            
+
             const favCheck = result.favourite == favourite;
             const ratingCheck = result.rating === 0 && rating !== 0;
-            const reviewCheck = reviewText !== undefined;
 
             const userUpdates = { rating, favourite, watched, watchLater }
 
-            if(reviewCheck){
-                userUpdates.review = oldReviewCheck ? { "uid": result.review.uid, "text": reviewText } : { "uid": uniqueId, "text": reviewText }
-            }
-
-            let reviews = movieObj.reviews;
-            if(oldReviewCheck){
-                reviews.forEach(element => {
-                    if(element.uid == result.review.uid) element.text = reviewText
-                });
-            }
-            else reviews.push({ "uid" : uniqueId, "text" : reviewText })
-
-            const updatedDoc = await updateDoc(doc(User, userObj.id, subCollectionName, result.uid), userUpdates);
+            await updateDoc(doc(User, userObj.id, subCollectionName, result.id), userUpdates);
+            const updatedDoc = await getDoc(doc(User, userObj.id, subCollectionName, result.id));
             //updating movie doc
             const movieUpdates = {
                 "rating" : rating === 0 ? 0 : ((movieObj.rating * movieObj.numRating ) - result.rating + rating) / (movieObj.numRating),
                 "favourite" : increment(favCheck ? 0 : favourite ? 1 : -1),
-                "numRating" : increment(ratingCheck ? 1 : 0),
-                "reviews" : reviews,
-                "reviewCount" : increment(oldReviewCheck ? 0 : reviewCheck ? 1 : 0)
+                "numRating" : increment(ratingCheck ? 1 : 0)
             }
-            await updateDoc(doc(Movie, movieObj.movieId),movieUpdates );
-            res.send(updatedDoc);
+            await updateDoc(doc(Movie, movieObj.id),movieUpdates );
+
+            res.send(updatedDoc.data());
             return;
         }
     }
-    const { rating = 0, favourite = false, watched = false, watchLater = false, reviewText = ''} = req.body;
-    const reviewCheck = reviewText.length > 0;
-
-    if(reviewCheck){
-        movieObj.reviews.push({ "uid" : uniqueId, "text" : reviewText })
-    }
+    const { rating = 0, favourite = false, watched = false, watchLater = false} = req.body;
 
     const movieUpdates = {
         "rating" : rating === 0 ? movieObj.rating : ((movieObj.rating * movieObj.numRating) + rating) / (movieObj.numRating + 1),
         "favourite" : increment(favourite ? 1 : 0),
         "numRating" : increment(rating === 0 ? 0 : 1),
-        "reviews" : movieObj.reviews,
-        "reviewCount" : increment(reviewCheck ? 1 : 0)
     }
 
-    await updateDoc(doc(Movie, movieObj.movieId), movieUpdates );
+    await updateDoc(doc(Movie, movieObj.id), movieUpdates );
 
-    const obj = { rating, favourite, watched, watchLater, tmdbId, "id" : movieObj.movieId }
+    const obj = { rating, favourite, watched, watchLater, tmdbId, "movieId" : movieObj.id }
 
-    if(reviewCheck) obj.review = { "uid" : uniqueId, "text" : reviewText }
-
-    const parentDoc = doc(User, userObj.id);
-    const subcollectionRef = collection(parentDoc, subCollectionName);
-    const subCollection = await addDoc(subcollectionRef, obj);
-    res.send(subCollection);
+    const subCollection = await addDoc(collection(User, userObj.id, subCollectionName), obj);
+    const newDoc = await getDoc(doc(User, userObj.id, subCollectionName, subCollection.id));
+    res.send(newDoc.data());
 };
+
+module.exports.getReviews = async(req, res, next) => {
+    const {tmdbId} = req.params;
+
+    const movieObj = utilityFunctions.getMovie(tmdbId)
+    const userQuery = query(collection(db, 'Movie'), where('movieId', '==', movieObj.id));
+    const querySnapshot = await getDocs(userQuery);
+    const result = querySnapshot.map(ele => ele.data())
+
+    res.send(result);
+}
+
+
+//Need to do error control
