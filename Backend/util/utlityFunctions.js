@@ -1,5 +1,5 @@
 const { db } = require("../firebaseConfig");
-const { query, where, collection, getDocs } = require("firebase/firestore/lite");
+const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
 
 module.exports.getUser = async (user) => {
     const userQuery = query(collection(db, 'User'), where('uid', '==', user.uid));
@@ -15,6 +15,12 @@ module.exports.getMovie = async (tmdbId) => {
     const movie = await getDocs(querySol);
     const movieId = movie.docs[0].id;
     const data = movie.docs[0].data();
-    const result = { "movieId": movieId, ...data };
+    const result = { "id" : movieId, ...data };
     return result;
 }
+
+module.exports.getUserById = async (id) => {
+    const docRef = doc(User, id);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+};

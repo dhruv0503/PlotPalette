@@ -34,3 +34,5 @@ module.exports.signOut = async(req,res, next) => {
     await signOut(auth);
     res.send("Logged Out")
 }
+
+//When completed with the rest of the auth, check signIn promise section
