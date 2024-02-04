@@ -9,17 +9,13 @@ import data from "../assets/Data"
 
 function Navbar() {
     const navigate = useNavigate();
-    
-
-
-
     return (
         <div className='fixed top-0 z-10 w-screen '>
         <NavigationMenu.Root className=" flex bg-custom-50">
             <NavigationMenu.List className=" m-5 grid grid-cols-2 list-none items-center text-custom-10 p-1 ">
                 <div className='flex '>
                     <NavigationMenu.Item >
-                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
                           LOGO{}
                         </NavigationMenu.Trigger>
                        
@@ -37,7 +33,6 @@ function Navbar() {
                         <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
                             <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
                                 <ListItem title="MOVIES" href="/movies">
-                                   
                                 </ListItem>
                                 <ListItem title="TOP MOVIES" href="/movies">
                                    

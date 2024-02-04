@@ -14,8 +14,8 @@ function Booktemplate() {
     
     return (
         <div>
-        <div className='bg-custom-10 p-10  gap-3 grid grid-cols-3 mt-20'>
-            <div className=''>
+        <div className='bg-custom-10 p-10  gap-3 sm:grid sm:grid-cols-3 mt-20'>
+            <div className='m-2'>
                     <div className='shadow-md bg-custom-50 rounded-lg'>
                         <img
                             src={movie.Images[1]}
