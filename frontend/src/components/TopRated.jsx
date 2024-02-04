@@ -6,39 +6,41 @@ import data from '../assets/Data'
 import { MovieCard } from './CustomCard';
 
 function TopRated() {
-    const settings = {
+    
+    var settings = {
         dots: true,
-        infinite: true,
+        infinite: false,
         speed: 500,
-        CenterMode: true,
-     
-        centerPadding: '60px',
-        slidesToShow: 4, // Number of movies shown at once
-        slidesToScroll: 1,
+        slidesToShow: 3,
+        slidesToScroll: 4,
+        initialSlide: 0,
         responsive: [
             {
-                breakpoint: 1200,
+                breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 900,
-                settings: {
-                    slidesToShow: 2,
-                },
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
             },
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 1,
-                },
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
             },
-        ],
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
-
-  
-
 
 
 
@@ -53,8 +55,7 @@ function TopRated() {
               <Slider {...settings}>
                   {data.map((movie, index) => (
                       <div className='focus:outline-none' key={index}>
-                          {/* Assuming MovieCard is a component */}
-                          <MovieCard {...movie} />
+                          <MovieCard  {...movie} />
                       </div>
                   ))}
               </Slider>
