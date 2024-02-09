@@ -7,7 +7,7 @@ function AccountPage() {
     return (
         <>
             <Navbar />
-            <div className='bg-custom-10 grid-cols-4 grid mt-20 p-4'>
+            <div className='bg-custom-30 grid-cols-4 grid mt-20 p-4'>
                
                 <div className=' col-span-3 flex m-3 gap-2 '>
                     <div className='grid grid-rows-3 gap-2 bg-custom-50 p-5'>

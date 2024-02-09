@@ -15,7 +15,7 @@ function Movies() {
   
 
   return (
-    <div className='bg-custom-10'>
+    <div className='bg-custom-30'>
       <Navbar />
       <div className='mt-20 p-2'>
         <div className='p-2'>
