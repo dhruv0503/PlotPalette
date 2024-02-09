@@ -4,24 +4,25 @@ import Bookim from "../assets/Bookim.jpg"
  import Footer from "../components/Footer.jsx"
 
 function SignIn() {
-  const [pass, setpass] = useState("");
+  const [password, setpass] = useState("");
   const [email, setemail] = useState("");
-  const [name, setname] = useState("");
+  const [Username, setname] = useState("");
 
   const handleLogin = () => {
-     console.log(pass ,name)
+     console.log(password ,Username)
   }
   const handleSignUp = () => {
-     console.log(name , pass , email)
+     console.log(Username , password , email)
   }
 
   return (
-    <div className='bg-custom-20 p-10'>
-      <div className=" mt-5 bg-custom-10 p-10 border border-black flex">
-      <div className=''>
+    <div className='bg-custom-30 p-10  h-100vh '>
+      <p className='font-bold font-mono text-lg ' >PLOT PALETTE.</p>
+      <div className="justify-center grid grid-cols-2 gap-0  ">
+      <div className='z-10 h-full '>
         <img className='h-[410px] w-[500px]' src={Bookim} alt="" />
       </div>
-      <div className='bg-black'>
+      <div className='z-10'>
         <Tabs.Root
           className="flex flex-col w-[400px] h-[410px] "
           defaultValue="tab1"
@@ -52,7 +53,7 @@ function SignIn() {
                 UserName
               </label>
                 <input
-                  value={name} onChange={(e)=>setname(e.target.value)}
+                  value={Username} onChange={(e)=>setname(e.target.value)}
                   className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
                 id="name"
                
@@ -62,7 +63,7 @@ function SignIn() {
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
                   Password
               </label>
-                <input value={pass} onChange={(e) => setpass(e.target.value)}
+                <input value={password} onChange={(e) => setpass(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
             
@@ -103,7 +104,7 @@ function SignIn() {
                UserName
               </label>
                 <input
-                  value={name} onChange={(e) => setname(e.target.value)}
+                  value={Username} onChange={(e) => setname(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="newPassword"
                 
@@ -117,7 +118,7 @@ function SignIn() {
               Password
               </label>
                 <input
-                  value={pass} onChange={(e) => setpass(e.target.value)}
+                  value={password} onChange={(e) => setpass(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="confirmPassword"
                 
@@ -133,8 +134,15 @@ function SignIn() {
         </Tabs.Root>
 
       </div>
+      </div> 
+      <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-0 z-0">
+         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className='relative block w-[275%] h-100 fill-current text-custom-50'>
+          <path d="M892.25 114.72L0 0 0 120 1200 120 1200 0 892.25 114.72z" class="shape-fill"></path>
+        </svg> 
       </div>
+
     </div>
+    
   )
 }
 
