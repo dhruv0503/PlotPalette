@@ -1,5 +1,6 @@
 import { Flex, Button } from '@radix-ui/themes';
 import Homepage from './pages/Homepage';
+import firebase from 'firebase/compat/app';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AccountPage from './pages/Accountpage';
 import SignIn from './pages/SignIn';

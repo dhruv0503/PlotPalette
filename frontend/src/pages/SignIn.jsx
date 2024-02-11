@@ -1,19 +1,48 @@
+
+
 import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+// import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
+// import {auth} from '../firebaseconfig/firebaseConfig.js'
+
 import * as Tabs from '@radix-ui/react-tabs';
 import Bookim from "../assets/Bookim.jpg"
- import Footer from "../components/Footer.jsx"
+ 
 
-function SignIn() {
-  const [password, setpass] = useState("");
+export default function SignIn() {
+  const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
-  const [Username, setname] = useState("");
+  const [name, setname] = useState("");
+  const navigate = useNavigate();
+  
 
-  const handleLogin = () => {
-     console.log(password ,Username)
-  }
-  const handleSignUp = () => {
-     console.log(Username , password , email)
-  }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/signin', { email, password });
+      console.log(response.data.msg);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing in:', error.message);
+      alert(error.message);
+    }
+  };
+
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/signup', { email,name, password });
+      console.log(response.data.msg);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing in:', error.message);
+      alert(error.message);
+    }
+  };
 
   return (
     <div className='bg-custom-30 p-10  h-100vh '>
@@ -50,10 +79,10 @@ function SignIn() {
             </p>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
-                UserName
+               Email
               </label>
                 <input
-                  value={Username} onChange={(e)=>setname(e.target.value)}
+                  value={email} onChange={(e)=>setemail(e.target.value)}
                   className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
                 id="name"
                
@@ -63,7 +92,7 @@ function SignIn() {
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
                   Password
               </label>
-                <input value={password} onChange={(e) => setpass(e.target.value)}
+                <input value={password} onChange={(e) => setpassword(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
             
@@ -104,7 +133,7 @@ function SignIn() {
                UserName
               </label>
                 <input
-                  value={Username} onChange={(e) => setname(e.target.value)}
+                  value={name} onChange={(e) => setname(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="newPassword"
                 
@@ -118,7 +147,7 @@ function SignIn() {
               Password
               </label>
                 <input
-                  value={password} onChange={(e) => setpass(e.target.value)}
+                  value={password} onChange={(e) => setpassword(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="confirmPassword"
                 
@@ -146,4 +175,14 @@ function SignIn() {
   )
 }
 
-export default SignIn
+
+  
+
+
+
+ 
+   
+ 
+   
+ 
+   

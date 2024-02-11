@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
+import axios from 'axios'
 import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
@@ -10,6 +11,23 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons
 
 function Movies() {
   const [genre, setgenre] = useState(null);
+
+  
+    const [upcomingMovies, setUpcomingMovies] = useState([]);
+  
+    useEffect(() => {
+      const fetchUpcomingMovies = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/api/movies/type/upcoming');
+          console.log(response.data);
+          setUpcomingMovies(response.data);
+        } catch (error) {
+          console.error('Error fetching upcoming movies:', error.message);
+        }
+      };
+  
+      fetchUpcomingMovies();
+    }, []);
 
   const handleSelectChange = (newValue) => {
     setgenre(newValue);

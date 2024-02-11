@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express();
+const cors = require('cors');
 const userRouter = require("./Routes/userRoutes")
 const authRouter = require("./Routes/authRoutes")
 const movieRouter = require("./Routes/movieRoutes")
@@ -7,6 +8,13 @@ const reviewRouter = require("./Routes/reviewRoutes")
 const expressError = require("./util/expressError")
 
 app.use(express.json())
+app.use(cors());
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  })
 
 app.use("/api", authRouter);
 app.use("/api/users", userRouter);
@@ -28,6 +36,6 @@ app.use((err, req, res, next) => {
     });
 })
 
-app.listen(3000, () => {
-    console.log("App Listening on port 3000");
+app.listen(5000, () => {
+    console.log("App Listening on port 5000");
 })
