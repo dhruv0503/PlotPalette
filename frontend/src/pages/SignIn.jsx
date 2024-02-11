@@ -31,17 +31,27 @@ export default function SignIn() {
   };
 
 
-  const handleSignUp = () => {
-     console.log(name , password , email)
-  }
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/signup', { email,name, password });
+      console.log(response.data.msg);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing in:', error.message);
+      alert(error.message);
+    }
+  };
 
   return (
-    <div className='bg-custom-20 p-10'>
-      <div className=" mt-5 bg-custom-10 p-10 border border-black flex">
-      <div className=''>
+    <div className='bg-custom-30 p-10  h-100vh '>
+      <p className='font-bold font-mono text-lg ' >PLOT PALETTE.</p>
+      <div className="justify-center grid grid-cols-2 gap-0  ">
+      <div className='z-10 h-full '>
         <img className='h-[410px] w-[500px]' src={Bookim} alt="" />
       </div>
-      <div className='bg-black'>
+      <div className='z-10'>
         <Tabs.Root
           className="flex flex-col w-[400px] h-[410px] "
           defaultValue="tab1"
@@ -153,8 +163,15 @@ export default function SignIn() {
         </Tabs.Root>
 
       </div>
+      </div> 
+      <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-0 z-0">
+         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className='relative block w-[275%] h-100 fill-current text-custom-50'>
+          <path d="M892.25 114.72L0 0 0 120 1200 120 1200 0 892.25 114.72z" class="shape-fill"></path>
+        </svg> 
       </div>
+
     </div>
+    
   )
 }
 
