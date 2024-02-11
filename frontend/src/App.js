@@ -7,6 +7,9 @@ import Template from './pages/Template';
 import Movies from './pages/Movies';
 import Books from './pages/Books';
 import Aboutsus from './pages/Aboutsus';
+import { MyContextProvider } from "./Context/Contxt";
+
+
 function App() {
   return (
     <>
