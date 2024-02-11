@@ -1,22 +1,21 @@
 import React from 'react'
-import { Card ,Inset ,Strong,Text ,Heading ,TextArea , Button ,Flex ,Avatar ,Popover,Box ,Checkbox} from '@radix-ui/themes'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import CommentSection from './CommentSection'
 import { useParams } from 'react-router-dom'
 import data from '../assets/Data'
-import { Tabs } from '@radix-ui/themes'
+import { Tabs ,Text } from '@radix-ui/themes'
+
 
 function Booktemplate() {
     const { movieId } = useParams();
-    const movie = data.find(movie => movie.Title == movieId);
+    const movie = data.find(movie => movie.Title === movieId);
     const actor = movie.Actors.split(',');
 
     
     return (
         <div className='relative '>
-            <div className='bg-custom-30 p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>
-                
-                {/* <div className='m-2 z-10'>
+            <div style={{backgroundImage: `url(${movie.Images[0]})`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
+                <div className='m-2 z-10 '>
                     <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
 
                         <div className='relative'>
@@ -41,16 +40,10 @@ function Booktemplate() {
                         </div>
 
                     </div>
-                </div> */}
-                <div className={`bg-url-${movie.Images[0]}  min-h-100  min-w-100`}>
-               
-
                 </div>
-                 
+             
 
-
-               
-                {/* <div className='z-10 col-span-2 p-5 rounded-lg px-10 text-custom-10 bg-custom-50 font-bold '>  
+                <div className='z-10 col-span-2 p-5 rounded-lg px-10 text-custom-10 bg-custom-50 font-bold '>  
                 <Tabs.Root
                     className="flex flex-col shadow-[0_2px_10px] shadow-blackA2"
                     defaultValue="tab1"
@@ -149,13 +142,7 @@ function Booktemplate() {
                         >
                         </Tabs.Content>
                     </Tabs.Root>
-                </div> */}
-                
-
-
-                
-        
-
+                </div>
             </div>
              
             <div className='p-4 bg-custom-50 gap-3 items-center relative flex  shadow-lg'>

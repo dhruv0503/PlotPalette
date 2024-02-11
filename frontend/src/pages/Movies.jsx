@@ -3,28 +3,33 @@ import Navbar from './Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import data from '../assets/Data.jsx';
-
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 
 
 function Movies() {
-  const [genre, setgenre] = useState();
-  console.log(genre);
-  
+  const [genre, setgenre] = useState(null);
+
+  const handleSelectChange = (newValue) => {
+    setgenre(newValue);
+  };
+  console.log(genre)
+  const filteredMovies = genre?data.filter(movie => movie.Genre.includes(genre)):data;
+
+
 
   return (
-    <div className='bg-custom-30'>
+    <div className='bg-custom-30 h-screen'>
       <Navbar />
       <div className='mt-20 p-2'>
         <div className='p-2'>
-          <Select.Root>
+          <Select.Root value={genre} onValueChange={handleSelectChange} >
             <Select.Trigger
-              className="inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-violet11 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-violet9 outline-none"
+              className="inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-custom-30 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-custom-30 outline-none"
               aria-label="Food"
             >
-              <Select.Value placeholder="Filter content" />
+              <Select.Value  placeholder=" "  />
               <Select.Icon className="text-custom-50">
                 <ChevronDownIcon />
               </Select.Icon>
@@ -35,7 +40,7 @@ function Movies() {
                   <ChevronUpIcon />
                 </Select.ScrollUpButton>
                 <Select.Viewport className="p-[5px]">
-                  <Select.Group>
+                  <Select.Group > 
                     <Select.Label className="px-[25px] text-xs leading-[25px] text-mauve11">
                       Category
                     </Select.Label>
@@ -59,9 +64,13 @@ function Movies() {
           </Select.Root>
       </div>
       <div className="p-3  gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 justify-around ">
-          {data.map((movie, index) => (
+          { filteredMovies.length>0?
+            (filteredMovies.map((movie, index) => (
             <MovieCard key={index} {...movie} />       
-        ))} 
+            ))) :
+            <p>SORRY NO MOVIES </p>
+          } 
+          
         </div>
       </div>
     </div>
@@ -72,13 +81,13 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
   return (
     <Select.Item
       className={classnames(
-        'text-[13px] leading-none text-custom-50 rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1',
+        'text-[13px] leading-none text-custom-50 rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-custom-50 data-[highlighted]:text-violet1',
         className
       )}
       {...props}
       ref={forwardedRef}
     >
-      <Select.ItemText>{children}</Select.ItemText>
+      <Select.ItemText>{children}</Select.ItemText> 
       <Select.ItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
         <CheckIcon />
       </Select.ItemIndicator>
