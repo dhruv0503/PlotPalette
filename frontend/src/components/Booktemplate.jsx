@@ -2,19 +2,21 @@ import React from 'react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import CommentSection from './CommentSection'
 import { useParams } from 'react-router-dom'
-import data from '../assets/Data'
 import { Tabs ,Text } from '@radix-ui/themes'
-
+import { useApi } from '../Context/Contxt.jsx';
 
 function Booktemplate() {
+
+    const { upcomingMovies } = useApi();
+
     const { movieId } = useParams();
-    const movie = data.find(movie => movie.Title === movieId);
-    const actor = movie.Actors.split(',');
+    const movie = upcomingMovies.find(movie => movie.title === movieId);
+    // const actor = movie.Actors.split(',');
 
     
     return (
         <div className='relative '>
-            <div style={{backgroundImage: `url(${movie.Images[0]})`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
+            <div style={{backgroundImage: `url(${movie.backdrop_path})`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
                 <div className='m-2 z-10 '>
                     <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
 
@@ -22,7 +24,7 @@ function Booktemplate() {
                             <div className='bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45'></div>
 
                             <img
-                                src={movie.Images[1]}
+                                src={movie.backdrop_path}
                                 alt="Bold typography"
                                 className='p-2 h-[400px] w-[300px] w-full rounded-md object-cover hover:opacity-90 transition duration-300'
                                 style={{ clipPath: 'polygon(0 0, 100% 0, 100% 80%, 0 100%)' }}
@@ -80,9 +82,9 @@ function Booktemplate() {
                         >
                     
                             <div className='bg-black p-4 flex flex-col border border-gray-800 '>
-                                <h2 className='text-white text-lg font-bold mb-2'>{movie.Title} ({movie.Year})</h2>
-                                <p className='text-gray-400 mb-2'>RELEASED ON: {movie.Released}</p>
-                                <p className='text-gray-400'>GENRE: {movie.Genre}</p>
+                                <h2 className='text-white text-lg font-bold mb-2'>{movie.title} ({movie.release_date})</h2>
+                                <p className='text-gray-400 mb-2'>RELEASED ON: {movie.release_date}</p>
+                                <p className='text-gray-400'>GENRE: {movie.genre_ids}</p>
                             </div>
 
                         <div>   
@@ -90,7 +92,7 @@ function Booktemplate() {
                                 <div className='bg-custom-40 p-3'>
                                     <p className='text-custom-50 font-mono text-lg mb-2'>MOVIE PLOT</p>
                                     <Text as="p" size="3" className='text-white'>
-                                        {movie.Plot}
+                                        {movie.overview}
                                     </Text>
                                 </div>
 
@@ -104,7 +106,7 @@ function Booktemplate() {
                                 </div>        
                     </div>
                     </Tabs.Content>
-                    <Tabs.Content
+                    {/* <Tabs.Content
                         className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black grid grid-cols-2 m-3"
                         value="tab2"
                         >
@@ -124,7 +126,7 @@ function Booktemplate() {
 
                       
                            
-                        </Tabs.Content>
+                        </Tabs.Content> */}
                         <Tabs.Content
                             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-3"
                             value="tab3"

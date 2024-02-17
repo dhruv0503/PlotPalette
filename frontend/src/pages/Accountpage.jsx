@@ -18,10 +18,7 @@ function AccountPage() {
                             <h1>Recent likes</h1>
                             <h1>Liked movies</h1>
                         </div>
-
                     </div>
-
-                  
                 </div>
 
                 <div className=' w-max h-max border rounded-lg bg-white m-1 '>

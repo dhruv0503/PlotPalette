@@ -7,36 +7,25 @@ import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-
+import { useApi } from '../Context/Contxt.jsx';
 
 function Movies() {
   const [genre, setgenre] = useState(null);
 
   
-    const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const { upcomingMovies } = useApi();
   
-    useEffect(() => {
-      const fetchUpcomingMovies = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/api/movies/type/upcoming');
-          console.log(response.data);
-          setUpcomingMovies(response.data);
-        } catch (error) {
-          console.error('Error fetching upcoming movies:', error.message);
-        }
-      };
   
-      fetchUpcomingMovies();
-    }, []);
-
   const handleSelectChange = (newValue) => {
     setgenre(newValue);
   };
-  console.log(genre)
-  const filteredMovies = genre?data.filter(movie => movie.Genre.includes(genre)):data;
 
+  console.log(upcomingMovies)
 
+  
 
+  const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
+  
   return (
     <div className='bg-custom-30 h-screen'>
       <Navbar />
@@ -81,14 +70,15 @@ function Movies() {
             </Select.Portal>
           </Select.Root>
       </div>
-      <div className="p-3  gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 justify-around ">
-          { filteredMovies.length>0?
-            (filteredMovies.map((movie, index) => (
+        <div className="p-3  gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 justify-around ">
+          
+
+           { upcomingMovies.length>0?
+            (upcomingMovies.map((movie, index) => (
             <MovieCard key={index} {...movie} />       
             ))) :
             <p>SORRY NO MOVIES </p>
-          } 
-          
+          }
         </div>
       </div>
     </div>

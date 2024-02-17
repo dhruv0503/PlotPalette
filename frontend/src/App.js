@@ -13,7 +13,7 @@ import { MyContextProvider } from "./Context/Contxt";
 
 function App() {
   return (
-    <>
+    <MyContextProvider>
       <Router>
         <Routes>
           <Route element={<Homepage />} path='/' />
@@ -25,7 +25,7 @@ function App() {
           <Route element={<Aboutsus />} path='/about' />
         </Routes>
       </Router>
-    </>
+    </MyContextProvider>
   );
 }
 
