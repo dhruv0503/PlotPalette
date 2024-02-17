@@ -15,16 +15,21 @@ module.exports.signUp = async(req, res, next) => {
 module.exports.signIn = async (req, res, next) => {
     const { email, password } = req.body;
     const signInObj = await signInWithEmailAndPassword(auth, email, password);
-    const user = await new Promise((resolve) => {
+   try { const user = await new Promise((resolve) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             unsubscribe();
             resolve(user);
         });
     });
     if (user) {
-        res.send({"msg" : `Signed in with id: ${signInObj.user.uid}`});
+        res.send({success : true,"msg" : `Signed in with id: ${signInObj.user.uid}`, signInObj});
     } else {
         next(new expressError('Error signing in: User not found', 404));
+    }}
+    catch (error) {
+        console.log(error);
+        res.json({ success: false })
+
     }
 };
 
