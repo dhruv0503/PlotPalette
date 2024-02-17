@@ -5,6 +5,7 @@ const userRouter = require("./Routes/userRoutes")
 const authRouter = require("./Routes/authRoutes")
 const movieRouter = require("./Routes/movieRoutes")
 const reviewRouter = require("./Routes/reviewRoutes")
+const friendRouter = require("./Routes/frinedRoutes")
 const expressError = require("./util/expressError")
 
 app.use(express.json())
@@ -18,8 +19,9 @@ app.use((req, res, next) => {
 
 app.use("/api", authRouter);
 app.use("/api/users", userRouter);
-app.use("/api/movies", movieRouter)
-app.use("/api/reviews", reviewRouter)
+app.use("/api/movies", movieRouter);
+app.use("/api/reviews", reviewRouter);
+app.use("/api/friend", friendRouter);
 
 app.all('*', (req, res, next) => {
     next(new expressError('Page Not Found', 404))

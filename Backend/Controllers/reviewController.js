@@ -1,12 +1,14 @@
 require("dotenv").config();
 const { db, auth } = require("../firebaseConfig");
-const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField} = require("firebase/firestore/lite");
+const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore/lite");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const Review = collection(db, "Review");
 const expressError = require("../util/expressError");
 const movieFunctions = require("../util/movieFunctions");
 const utilityFunctions = require("../util/utlityFunctions");
+
+//Review Routes start with /api/reviews/:tmdbId
 
 module.exports.makeReview = async (req, res, next) => {
     const user = auth.currentUser;
@@ -18,7 +20,7 @@ module.exports.makeReview = async (req, res, next) => {
 
     const formattedTime = new Date(Date.now()).toLocaleString();
 
-    const obj = {"text": reviewText, "userId" : userObj.id, "movieId" : movieObj.id, "timeStamp" : formattedTime }
+    const obj = {"text": reviewText, "userId" : userObj.id, "movieId" : movieObj.id, "timeStamp" : formattedTime, "upVote" : 0, "downVote" : 0}
     const review = await addDoc(Review, obj);
     const reviewId = review.id;
 
@@ -53,7 +55,7 @@ module.exports.updateReview = async(req, res, next) => {
 
 module.exports.deleteReview = async(req, res, next) => {
     const user = auth.currentUser;
-    const {tmdbId} = req.params
+    const {tmdbId} = req.params;
 
     const userObj = await utilityFunctions.getUser(user);
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -71,5 +73,7 @@ module.exports.deleteReview = async(req, res, next) => {
         "reviews" : arrayRemove(reviewId)
     })
     await deleteDoc(doc(Review, reviewId));
-    res.send("Deleted");
+    const reviewsRef = await getDocs(collection(Review));
+    const reviews = reviewsRef.map(rev => ({...rev.data()}))
+    res.send(reviews);
 }

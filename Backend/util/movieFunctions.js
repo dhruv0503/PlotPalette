@@ -4,9 +4,8 @@ const axios = require("axios");
 const User = collection(db, "User");
 
 module.exports.getMovieById = async(id) => {
-    const external_id_object = await axios.get(`https://api.themoviedb.org/3/movie/${id}/external_ids?api_key=${process.env.TMDB_API_KEY}`)
-    const movie = await axios.get(`https://api.themoviedb.org/3/find/${external_id_object.data.imdb_id}?api_key=${process.env.TMDB_API_KEY}&external_source=imdb_id`);
-    return movie.data.movie_results;
+    const movie = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}`)
+    return movie.data;
 }
 
 module.exports.hasSubcollection = async(userId, subcollectionName) => {
