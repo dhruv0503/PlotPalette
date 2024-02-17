@@ -1,5 +1,6 @@
 const { db } = require("../firebaseConfig");
 const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
+const User = collection(db, 'User')
 
 module.exports.getUser = async (user) => {
     const userQuery = query(collection(db, 'User'), where('uid', '==', user.uid));
@@ -24,3 +25,11 @@ module.exports.getUserById = async (id) => {
     const docSnap = await getDoc(docRef);
     return docSnap.data();
 };
+
+module.exports.getReviewId = async(user) => {
+    const userData = await utilityFunctions.getUser(user);
+    const movieDoc = await getDocs(collection(User, userData.id, 'movies'));
+    const movie = movieDoc.docs.find(ele => ele.tmdbId == String(tmdbId))
+    if(movie.reviewId) return movie.reviewId
+    else return null;
+}

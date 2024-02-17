@@ -1,6 +1,6 @@
 const { db ,auth } = require("../firebaseConfig");
 const {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} = require("firebase/auth");
-const {addDoc, collection} = require("firebase/firestore/lite")
+const {addDoc, collection, getDoc, doc} = require("firebase/firestore/lite")
 const User = collection(db, "User");
 
 module.exports.signUp = async(req, res, next) => {
@@ -8,8 +8,8 @@ module.exports.signUp = async(req, res, next) => {
     const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
     delete data.password;
     const formattedTime = new Date(Date.now()).toLocaleString();
-    const docRef = await addDoc(User,{...data, "uid" : newUser.user.uid, "role" : "User", "joinedOn" : formattedTime});
-    res.send({"msg" : `User Added with id ${docRef.id}`, newUser});
+    const docRef = await addDoc(User,{...data, "uid" : newUser.user.uid, "role" : "User", "joinedOn" : formattedTime, "friendCount" : 0, "friendList" : [], "requestList" : [] });
+    res.send({"msg" : `User Added with id ${docRef.id}`});
 }
 
 module.exports.signIn = async (req, res, next) => {
@@ -22,8 +22,7 @@ module.exports.signIn = async (req, res, next) => {
         });
     });
     if (user) {
-        res.send({"msg" : `Signed in with id: ${signInObj.user.uid}`,
-    signInObj});
+        res.send({"msg" : `Signed in with id: ${signInObj.user.uid}`});
     } else {
         next(new expressError('Error signing in: User not found', 404));
     }
