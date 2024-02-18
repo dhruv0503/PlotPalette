@@ -1,20 +1,28 @@
 // MovieCard.js
 import React from 'react';
-import { useNavigate ,Link ,useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useApi } from '../Context/Contxt';
 
 const MovieCard = ({ 
 original_title, genre_ids
 , release_date
 , 
 poster_path
- ,imdbRating, } ) => {
+    , imdbRating }) => {
+    
+    
+    
+    
     const navigate = useNavigate();
+    const { genres } = useApi();
+
+
     return (  
         <div className="max-w-sm bg-custom-50 p-6 overflow-hidden shadow-lg">
 
             <div className="relative">
                 <div className="bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45"></div>
-                <img className="w-full h-48 object-cover object-center rounded-t-lg border-2 border-custom-20" src={poster_path} alt={`${
+                <img className="w-full h-48 object-cover object-center rounded-t-lg border-2 border-custom-20" src={`https://image.tmdb.org/t/p/original${poster_path}`}alt={`${
 original_title} 
 backdrop_path
 `} />
@@ -22,9 +30,8 @@ backdrop_path
                 <div className="mt-6">
                     <div className="font-bold text-white text-xl mb-2">{
 original_title}</div>
-                    <p className="text-gray-200 text-sm mb-2">{genre_ids
-}</p>
-                    <p className="text-gray-200 text-sm mb-2">{`release_date
+                    <p className="text-gray-200 text-sm mb-2"></p>
+                    <p className="text-gray-200 text-sm mb-2">{`Release Date
 : ${release_date
 }`}</p>
                 </div>

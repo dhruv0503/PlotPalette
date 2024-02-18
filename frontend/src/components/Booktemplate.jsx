@@ -7,16 +7,20 @@ import { useApi } from '../Context/Contxt.jsx';
 
 function Booktemplate() {
 
-    const { upcomingMovies } = useApi();
+    const { all_movie } = useApi();
 
     const { movieId } = useParams();
-    const movie = upcomingMovies.find(movie => movie.title === movieId);
-    // const actor = movie.Actors.split(',');
+    const movie = all_movie.find(movie => movie.title === movieId);
 
+    // const actor = movie.Actors.split(',');
+     
+    console.log(all_movie)
+     
+    var img = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
     
     return (
         <div className='relative '>
-            <div style={{backgroundImage: `url(${movie.backdrop_path})`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
+            <div style={{backgroundImage: `url(${movie.backgroundImage}`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
                 <div className='m-2 z-10 '>
                     <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
 
@@ -24,7 +28,7 @@ function Booktemplate() {
                             <div className='bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45'></div>
 
                             <img
-                                src={movie.backdrop_path}
+                                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
                                 alt="Bold typography"
                                 className='p-2 h-[400px] w-[300px] w-full rounded-md object-cover hover:opacity-90 transition duration-300'
                                 style={{ clipPath: 'polygon(0 0, 100% 0, 100% 80%, 0 100%)' }}
@@ -106,27 +110,7 @@ function Booktemplate() {
                                 </div>        
                     </div>
                     </Tabs.Content>
-                    {/* <Tabs.Content
-                        className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black grid grid-cols-2 m-3"
-                        value="tab2"
-                        >
-                           
-                            <div className='bg-custom-40 p-4 rounded-md hover:shadow-lg transition duration-300'>
-                                <p className='text-custom-50 font-bold mb-2 hover:text-violet11 transition duration-300'>ACTOR</p>
-                                <div className='flex flex-col'>
-                                    {actor.map((actorName, index) => (
-                                        <p className='mb-1 hover:text-violet11 cursor-pointer transition duration-300' key={index}>{actorName}</p>
-                                    ))}
-                                </div>
-                            </div>
-                          
-
-
-
-
-                      
-                           
-                        </Tabs.Content> */}
+                  
                         <Tabs.Content
                             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-3"
                             value="tab3"

@@ -3,34 +3,32 @@ import Navbar from '../pages/Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
+import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 
-function TopRated() {
+function Popular() {
     const [genre, setgenre] = useState(null);
 
 
-    const { top_rated, searchResults ,TAGS } = useApi();
+    const { popular, searchResults ,TAGS } = useApi();
+
+
     const handleSelectChange = (newValue) => {
         setgenre(newValue);
     };
-    
 
     const data = searchResults
-        ? top_rated.filter(article =>
+        ? popular.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
-        : top_rated;
-    
-    console.log(data)
+        : popular;
 
-
-
-
+     
 
     const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
 
@@ -112,11 +110,6 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
 });
 
 
-export default TopRated
-
-
-
-
-
+export default Popular
 
 

@@ -36,49 +36,19 @@ function Navbar() {
                             <CaretDownIcon
                                 className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
-                                />
-                                
+                                />      
                         </NavigationMenu.Trigger>
                         <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                            <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                                <ListItem title="MOVIES" href="/movies">
-                                </ListItem>
-                                <ListItem title="TOP MOVIES" href="/movies">
-                                   
-                                </ListItem>
-                                <ListItem title="TOP MOVIES" href="/movies">
-                                    
-                                </ListItem>
+                            <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-2">
+                                <ListItem title="Top Rated" href="/movies/toprated" />
+                                <ListItem title="Upcoming Movies" href="/movies/upcoming" />
+                                <ListItem title="Popular" href="/movies/popular" />
+                                <ListItem title="Now playing" href="/movies/nowplaying"/>
                                
-                              
                             </ul>
                         </NavigationMenu.Content>
                     </NavigationMenu.Item>
-                        <NavigationMenu.Item>
-                            <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                                MOVIES{' '}
-                                <CaretDownIcon
-                                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
-                                    aria-hidden
-                                />
-
-                            </NavigationMenu.Trigger>
-                            <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                                <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                                    <ListItem title="MOVIES" href="/movies">
-
-                                    </ListItem>
-                                    <ListItem title="TOP MOVIES" href="/movies">
-
-                                    </ListItem>
-                                    <ListItem title="TOP MOVIES" href="/movies">
-
-                                    </ListItem>
-
-
-                            </ul>
-                            </NavigationMenu.Content>
-                    </NavigationMenu.Item>
+                      
                     </NavigationMenu.List>
                 <NavigationMenu.List className={`sm:flex  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 `}
                 onClick={closeDropdown} >
