@@ -3,32 +3,31 @@ import Navbar from '../pages/Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
+import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 
-function TopRated() {
+function NowPlaying() {
     const [genre, setgenre] = useState(null);
-
-
-    const { top_rated, searchResults ,TAGS } = useApi();
+    const { now_playing, searchResults ,TAGS ,genres } = useApi();
     const handleSelectChange = (newValue) => {
         setgenre(newValue);
     };
+
     
 
     const data = searchResults
-        ? top_rated.filter(article =>
+        ? now_playing.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
-            article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
+            article.title.toLowerCase().includes(searchResults.toLowerCase())
         )
-        : top_rated;
-    
-    console.log(data)
+        : now_playing;
+    console.log(searchResults)
 
-
+       
 
 
 
@@ -112,7 +111,7 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
 });
 
 
-export default TopRated
+export default NowPlaying
 
 
 

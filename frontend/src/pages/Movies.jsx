@@ -15,12 +15,11 @@ function Movies() {
   
   const { upcomingMovies } = useApi();
   
-  
   const handleSelectChange = (newValue) => {
     setgenre(newValue);
   };
 
-  console.log(upcomingMovies)
+
 
   
 
