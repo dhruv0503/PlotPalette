@@ -19,17 +19,3 @@ module.exports.getMovie = async (tmdbId) => {
     const result = { "id" : movieId, ...data };
     return result;
 }
-
-module.exports.getUserById = async (id) => {
-    const docRef = doc(User, id);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
-};
-
-module.exports.getReviewId = async(user) => {
-    const userData = await utilityFunctions.getUser(user);
-    const movieDoc = await getDocs(collection(User, userData.id, 'movies'));
-    const movie = movieDoc.docs.find(ele => ele.tmdbId == String(tmdbId))
-    if(movie.reviewId) return movie.reviewId
-    else return null;
-}

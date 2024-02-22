@@ -23,7 +23,6 @@ module.exports.makeReview = async (req, res, next) => {
     const obj = {"text": reviewText, "userId" : userObj.id, "movieId" : movieObj.id, "timeStamp" : formattedTime, "upVote" : 0, "downVote" : 0}
     const review = await addDoc(Review, obj);
     const reviewId = review.id;
-
     const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
     const movie = movieFunctions.findObjectById(response, tmdbId);
     await updateDoc(doc(User, userObj.id, 'movies', movie.id), {reviewId} );
@@ -32,7 +31,6 @@ module.exports.makeReview = async (req, res, next) => {
         "reviewCount" : increment(1),
         "reviews" : arrayUnion(reviewId)
       });
-
       const reviewDoc = await getDoc(doc(Review, reviewId));
       res.send(reviewDoc.data())
 }
