@@ -16,8 +16,9 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const userData = await utilityFunctions.getUserById(id);
-    res.send(userData);
+    const docRef = doc(User, id);
+    const docSnap = await getDoc(docRef);
+    res.send(docSnap.data());
 };
 
 //Admin Route (Used to make admins)
