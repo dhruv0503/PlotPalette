@@ -1,124 +1,152 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { useNavigate } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
-
+import data from "../assets/Data"
+import * as Avatar from '@radix-ui/react-avatar';
 
 
 function Navbar() {
     const navigate = useNavigate();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(prevState => !prevState);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
+    
     return (
-        <NavigationMenu.Root className="relative z-[1] flex fixed bg-black">
-            <NavigationMenu.List className=" m-5 grid grid-cols-2 list-none items-center text-white p-1 ">
-                <div className='flex '>
+        <div className='fixed top-0 z-20 w-screen '>
+        <NavigationMenu.Root className=" flex  justify-between bg-custom-50">
+                <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
+                    
                     <NavigationMenu.Item >
-                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            LOGO{' '}
-                            <CaretDownIcon
-                                className="text-white relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
-                                aria-hidden
-                            />
+                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
+                          LOGO{}
                         </NavigationMenu.Trigger>
-                        <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto bg-black">
-                            <ul className="one m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[500px] sm:grid-cols-[0.75fr_1fr]">
-                                <li className="row-span-3 grid">
-                                    <NavigationMenu.Link asChild>
-                                        <a
-                                            className="focus:shadow-violet7 from-purple9 to-indigo9 flex
-                    h-full w-full select-none flex-col justify-end rounded-[6px] bg-gradient-to-b p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px]"
-                                            href="/"
-                                        >
-                                            <svg aria-hidden width="38" height="38" viewBox="0 0 25 25" fill="white">
-                                                <path d="M12 25C7.58173 25 4 21.4183 4 17C4 12.5817 7.58173 9 12 9V25Z"></path>
-                                                <path d="M12 0H4V8H12V0Z"></path>
-                                                <path d="M17 8C19.2091 8 21 6.20914 21 4C21 1.79086 19.2091 0 17 0C14.7909 0 13 1.79086 13 4C13 6.20914 14.7909 8 17 8Z"></path>
-                                            </svg>
-                                            <div className="mt-4 mb-[7px] text-[18px] font-medium leading-[1.2] text-white">
-                                                Radix Primitives
-                                            </div>
-                                            <p className="text-mauve4 text-[14px] leading-[1.3]">
-                                                Unstyled, accessible components for React.
-                                            </p>
-                                        </a>
-                                    </NavigationMenu.Link>
-                                </li>
-
-                                <ListItem href="https://stitches.dev/" title="Stitches">
-                                    CSS-in-JS with best-in-class developer experience.
-                                </ListItem>
-                                <ListItem href="/colors" title="Colors">
-                                    Beautiful, thought-out palettes with auto dark mode.
-                                </ListItem>
-                                <ListItem href="https://icons.radix-ui.com/" title="Icons">
-                                    A crisp set of 15x15 icons, balanced and consistent.
-                                </ListItem>
-                            </ul>
-                        </NavigationMenu.Content>
                     </NavigationMenu.Item>
-
                     <NavigationMenu.Item>
                         <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                             MOVIES{' '}
                             <CaretDownIcon
                                 className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
-                            />
+                                />      
                         </NavigationMenu.Trigger>
                         <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                            <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                                <ListItem title="Introduction" href="/primitives/docs/overview/introduction">
-                                    Build high-quality, accessible design systems and web apps.
-                                </ListItem>
-                                <ListItem title="Getting started" href="/primitives/docs/overview/getting-started">
-                                    A quick tutorial to get you up and running with Radix Primitives.
-                                </ListItem>
-                                <ListItem title="Styling" href="/primitives/docs/guides/styling">
-                                    Unstyled and compatible with any styling solution.
-                                </ListItem>
-                                <ListItem title="Animation" href="/primitives/docs/guides/animation">
-                                    Use CSS keyframes or any animation library of your choice.
-                                </ListItem>
-                                <ListItem title="Accessibility" href="/primitives/docs/overview/accessibility">
-                                    Tested in a range of browsers and assistive technologies.
-                                </ListItem>
-                                <ListItem title="Releases" href="/primitives/docs/overview/releases">
-                                    Radix Primitives releases and their changelogs.
-                                </ListItem>
+                            <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-2">
+                                <ListItem title="Top Rated" href="/movies/toprated" />
+                                <ListItem title="Upcoming Movies" href="/movies/upcoming" />
+                                <ListItem title="Popular" href="/movies/popular" />
+                                <ListItem title="Now playing" href="/movies/nowplaying"/>
+                               
                             </ul>
                         </NavigationMenu.Content>
                     </NavigationMenu.Item>
+                      
+                    </NavigationMenu.List>
+                <NavigationMenu.List className={`sm:flex  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 `}
+                onClick={closeDropdown} >
+                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
+                        <Searchbar/>
+                         </NavigationMenu.Item>
+                        
+                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
+                                <NavigationMenu.Trigger onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
+                                    Account{' '}
+                                </NavigationMenu.Trigger>
+                            </NavigationMenu.Item >
 
-                    <NavigationMenu.Item>
-                        <NavigationMenu.Link
-                            className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
-                            
-                        >
-                            BOOKS
-                        </NavigationMenu.Link>
+                    <div className="flex gap-5 sm:ml-4 mt-3 sm:mt-0">
+                                <button>
+                                    <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                        <Avatar.Image
+                                            className="h-full w-full rounded-[inherit] object-cover"
+                                            src=""
+                                            alt="Colm Tuite"
+                                        />
+                                        <Avatar.Fallback
+                                            className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
+                                            delayMs={600}
+                                        >
+                                            CT
+                                        </Avatar.Fallback>
+                                    </Avatar.Root>
+                                </button>
+                            </div>           
+                </NavigationMenu.List>
+                
+                <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
+                    <NavigationMenu.Item className='flex'>
+                        <Searchbar />
                     </NavigationMenu.Item>
-                </div>
-                <div className=' flex items-center'>
-                    <Searchbar />
-                    <NavigationMenu.Item>
-                        <NavigationMenu.Trigger  onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
+                    </NavigationMenu.List>
+
+                    <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
+                    <NavigationMenu.Item className=''>
+                        <NavigationMenu.Trigger onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
                             Account{' '}
                         </NavigationMenu.Trigger>
+                    </NavigationMenu.Item >
+                    </NavigationMenu.List>
+                <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
+                    <div className="flex gap-5 ">
+                        <button>
+                            <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                <Avatar.Image
+                                    className="h-full w-full rounded-[inherit] object-cover"
+                                    src=""
+                                    alt="Colm Tuite"
+                                />
+                                <Avatar.Fallback
+                                    className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
+                                    delayMs={600}
+                                >
+                                    CT
+                                </Avatar.Fallback>
+                            </Avatar.Root>
+                        </button>
+                    </div>
+                </NavigationMenu.List>
+                
 
-                    </NavigationMenu.Item>
-                </div>
-                <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
-                    <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
-                </NavigationMenu.Indicator>
-            </NavigationMenu.List>
+                <NavigationMenu.List className=" sm:hidden flex justify-between items-center m-5  list-none  text-custom-10 p-1 ">
+               
+                        <button onClick={toggleDropdown} className="focus:outline-none">
+                            <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {isDropdownOpen ? (
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                ) : (
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                )}
+
+                            </svg>
+                        </button>
+            
+                </NavigationMenu.List>
 
             <div className="perspective-[2000px] absolute top-full left-0 flex w-full justify-center">
                 <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
             </div>
-        </NavigationMenu.Root>
-    );
+            </NavigationMenu.Root>
+        </div>
+
+        );
 };
 
 const ListItem = React.forwardRef(({ className, children, title, ...props }, forwardedRef) => (

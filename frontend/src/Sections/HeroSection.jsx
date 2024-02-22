@@ -1,138 +1,45 @@
 import React from 'react';
-import Carousel from '../components/Carousel';
+import * as Separator from '@radix-ui/react-separator';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
-
-
-const slides = ["https://i.ibb.co/ncrXc2V/1.png",
-  "https://i.ibb.co/B3s7v4h/2.png",
-  "https://i.ibb.co/XXR8kzF/3.png",
-  "https://i.ibb.co/yg7BSdM/4.png"];
-
+import { MovieCard } from '../components/CustomCard';
 
 function HeroSection() {
+  const im = "https://images-na.ssl-images-amazon.com/images/M/MV5BMTYxMDg1Nzk1MV5BMl5BanBnXkFtZTcwMDk0MTUzNA@@._V1_SX1500_CR0,0,1500,999_AL_.jpg";
   return (
-    <section className=' bg-yellow-600 md:grid md:grid-cols-2 p-2'>
-      <div className="shadow-blackA4 w-[600px] overflow-hidden rounded-md shadow-[0_2px_10px]">
-        <AspectRatio.Root ratio={16/9}>
-          <Carousel autoplay={true} >
-            {slides.map((a) => (
-              <img src={a} />
-            ))}
-          </Carousel>
-        </AspectRatio.Root>
-      </div>
+    <section className='relative bg-custom-50 p-8 '>
+        <div className='  sm:grid sm:grid-cols-2 mt-20'> 
+          <div className="w-full max-w-[500px] mx-[15px]  z-10 ">
+          <img src={im} className='shadow-sm p-5 mb-5 bg-custom-20 rounded-md' alt="" />
+            <div className="text-white text-[15px] font-bold text-lg leading-5 font-medium">PLOT PALETTE</div>
+            <div className="text-white text-[15px] leading-5">Platform for the plot.</div>
+            <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px my-[15px]" />
+            
+        </div>
 
-      <div className='px-20 py-10'>
-        <Tabs.Root
-          className="flex flex-col w-[300px] shadow-[0_2px_10px] shadow-blackA2"
-          defaultValue="tab1"
-        >
-          <Tabs.List className="shrink-0 flex border-b border-mauve6" aria-label="Manage your account">
-            <Tabs.Trigger
-              className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-              value="tab1"
-            >
-              Account
-            </Tabs.Trigger>
-            <Tabs.Trigger
-              className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-              value="tab2"
-            >
-              Password
-            </Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content
-            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
-            value="tab1"
-          >
-            <p className="mb-5 text-mauve11 text-[15px] leading-normal">
-              Make changes to your account here. Click save when you're done.
-            </p>
-            <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
-                Name
-              </label>
-              <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
-                id="name"
-                defaultValue="Pedro Duarte"
-              />
-            </fieldset>
-            <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
-                Username
-              </label>
-              <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
-                id="username"
-                defaultValue="@peduarte"
-              />
-            </fieldset>
-            <div className="flex justify-end mt-5">
-              <button className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-green4 text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
-                Save changes
-              </button>
-            </div>
-          </Tabs.Content>
-          <Tabs.Content
-            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
-            value="tab2"
-          >
-            <p className="mb-5 text-mauve11 text-[15px] leading-normal">
-              Change your password here. After saving, you'll be logged out.
-            </p>
-            <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label
-                className="text-[13px] leading-none mb-2.5 text-violet12 block"
-                htmlFor="currentPassword"
-              >
-                Current password
-              </label>
-              <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
-                id="currentPassword"
-                type="password"
-              />
-            </fieldset>
-            <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label
-                className="text-[13px] leading-none mb-2.5 text-violet12 block"
-                htmlFor="newPassword"
-              >
-                New password
-              </label>
-              <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
-                id="newPassword"
-                type="password"
-              />
-            </fieldset>
-            <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label
-                className="text-[13px] leading-none mb-2.5 text-violet12 block"
-                htmlFor="confirmPassword"
-              >
-                Confirm password
-              </label>
-              <input
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
-                id="confirmPassword"
-                type="password"
-              />
-            </fieldset>
-            <div className="flex justify-end mt-5">
-              <button className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-green4 text-green11 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
-                Change password
-              </button>
-            </div>
-          </Tabs.Content>
-        </Tabs.Root>
-      </div>
+        <div className='bg-white z-10 p-10 '>
+          <p className='p-3 font-mono font-black text-xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia illum dolor itaque quis. Molestias voluptas corrupti minus tenetur maiores sequi sit, eaque aliquam, accusamus, nam aut amet quisquam aperiam modi. </p>
 
+          <div className='flex justify-center bg-blue-800 rounded-md p-4'>
+              <button className='bg-black text-zinc-500 p-1 rounded-md'>MOVIES</button>
+     
+          </div>
+        </div> 
+      </div>
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-0 z-0">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="relative block w-[calc(103% + 1.3px)] h-220 fill-current text-custom-30 "></path>
+        </svg>
+      </div>
     </section>
 
   )
 }
 
+
+
+
+
 export default HeroSection
+
+
