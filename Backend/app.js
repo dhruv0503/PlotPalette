@@ -5,7 +5,7 @@ const userRouter = require("./Routes/userRoutes")
 const authRouter = require("./Routes/authRoutes")
 const movieRouter = require("./Routes/movieRoutes")
 const reviewRouter = require("./Routes/reviewRoutes")
-const friendRouter = require("./Routes/frinedRoutes")
+const friendRouter = require("./Routes/friendRoutes")
 const expressError = require("./util/expressError")
 
 app.use(express.json())
@@ -38,6 +38,6 @@ app.use((err, req, res, next) => {
     });
 })
 
-app.listen(5000, () => {
-    console.log("App Listening on port 5000");
+app.listen(3000, () => {
+    console.log("App Listening on port 3000");
 })

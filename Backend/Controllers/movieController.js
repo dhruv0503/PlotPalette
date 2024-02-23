@@ -75,7 +75,8 @@ module.exports.getMovie = async (req, res, next) => {
 //upcoming
 module.exports.getMovieList = async (req, res, next) => {
     const { parameter } = req.params;
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${parameter}?api_key=${process.env.TMDB_API_KEY}`);
+    const { pageNo = 1 } = req.query
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/${parameter}?page=${pageNo}&api_key=${process.env.TMDB_API_KEY}`);
     if (!response) {
         return next(new expressError("Error Fetching Popular Movies", 500))
     }
@@ -181,4 +182,11 @@ module.exports.getCastMember = async (req, res, next) => {
 
     const obj = { ...info, "cast": movies };
     res.send(obj);
+}
+
+module.exports.searchMovie = async(req, res, next) => {
+    const { name } = req.body;
+    const searches = await axios.get(`https://api.themoviedb.org/3/search/${name}?api_key=${process.env.TMDB_API_KEY}`)
+    res.send(searches.data.results);
+
 }

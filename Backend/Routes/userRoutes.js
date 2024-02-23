@@ -12,8 +12,10 @@ router.route("/options/:parameter").get(isLoggedIn(), wrapAsync(userController.o
 
 router.route("/all").get(isLoggedIn(), authorizeRoles("Admin"),wrapAsync(userController.getAllUsers));
 
+router.route("/resetPassword").post(wrapAsync(userController.resetPassword))
+
 router.route("/:id")
-    .get(wrapAsync(userController.findUser))
+    .get(isLoggedIn(), wrapAsync(userController.findUser))
     .put(isLoggedIn(), authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
 
 
