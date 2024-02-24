@@ -19,8 +19,18 @@ module.exports = {
           50: '#241F19',
         },
       },
+      keyframes: {
+        spin: {
+          to: { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        spin: 'spin 1.2s linear infinite',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-dotted-background'),
+  ],
 }
 

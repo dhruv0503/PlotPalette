@@ -11,7 +11,7 @@ function Homepage() {
   const { now_playing, popular, top_rated, upcomingMovies } = useApi();
   
   return (
-    <div className='bg-custom-30'>
+    <div className='bg-custom-30  '>
       <Navbar />
       <HeroSection />
       <div className='p-4'>

@@ -41,10 +41,9 @@ function Navbar() {
         <div className='fixed top-0 z-20 w-screen '>
         <NavigationMenu.Root className=" flex  justify-between bg-custom-50">
                 <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
-                    
                     <NavigationMenu.Item >
                         <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
-                          LOGO{}
+                          PLOTPALETTE{}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
                     <NavigationMenu.Item>
@@ -70,6 +69,7 @@ function Navbar() {
                 <NavigationMenu.List className={`sm:flex  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 `}
                 onClick={closeDropdown} >
                     <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
+                        <button>CLOSE</button>
                         <Searchbar/>
                          </NavigationMenu.Item>
                         
@@ -100,6 +100,7 @@ function Navbar() {
                 
                 <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
                     <NavigationMenu.Item className='flex'>
+                      
                         <Searchbar />
                     </NavigationMenu.Item>
                     </NavigationMenu.List>
@@ -171,7 +172,7 @@ const ListItem = React.forwardRef(({ className, children, title, ...props }, for
         <NavigationMenu.Link asChild>
             <a
                 className={classNames(
-                    'focus:shadow-[0_0_0_2px] focus:shadow-violet7 hover:bg-mauve3 block select-none rounded-[6px] p-3 text-[15px] leading-none no-underline outline-none transition-colors',
+                    'focus:shadow-[0_0_0_2px] focus:shadow-custom-40 hover:bg-mauve3 block select-none rounded-[6px] p-3 text-[15px] leading-none no-underline outline-none transition-colors',
                     className
                 )}
                 {...props}

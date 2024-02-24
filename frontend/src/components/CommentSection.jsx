@@ -24,7 +24,7 @@ const CommentSection = () => {
                         <img src="https://via.placeholder.com/40" alt="User Avatar" className="rounded-full w-8 h-8 mr-2" />
                         <div>
                             <p className="font-semibold">John Doe</p>
-                            <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla justo id tortor feugiat...</p>
+                            <p className="text-gray-600">An epic tale of power, loyalty, and the irresistible allure of the underworld, 'The Godfather' remains an unshakable cornerstone of cinematic greatness.</p>
                         </div>
                     </div>
                 </div>
