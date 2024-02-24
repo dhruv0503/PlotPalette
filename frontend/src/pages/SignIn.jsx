@@ -22,7 +22,7 @@ export default function SignIn() {
 
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
-      console.log(response.data.msg);
+      console.log(response.data.signInObj.user.uid);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
