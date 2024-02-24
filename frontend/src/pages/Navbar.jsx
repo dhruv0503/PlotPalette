@@ -2,14 +2,31 @@ import React, { useEffect, useState } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
 import { CaretDownIcon } from '@radix-ui/react-icons';
-import { useNavigate } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
 import data from "../assets/Data"
 import * as Avatar from '@radix-ui/react-avatar';
+import axios from 'axios'
+// import {getAuth,signInW
 
 
 function Navbar() {
     const navigate = useNavigate();
+    const handleLogout = async (e) => {
+        e.preventDefault();
+    
+        try {
+          const response = await axios.get('http://localhost:5000/api/signout');
+          console.log("Logged out");
+          navigate('/signin');
+        } catch (error) {
+          console.error('Error signing out:', error.message);
+          alert(error.message);
+        }
+      };
+    
+
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -97,7 +114,7 @@ function Navbar() {
                     </NavigationMenu.List>
                 <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
                     <div className="flex gap-5 ">
-                        <button>
+                        <button onClick={handleLogout}>
                             <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                                 <Avatar.Image
                                     className="h-full w-full rounded-[inherit] object-cover"
