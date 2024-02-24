@@ -6,7 +6,7 @@ import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 function Accordian() {
     return (
-        <div className='bg-black p-10 '>
+        <div className='bg-custom-50 p-10 '>
         <Accordion.Root
             className="bg-black max-w-xxl  rounded-md shadow-[0_2px_10px] shadow-black/5"
             type="single"
@@ -15,21 +15,21 @@ function Accordian() {
       >
           
             <AccordionItem value="item-1">
-                <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+                    <AccordionTrigger>How do I submit a movie review?</AccordionTrigger>
+                    <AccordionContent>To submit a movie review, simply navigate to the movie's page on our website and click on the "Write a Review" button. From there, you can share your thoughts, rate the movie, and submit your review for others to read.</AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-2">
-                <AccordionTrigger>Is it unstyled?</AccordionTrigger>
+                    <AccordionTrigger>Can I edit or delete my movie review after submitting it?</AccordionTrigger>
                 <AccordionContent >
-                    Yes. It's unstyled by default, giving you freedom over the look and feel.
+                        Yes, you can edit or delete your movie review. Simply go to your profile, locate the review you want to edit or delete, and select the appropriate option.
                 </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-3">
-                <AccordionTrigger>Can it be animated?</AccordionTrigger>
+                    <AccordionTrigger>How can I share a movie I like with my friends?</AccordionTrigger>
                 <AccordionContent>
-                    Yes! You can animate the Accordion with CSS or JavaScript.
+                        Sharing a movie you like is easy! Simply click on the share button located on the movie's page and choose your preferred platform to share it with your friends via social media, email, or messaging apps.
                 </AccordionContent>
           </AccordionItem>
           
@@ -72,7 +72,7 @@ const AccordionTrigger = React.forwardRef(({ children, className, ...props }, fo
 const AccordionContent = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
     <Accordion.Content
         className={classNames(
-            'text-stone-950 bg-rose-300 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden text-[15px]',
+            'text-stone-950 bg-custom-30 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden text-[15px]',
             className
         )}
         {...props}

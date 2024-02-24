@@ -28,7 +28,7 @@ function Popular() {
         )
         : popular;
 
-     
+        console.log(data)
 
     const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
 
