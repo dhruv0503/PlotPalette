@@ -7,6 +7,7 @@ import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
+import LoadingPage from './LoadingPage.jsx';
 
 function TopRated() {
     const [genre, setgenre] = useState(null);
@@ -17,7 +18,6 @@ function TopRated() {
         setgenre(newValue);
     };
     
-
     const data = searchResults
         ? top_rated.filter(article =>
             article.overview &&
@@ -26,18 +26,13 @@ function TopRated() {
         )
         : top_rated;
     
+    const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
     console.log(data)
 
-
-
-
-
-    const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
-
     return (
-        <div className='bg-custom-30 h-screen'>
+        <div className='bg-custom-30'>
             <Navbar />
-            <div className='mt-20 p-2'>
+            <div className='mt-20 p-2 '>
                 <div className='p-2'>
                     <Select.Root value={genre} onValueChange={handleSelectChange} >
                         <Select.Trigger
@@ -78,14 +73,14 @@ function TopRated() {
                         </Select.Portal>
                     </Select.Root>
                 </div>
-                <div className="p-3  gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 justify-around ">
-
+                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around ">
+                
 
                     {data.length > 0 ?
                         (data.map((movie, index) => (
                             <MovieCard key={index} {...movie} />
                         ))) :
-                        <p>SORRY NO MOVIES </p>
+                        <LoadingPage/>
                     }
                 </div>
             </div>

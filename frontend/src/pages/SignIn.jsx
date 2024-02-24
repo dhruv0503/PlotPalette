@@ -1,13 +1,13 @@
-
-
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 // import {auth} from '../firebaseconfig/firebaseConfig.js'
-
+import Footer from "../components/Footer"
 import * as Tabs from '@radix-ui/react-tabs';
 import Bookim from "../assets/Bookim.jpg"
+import Lookim from "../assets/ImIM.svg"
+import Navbar from "../pages/Navbar"
  
 
 export default function SignIn() {
@@ -44,27 +44,33 @@ export default function SignIn() {
     }
   };
 
+  
+
   return (
-    <div className='bg-custom-30 p-10  h-100vh '>
-      <p className='font-bold font-mono text-lg ' >PLOT PALETTE.</p>
-      <div className="justify-center grid grid-cols-2 gap-0  ">
-      <div className='z-10 h-full '>
-        <img className='h-[410px] w-[500px]' src={Bookim} alt="" />
+    <>
+      <Navbar/>
+      <div className='bg-custom-30 p-10 mt-20  h-100vh bg-dotted-spacing-1 bg-dotted-custom-10  '>
+       
+        <div  >
+      <h1 className='font-bold font-mono text-lg  text-custom-30' >PLOT PALETTE.</h1>
+      <div className="justify-center grid grid-cols-2 sm:flex  gap-0  ">
+      <div className='z-10 h-full'>
+        <img className='h-[410px] w-[500px] border-3 border-black rounded-lg sm:rounded-none ' src={Bookim} alt="" />
       </div>
-      <div className='z-10'>
+      <div className='z-10 '>
         <Tabs.Root
-          className="flex flex-col w-[400px] h-[410px] "
+          className="flex flex-col w-[400px] h-[410px]  "
           defaultValue="tab1"
         >
           <Tabs.List className="shrink-0 flex " aria-label="Manage your account">
             <Tabs.Trigger
-              className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-white select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-30 data-[state=active]:text-custom-50 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+              className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-white select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-30 data-[state=active]:text-custom-10 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
               value="tab1"
             >
               LOGIN
             </Tabs.Trigger>
             <Tabs.Trigger
-              className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-white select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+              className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-white select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-30 data-[state=active]:text-custom-10 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
               value="tab2"
             >
               SIGN UP
@@ -164,14 +170,12 @@ export default function SignIn() {
 
       </div>
       </div> 
-      <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-0 z-0">
-         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className='relative block w-[275%] h-100 fill-current text-custom-50'>
-          <path d="M892.25 114.72L0 0 0 120 1200 120 1200 0 892.25 114.72z" class="shape-fill"></path>
-        </svg> 
+      <div class="absolute top-0 left-0 w-full overflow-hidden leading-0 z-0">
+         
       </div>
-
+      </div>
     </div>
-    
+    <Footer   /></>
   )
 }
 

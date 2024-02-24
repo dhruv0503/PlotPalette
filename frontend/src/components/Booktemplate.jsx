@@ -16,11 +16,11 @@ function Booktemplate() {
      
     console.log(all_movie)
      
-    var img = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+    var img = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
     
     return (
         <div className='relative '>
-            <div style={{backgroundImage: `url(${movie.backgroundImage}`}} className='bg-cover bg-center  p-10  gap-3 sm:grid sm:grid-cols-3 mt-20 '>   
+            <div style={{backgroundImage: `url(${img}`}} className='bg-cover bg-center  p-10  gap-3 md:grid sm:grid-cols-3 mt-20 '>   
                 <div className='m-2 z-10 '>
                     <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
 
