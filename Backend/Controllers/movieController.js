@@ -1,7 +1,7 @@
 require("dotenv").config();
 const axios = require("axios");
 const { db, auth } = require("../firebaseConfig");
-const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore/lite");
+const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc} = require("firebase/firestore/lite");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const expressError = require("../util/expressError");
@@ -22,8 +22,8 @@ module.exports.getMovie = async (req, res, next) => {
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
             if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: movieData.id }
-                await addDoc(collection(User, user.id, 'movies'), obj);
+                const obj = { watched: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title }
+                await addDoc(collection(doc(User, user.id), 'movies'), obj);
                 res.send({ watched: false, ...movieData.data() })
                 return;
             }
@@ -55,8 +55,8 @@ module.exports.getMovie = async (req, res, next) => {
             const movies = await getDocs(collection(User, user.id, 'movies'))
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
             if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: newMovieData.id }
-                await addDoc(collection(User, user.id, 'movies'), obj);
+                const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title }
+                await addDoc(collection(doc(User, user.id), 'movies'), obj);
                 res.send({ watched: false, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
@@ -98,7 +98,6 @@ module.exports.watched = async (req, res, next) => {
 
     const updatedDoc = await getDoc(doc(User, user.id, 'movies', movieObj.id));
     res.send(updatedDoc.data());
-
 }
 
 module.exports.movieOptions = async (req, res, next) => {

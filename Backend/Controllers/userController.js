@@ -1,5 +1,5 @@
 const { db, auth } = require("../firebaseConfig")
-const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove } = require("firebase/firestore/lite")
+const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, query, where } = require("firebase/firestore/lite")
 const User = collection(db, "User");
 const movieFunctions = require("../util/movieFunctions")
 const utilityFunctions = require("../util/utlityFunctions");
@@ -76,12 +76,11 @@ module.exports.removeFriend = async(req, res, next) => {
     res.send(userResult.data());
 }
 
-module.exports.resetPassword = async(req, res, next, error) => {
+module.exports.resetPassword = async(req, res, next) => {
     const {email} = req.body;
-    const redirectUrl = "localhost:3000/api/auth/login";
     try{
         await sendPasswordResetEmail(auth, email);
-        res.status(200).json({message : 'Password reset email sent successfully.', redirectUrl})
+        res.status(200).json({message : 'Password reset email sent successfully.'})
     }
     catch(error){
         next(new expressError(500, "Error sending reset password email"));
