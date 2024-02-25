@@ -12,9 +12,10 @@ router.route("/options/:parameter").get(isLoggedIn(), wrapAsync(userController.o
 
 router.route("/all").get(isLoggedIn(), authorizeRoles("Admin"),wrapAsync(userController.getAllUsers));
 
-router.route("/:id")
-    .get(wrapAsync(userController.findUser))
-    .put(isLoggedIn(), authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
+router.route("/resetPassword").post(isLoggedIn(), wrapAsync(userController.resetPassword))
 
+router.route("/:id")
+    .get(isLoggedIn(), wrapAsync(userController.findUser))
+    .put(isLoggedIn(), authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
 
 module.exports = router;

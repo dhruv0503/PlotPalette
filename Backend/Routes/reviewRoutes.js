@@ -1,12 +1,12 @@
 const reviewController = require("../Controllers/reviewController")
-const {isLoggedIn} = require("../middleware")
+const {isLoggedIn, isWatched} = require("../middleware")
 const express = require("express");
 const wrapAsync = require("../util/catchAsync");
 const router = express.Router();
 
 router.route("/:tmdbId")
-    .post(isLoggedIn(), wrapAsync(reviewController.makeReview))
-    .put(isLoggedIn(), wrapAsync(reviewController.updateReview))
-    .delete(isLoggedIn(), wrapAsync(reviewController.deleteReview));
+    .post(isLoggedIn(), isWatched(), wrapAsync(reviewController.makeReview))
+    .put(isLoggedIn(), isWatched(), wrapAsync(reviewController.updateReview))
+    .delete(isLoggedIn(), isWatched(), wrapAsync(reviewController.deleteReview));
     
 module.exports = router;
