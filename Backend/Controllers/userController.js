@@ -17,11 +17,17 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const userQuery = query(collection(db, 'User'), where('uid', '==', id));
+    const user = await getDoc(doc(User, id));
+    res.send(user.data());
+};
+
+module.exports.getProfile = async(req, res, next) => {
+    const userRef = auth.currentUser
+    const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);
     const data = querySnapshot.docs[0].data();
     res.send(data);
-};
+}
 
 //Admin Route (Used to make admins)
 module.exports.makeAdmin = async (req, res, next) => {

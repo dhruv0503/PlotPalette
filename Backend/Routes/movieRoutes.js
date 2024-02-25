@@ -10,7 +10,7 @@ router.route("/person/:castId").get(wrapAsync(movieController.getCastMember));
 
 router.route("/reviews/:tmdbId").get(wrapAsync(movieController.getReviews))
 
-router.route("/options/:tmdbId").put(wrapAsync(movieController.movieOptions));
+router.route("/options/:tmdbId").put(isLoggedIn(), wrapAsync(movieController.movieOptions));
 
 router.route("/type/:parameter").get(wrapAsync(movieController.getMovieList));
 
