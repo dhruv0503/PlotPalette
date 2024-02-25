@@ -14,12 +14,13 @@ function Homepage() {
     <div className='bg-custom-30  '>
       <Navbar />
       <HeroSection />
-      <div className='p-4'>
+      <div className='p-4 '>
         <SliderComp topic={"TOP RATED"} config={top_rated} />
+     
         <SliderComp topic={"Popular"} config={popular} />
         <SliderComp topic={"Now Playing"} config={now_playing} />
         <SliderComp topic={"Upcoming Movies"} config={upcomingMovies} />
-      </div>
+    </div>
       <Accordian />
       <Footer/>
     </div>

@@ -2,6 +2,7 @@ import React, {useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
+import LoadingPage from '../components/LoadingPage.jsx'
 import axios from 'axios'
 import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
@@ -76,7 +77,7 @@ function Movies() {
             (upcomingMovies.map((movie, index) => (
             <MovieCard key={index} {...movie} />       
             ))) :
-            <p>SORRY NO MOVIES </p>
+            <LoadingPage/>
           }
         </div>
       </div>
