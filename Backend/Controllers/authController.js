@@ -1,5 +1,5 @@
 const { db ,auth } = require("../firebaseConfig");
-const {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} = require("firebase/auth");
+const {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} = require("firebase/auth");
 const {addDoc, collection, getDoc, doc} = require("firebase/firestore/lite")
 const User = collection(db, "User");
 
@@ -29,7 +29,6 @@ module.exports.signIn = async (req, res, next) => {
     catch (error) {
         console.log(error);
         res.json({ success: false })
-
     }
 };
 
@@ -39,5 +38,17 @@ module.exports.signOut = async(req,res, next) => {
    res.send({success : true,"msg" : signoutobj});
     // res.send("Logged Out",signoutobj)
 }
+
+module.exports.resetPassword = async(req, res, next) => {
+    const {email} = req.body;
+    try{
+        await sendPasswordResetEmail(auth, email);
+        res.status(200).json({message : 'Password reset email sent successfully.'})
+    }
+    catch(error){
+        next(new expressError(500, "Error sending reset password email"));
+    }
+}
+
 
 //When completed with the rest of the auth, check signIn promise section

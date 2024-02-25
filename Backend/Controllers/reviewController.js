@@ -8,8 +8,6 @@ const expressError = require("../util/expressError");
 const movieFunctions = require("../util/movieFunctions");
 const utilityFunctions = require("../util/utlityFunctions");
 
-//Review Routes start with /api/reviews/:tmdbId
-
 module.exports.makeReview = async (req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;

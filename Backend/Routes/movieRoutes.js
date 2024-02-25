@@ -8,11 +8,13 @@ router.route("/genres/:genre").get(wrapAsync(movieController.getMovieByGenre))
 
 router.route("/person/:castId").get(wrapAsync(movieController.getCastMember));
 
-router.route("/reviews/:tmdbId").get(wrapAsync(movieController.getReviews))
+router.route("/reviews/:movieId").get(wrapAsync(movieController.getReviews));
 
-router.route("/options/:tmdbId").put(wrapAsync(movieController.movieOptions));
+router.route("/options/:tmdbId").put(isLoggedIn(), wrapAsync(movieController.movieOptions));
 
 router.route("/type/:parameter").get(wrapAsync(movieController.getMovieList));
+
+router.route("/search").get(wrapAsync(movieController.searchMovie));
 
 router.route("/:tmdbId")
     .get(wrapAsync(movieController.getMovie))
