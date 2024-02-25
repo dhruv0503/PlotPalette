@@ -58,6 +58,7 @@ export function MyContextProvider({ children }) {
     const [top_rated, setTopRatedMovies] = useState([]);
     const [all_movie, setAll_movie] = useState(new Set());
     const [searchResults, setSearchResults] = useState([]);
+    const [userUid, setUserUid] = useState(null);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -102,7 +103,7 @@ export function MyContextProvider({ children }) {
 
     
     return (
-        <MyContext.Provider value={{upcomingMovies , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,TAGS ,genres}} >
+        <MyContext.Provider value={{upcomingMovies , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,TAGS ,genres , userUid , setUserUid}} >
             {children}
         </MyContext.Provider>
     )

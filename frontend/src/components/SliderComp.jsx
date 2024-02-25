@@ -42,7 +42,7 @@ function SliderComp(props) {
         ]
     };
     return (
-        <div className='p-6 gap-3   '>
+        <div className='p-6 gap-3 '>
             <h1 className='p-4 bg-gradient-to-r from-custom-50 to-custom-40 text-white font-bold text-2xl mb-4 rounded-md shadow-lg'>
                 {props.topic}
             </h1>

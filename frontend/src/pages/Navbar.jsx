@@ -7,11 +7,12 @@ import Searchbar from '../components/Searchbar';
 import data from "../assets/Data"
 import * as Avatar from '@radix-ui/react-avatar';
 import axios from 'axios'
-// import {getAuth,signInW
+import { useApi } from '../Context/Contxt';
 
 
 function Navbar() {
     const navigate = useNavigate();
+    const { userUid } = useApi();
     const handleLogout = async (e) => {
         e.preventDefault();
     
@@ -24,7 +25,13 @@ function Navbar() {
           alert(error.message);
         }
       };
+    console.log(userUid, "hello");
     
+
+   
+
+
+
 
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -43,7 +50,7 @@ function Navbar() {
                 <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
                     <NavigationMenu.Item >
                         <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
-                          PLOTPALETTE{}
+                         PLOT_PALETTE{}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
                     <NavigationMenu.Item>
@@ -60,7 +67,6 @@ function Navbar() {
                                 <ListItem title="Upcoming Movies" href="/movies/upcoming" />
                                 <ListItem title="Popular" href="/movies/popular" />
                                 <ListItem title="Now playing" href="/movies/nowplaying"/>
-                               
                             </ul>
                         </NavigationMenu.Content>
                     </NavigationMenu.Item>
@@ -85,13 +91,13 @@ function Navbar() {
                                         <Avatar.Image
                                             className="h-full w-full rounded-[inherit] object-cover"
                                             src=""
-                                            alt="Colm Tuite"
+                                            alt="Bhavya"
                                         />
                                         <Avatar.Fallback
                                             className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
                                             delayMs={600}
                                         >
-                                            CT
+                                            {userUid?'LOGGED':'LOGIN'}
                                         </Avatar.Fallback>
                                     </Avatar.Root>
                                 </button>

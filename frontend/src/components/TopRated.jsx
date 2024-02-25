@@ -27,7 +27,7 @@ function TopRated() {
         : top_rated;
     
     const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
-    console.log(data)
+   
 
     return (
         <div className='bg-custom-30'>

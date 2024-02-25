@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useApi } from '../Context/Contxt';
 // import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 // import {auth} from '../firebaseconfig/firebaseConfig.js'
 import Footer from "../components/Footer"
@@ -15,25 +16,26 @@ export default function SignIn() {
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
   const navigate = useNavigate();
+  const { setUserUid } = useApi();
   
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
-      console.log(response.data.signInObj.user.uid);
+       console.log(response.data.signInObj.user.uid);
+      setUserUid(response.data.signInObj.user.uid);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
       alert(error.message);
     }
-  };
+    };
+ 
 
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:5000/api/signup', { email,name, password });
       console.log(response.data.msg);
@@ -44,7 +46,6 @@ export default function SignIn() {
     }
   };
 
-  
 
   return (
     <>
@@ -52,12 +53,12 @@ export default function SignIn() {
       <div className='bg-custom-30 p-10 mt-20  h-100vh bg-dotted-spacing-1 bg-dotted-custom-10  '>
        
         <div  >
-      <h1 className='font-bold font-mono text-lg  text-custom-30' >PLOT PALETTE.</h1>
-      <div className="justify-center grid grid-cols-2 sm:flex  gap-0  ">
-      <div className='z-10 h-full'>
+      <h1 className='font-bold font-mono text-lg  text-custom-50 font-bold' >PLOT PALETTE.</h1>
+      <div className="justify-center md:grid md:grid-cols-2  m-2 ">
+      <div className='z-10 h-full flex justify-center items-center hidden md:block '>
         <img className='h-[410px] w-[500px] border-3 border-black rounded-lg sm:rounded-none ' src={Bookim} alt="" />
       </div>
-      <div className='z-10 '>
+      <div className='z-10 inline-block '>
         <Tabs.Root
           className="flex flex-col w-[400px] h-[410px]  "
           defaultValue="tab1"
@@ -170,9 +171,7 @@ export default function SignIn() {
 
       </div>
       </div> 
-      <div class="absolute top-0 left-0 w-full overflow-hidden leading-0 z-0">
-         
-      </div>
+    
       </div>
     </div>
     <Footer   /></>
