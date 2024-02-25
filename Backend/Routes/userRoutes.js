@@ -12,8 +12,6 @@ router.route("/options/:parameter").get(isLoggedIn(), wrapAsync(userController.o
 
 router.route("/all").get(isLoggedIn(), authorizeRoles("Admin"),wrapAsync(userController.getAllUsers));
 
-router.route("/resetPassword").post(isLoggedIn(), wrapAsync(userController.resetPassword))
-
 router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile))
 
 router.route("/:id")

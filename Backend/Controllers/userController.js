@@ -81,14 +81,3 @@ module.exports.removeFriend = async(req, res, next) => {
     const userResult = await getDoc(doc(User, mainUser.id));
     res.send(userResult.data());
 }
-
-module.exports.resetPassword = async(req, res, next) => {
-    const {email} = req.body;
-    try{
-        await sendPasswordResetEmail(auth, email);
-        res.status(200).json({message : 'Password reset email sent successfully.'})
-    }
-    catch(error){
-        next(new expressError(500, "Error sending reset password email"));
-    }
-}

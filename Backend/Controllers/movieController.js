@@ -24,15 +24,15 @@ module.exports.getMovie = async (req, res, next) => {
             if (!movies || !movieObj) {
                 const obj = { watched: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watched: false, ...movieData.data() })
+                res.send({ watched: false, loggedIn : true,  ...movieData.data() })
                 return;
             }
             if (movieObj.data().watched) {
-                res.send({ watched: true, ...movieData.data() })
+                res.send({ watched: true, loggedIn : true, ...movieData.data() })
                 return;
             }
         }
-        res.send({ watched: false, ...movieData.data() });
+        res.send({ watched: false, loggedIn : false, ...movieData.data()});
 
     } else {
         const path = "https://image.tmdb.org/t/p/original"
@@ -43,29 +43,28 @@ module.exports.getMovie = async (req, res, next) => {
         const cast = credits.data.cast;
         const data = movie.data;
         const mid = providers.data.results.US;
-        const platforms = movieFunctions.removeField(mid, 'link');
+        const platforms = mid ? movieFunctions.removeField(mid, 'link') : null;
 
         const movieObj = { "tmdbId": data.id, "title": data.title, "language": data.original_language, "overview": data.overview, "poster_path": path + data.poster_path, "release_date": data.release_date, "reviewCount": 0, "rating": 0, "numRating": 0, "favourite": 0, "reviews": [], "genres": data.genres, "production_companies": data.production_companies, "runTime": data.runtime, cast, platforms };
-
         const newMovie = await addDoc(Movie, movieObj);
-        const newMovieData = await getDoc(Movie, newMovie.id);
+        const newMovieData = await getDoc(doc(Movie, newMovie.id));
 
         if (userRef !== null) {
             const user = await utilityFunctions.getUser(userRef);
-            const movies = await getDocs(collection(User, user.id, 'movies'))
+            const movies = await getDocs(collection(doc(User, user.id), 'movies'))
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
             if (!movies || !movieObj) {
                 const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watched: false, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watched: false,loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
             if (movieObj.data().watched) {
-                res.send({ watched: true, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watched: true, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
         }
-        res.send({ watched: false, id: newMovieData.id, ...newMovieData.data() });
+        res.send({ watched: false, loggedIn : false, id: newMovieData.id, ...newMovieData.data() });
     }
 }
 
@@ -80,7 +79,7 @@ module.exports.getMovieList = async (req, res, next) => {
     if (!response) {
         return next(new expressError("Error Fetching Popular Movies", 500))
     }
-    const movies = response.data.results;
+    const movies = response.data;
     res.json({ movies });
 }
 
@@ -127,7 +126,6 @@ module.exports.movieOptions = async (req, res, next) => {
         await updateDoc(doc(Movie, movieObj.id), movieUpdates);
 
         res.send(updatedDoc.data());
-        return;
     }
     else {
         const { watchLater = result.watchLater } = req.body;
@@ -143,36 +141,40 @@ module.exports.movieOptions = async (req, res, next) => {
         await updateDoc(doc(Movie, movieObj.id), movieUpdates);
 
         res.send(updatedDoc.data());
-        return;
     }
 };
 
+
 module.exports.getReviews = async (req, res, next) => {
-    const { tmdbId } = req.params;
+    const { movieId } = req.params;
     const userRef = auth.currentUser
-    const reviewId = utilityFunctions.getReviewId(userRef);
-    const movieObj = utilityFunctions.getMovie(tmdbId)
-    const userQuery = query(collection(db, 'Review'), where('movieId', '==', String(movieObj.movieId)));
-    const querySnapshot = await getDocs(userQuery);
-    const reviews = querySnapshot.docs.map(ele => ({ "reviewId": ele.id, ...ele.data() }));
-    if (reviewId === null) res.send(reviews)
-    else res.send({ "reviewId": reviewId, ...reviews });
-}
+    
+    const userQuery = query(collection(db, 'Review'), where('movieId', '==', String(movieId)));
+    const querySnapshot = await getDocs(userQuery)
+    const reviews = querySnapshot.docs.map((ele) => ({"reviewId" : ele.id, ...ele.data()}));
+
+    if(userRef !== null){
+        const user = await utilityFunctions.getUser(userRef);
+        const review = reviews.find((ele) => ele.userId == user.id )
+        if(review) review.owner = true;
+    }
+    res.send(reviews);
+}   
 
 module.exports.getMovieByGenre = async (req, res, next) => {
     const genres = [{ "id": 28, "name": "Action" }, { "id": 12, "name": "Adventure" }, { "id": 16, "name": "Animation" }, { "id": 35, "name": "Comedy" }, { "id": 80, "name": "Crime" }, { "id": 99, "name": "Documentary" }, { "id": 18, "name": "Drama" }, { "id": 10751, "name": "Family" }, { "id": 14, "name": "Fantasy" }, { "id": 36, "name": "History" }, { "id": 27, "name": "Horror" }, { "id": 10402, "name": "Music" }, { "id": 9648, "name": "Mystery" }, { "id": 10749, "name": "Romance" }, { "id": 878, "name": "Science Fiction" }, { "id": 10770, "name": "TV Movie" }, { "id": 53, "name": "Thriller" }, { "id": 10752, "name": "War" }, { "id": 37, "name": "Western" }];
 
     const { genre } = req.params;
+    const { pageNo = 1 } = req.query
     const id = genres.find(mov => (mov.name == genre)).id;
 
-    const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${id};`);
+    const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?page=${pageNo}&api_key=${process.env.TMDB_API_KEY}&with_genres=${id};`);
     const movies = response.data;
     res.send(movies);
 }
 
 module.exports.getCastMember = async (req, res, next) => {
     const { castId } = req.params;
-
     const castInfo = await axios.get(`https://api.themoviedb.org/3/person/${castId}?api_key=${process.env.TMDB_API_KEY}`)
     const castMovies = await axios.get(`https://api.themoviedb.org/3/person/${castId}/movie_credits?api_key=${process.env.TMDB_API_KEY}`)
 
@@ -185,7 +187,6 @@ module.exports.getCastMember = async (req, res, next) => {
 
 module.exports.searchMovie = async(req, res, next) => {
     const { name } = req.body;
-    const searches = await axios.get(`https://api.themoviedb.org/3/search/${name}?api_key=${process.env.TMDB_API_KEY}`)
+    const searches = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${name}&api_key=${process.env.TMDB_API_KEY}`)
     res.send(searches.data.results);
-
 }
