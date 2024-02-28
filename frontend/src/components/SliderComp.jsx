@@ -41,21 +41,26 @@ function SliderComp(props) {
             }
         ]
     };
+<<<<<<< Updated upstream
 
     console.log(typeof(config))
 
+=======
+    console.log(typeof(config));
+>>>>>>> Stashed changes
     return (
         <div className='p-6 gap-3 '>
             <h1 className='p-4 bg-gradient-to-r from-custom-50 to-custom-40 text-white font-bold text-2xl mb-4 rounded-md shadow-lg'>
                 {props.topic}
             </h1>
             <div className='p-1'>
-                <Slider {...settings}>
-                    {config.map((movie, index) => (
+            <Slider {...settings}>
+                    {/* {config.map((movie, index) => (
                         <div className='focus:outline-none' key={index}>
                             <MovieCard  {...movie} />
                         </div>
-                    ))}
+                    ))} */}
+                    
                 </Slider>
             </div>
         </div>
