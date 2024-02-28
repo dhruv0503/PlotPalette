@@ -22,7 +22,7 @@ module.exports.getMovie = async (req, res, next) => {
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
             if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title }
+                const obj = { watched: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title,  rating : 0, favourite : false, watchLater : false, }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
                 res.send({ watched: false, loggedIn : true,  ...movieData.data() })
                 return;
@@ -54,7 +54,7 @@ module.exports.getMovie = async (req, res, next) => {
             const movies = await getDocs(collection(doc(User, user.id), 'movies'))
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
             if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title }
+                const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title,  rating : 0, favourite : false, watchLater : false, }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
                 res.send({ watched: false,loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
@@ -99,51 +99,60 @@ module.exports.watched = async (req, res, next) => {
     res.send(updatedDoc.data());
 }
 
-module.exports.movieOptions = async (req, res, next) => {
+module.exports.rating = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const userObj = await utilityFunctions.getUser(user);
+    const { rating } = req.body;
+
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
-    const subCollectionName = 'movies';
+    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
 
-    const response = await movieFunctions.hasSubcollection(userObj.id, subCollectionName);
-    const result = movieFunctions.findObjectById(response, tmdbId);
+    await updateDoc(doc(User, userObj.id, 'movies', result.id), rating);
+    const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
+    const ratingNum = result.rating === 0 ? movieObj.numRating + 1 : movieObj.numRating
 
-    if (result.watched) {
-        const { rating = result.rating, favourite = result.favourite } = req.body;
-        const favCheck = result.favourite == favourite;
-        const ratingCheck = result.rating === 0 && rating !== 0;
-        const userUpdates = { rating, favourite }
-
-        await updateDoc(doc(User, userObj.id, subCollectionName, result.id), userUpdates);
-        const updatedDoc = await getDoc(doc(User, userObj.id, subCollectionName, result.id));
-
-        const movieUpdates = {
-            "rating": rating === 0 ? 0 : ((movieObj.rating * movieObj.numRating) - result.rating + rating) / (movieObj.numRating),
-            "favourite": increment(favCheck ? 0 : favourite ? 1 : -1),
-            "numRating": increment(ratingCheck ? 1 : 0)
-        }
-        await updateDoc(doc(Movie, movieObj.id), movieUpdates);
-
-        res.send(updatedDoc.data());
+    const movieUpdates = {
+        "rating": ((movieObj.rating * movieObj.numRating) - result.rating + rating) / (ratingNum),
+        "numRating": increment(result.rating === 0 ? 1 : 0)
     }
-    else {
-        const { watchLater = result.watchLater } = req.body;
-        const check = result.watchLater == watchLater;
-        const userUpdates = { watchLater }
 
-        await updateDoc(doc(User, userObj.id, subCollectionName, result.id), userUpdates);
-        const updatedDoc = await getDoc(doc(User, userObj.id, subCollectionName, result.id));
+    await updateDoc(doc(Movie, movieObj.id), movieUpdates);
+    res.send(updatedDoc.data());
+}
 
-        const movieUpdates = {
-            watchLater: check ? increment(0) : watchLater ? increment(1) : increment(-1)
-        }
-        await updateDoc(doc(Movie, movieObj.id), movieUpdates);
+module.exports.favourite = async(req, res, next) => {
+    const user = auth.currentUser;
+    const { tmdbId } = req.params;
+    const {favourite} = req.body;
 
-        res.send(updatedDoc.data());
+    const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
+    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
+
+    await updateDoc(doc(User, userObj.id, 'movies', result.id), favourite);
+    const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
+    const movieUpdates = {
+        "favourite" : increment(favourite === true ? 1 : 0)
     }
-};
+    await updateDoc(doc(Movie, movieObj.id), movieUpdates);
+    res.send(updatedDoc.data());
+}
 
+module.exports.watchLater = async(req, res, next) => {
+    const user = auth.currentUser;
+    const { tmdbId } = req.params;
+    const {watchLater} = req.body;
+
+    const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
+    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
+
+    await updateDoc(doc(User, userObj.id, 'movies', result.id), watchLater);
+    const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
+    const movieUpdates = {
+        "watchLater" : increment(watchLater === true ? 1 : 0)
+    }
+    await updateDoc(doc(Movie, movieObj.id), movieUpdates);
+    res.send(updatedDoc.data());
+}
 
 module.exports.getReviews = async (req, res, next) => {
     const { movieId } = req.params;

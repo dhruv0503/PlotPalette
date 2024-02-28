@@ -28,25 +28,6 @@ module.exports.authorizeRoles = (role) => {
 };
 
 
-//return reviewId
-module.exports.isOwner = () => {
-    return async (req, res, next) => {
-        const user = auth.currentUser;
-        const userObj = await utilityFunctions.getUser(user)
-        const snapShot = await getDocs(Review); // you alrady have reviews array from backend, update it at frontend as required
-        if (!snapShot.empty) {
-            const reviews = snapShot.docs.map((doc) => ({ ...doc.data() }));
-            const result = reviews.find(doc => doc.userId == userObj.id);
-            if (!result) {
-                return next(new expressError("You can't edit or delete a review written by someone else"), 403);
-            }
-            next();
-        } else {
-            return next(new expressError("No reviews on the movie"), 404);
-        }
-    }
-}
-
 module.exports.isLoggedIn = () => {
     return async (req, res, next) => {
         const userRef = auth.currentUser;
