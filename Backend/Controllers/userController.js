@@ -17,11 +17,17 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const userQuery = query(collection(db, 'User'), where('uid', '==', id));
+    const user = await getDoc(doc(User, id));
+    res.send(user.data());
+};
+
+module.exports.getProfile = async(req, res, next) => {
+    const userRef = auth.currentUser
+    const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);
     const data = querySnapshot.docs[0].data();
     res.send(data);
-};
+}
 
 //Admin Route (Used to make admins)
 module.exports.makeAdmin = async (req, res, next) => {
@@ -74,15 +80,4 @@ module.exports.removeFriend = async(req, res, next) => {
     });
     const userResult = await getDoc(doc(User, mainUser.id));
     res.send(userResult.data());
-}
-
-module.exports.resetPassword = async(req, res, next) => {
-    const {email} = req.body;
-    try{
-        await sendPasswordResetEmail(auth, email);
-        res.status(200).json({message : 'Password reset email sent successfully.'})
-    }
-    catch(error){
-        next(new expressError(500, "Error sending reset password email"));
-    }
 }
