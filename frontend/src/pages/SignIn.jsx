@@ -15,22 +15,25 @@ export default function SignIn() {
   const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
+  const [error, seterror] = useState(true);
   const navigate = useNavigate();
   const { setUserUid } = useApi();
   
-
+ 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
-       console.log(response.data.signInObj.user.uid);
+      console.log(response.data.signInObj.user.uid);
       setUserUid(response.data.signInObj.user.uid);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
-      alert(error.message);
+      seterror(true)
     }
-    };
+  };
+    
+
  
 
 
@@ -50,15 +53,15 @@ export default function SignIn() {
   return (
     <>
       <Navbar/>
-      <div className='bg-custom-30 p-10 mt-20  h-100vh bg-dotted-spacing-1 bg-dotted-custom-10  '>
+      <div className='bg-custom-30 p-10 mt-20  bg-dotted-spacing-1 bg-dotted-custom-10  '>
        
-        <div  >
+        <div>
       <h1 className='font-bold font-mono text-lg  text-custom-50 font-bold' >PLOT PALETTE.</h1>
-      <div className="justify-center md:grid md:grid-cols-2  m-2 ">
-      <div className='z-10 h-full flex justify-center items-center hidden md:block '>
+          <div className=" md:grid md:grid-cols-2 p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 sm:justify-around m-2 ">
+      <div className='z-10 h-full flex  hidden md:block '>
         <img className='h-[410px] w-[500px] border-3 border-black rounded-lg sm:rounded-none ' src={Bookim} alt="" />
       </div>
-      <div className='z-10 inline-block '>
+      <div className='z-10  '>
         <Tabs.Root
           className="flex flex-col w-[400px] h-[410px]  "
           defaultValue="tab1"
@@ -91,9 +94,7 @@ export default function SignIn() {
                 <input
                   value={email} onChange={(e)=>setemail(e.target.value)}
                   className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
-                id="name"
-               
-              />
+                id="name" />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">

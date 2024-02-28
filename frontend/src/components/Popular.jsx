@@ -30,10 +30,10 @@ function Popular() {
 
         console.log(data)
 
-    const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
+    const filteredMovies = genre ?data.filter(movie => movie.Genre.includes(genre)) : data;
 
     return (
-        <div className='bg-custom-30 h-screen'>
+        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10 '>
             <Navbar />
             <div className='mt-20 p-2'>
                 <div className='p-2'>
@@ -76,7 +76,7 @@ function Popular() {
                         </Select.Portal>
                     </Select.Root>
                 </div>
-                <div className="p-3  gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 justify-around ">
+                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around  ">
 
 
                     {data.length > 0 ?

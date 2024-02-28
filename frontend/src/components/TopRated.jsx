@@ -9,11 +9,9 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
 
-function TopRated() {
+export default React.memo(function TopRated() {
     const [genre, setgenre] = useState(null);
-
-
-    const { top_rated, searchResults ,TAGS } = useApi();
+    const { top_rated, searchResults, TAGS, genres } = useApi();
     const handleSelectChange = (newValue) => {
         setgenre(newValue);
     };
@@ -26,11 +24,15 @@ function TopRated() {
         )
         : top_rated;
     
-    const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
-   
+    const filteredMovies = genre ? genres.map((item2) => {
+        const genresid = data.filter((movie) => movie.genre_id.includes(item2.id));
+        return { genresid }
+    }) : null
 
+
+    
     return (
-        <div className='bg-custom-30'>
+        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10  '>
             <Navbar />
             <div className='mt-20 p-2 '>
                 <div className='p-2'>
@@ -55,9 +57,9 @@ function TopRated() {
                                             Category
                                         </Select.Label>
                                         {
-                                            TAGS.map((tag, index) => (
-                                                <SelectItem key={index} value={tag}>
-                                                    {tag}
+                                            genres.map((genre, index) => (
+                                                <SelectItem key={index} value={genre}>
+                                                    {genre.name}
                                                 </SelectItem>
                                             ))
                                         }
@@ -80,13 +82,13 @@ function TopRated() {
                         (data.map((movie, index) => (
                             <MovieCard key={index} {...movie} />
                         ))) :
-                        <LoadingPage/>
+                        <LoadingPage />
                     }
                 </div>
             </div>
         </div>
     )
-}
+});
 
 const SelectItem = React.forwardRef(({ children, className, ...props }, forwardedRef) => {
     return (
@@ -107,7 +109,6 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
 });
 
 
-export default TopRated
 
 
 
