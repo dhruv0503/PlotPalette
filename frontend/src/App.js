@@ -13,13 +13,14 @@ import TopRated from './components/TopRated';
 import Popular from './components/Popular';
 import { MyContextProvider } from "./Context/Contxt";
 import NowPlaying from './components/NowPlaying';
-
+import FavList from './pages/FavList';
 
 function App() {
   return (
     <MyContextProvider>
       <Router>
         <Routes>
+          <Route element={<FavList/>} path='/account/favlist' />
           <Route element={<Homepage />} path='/' />
           <Route element={<AccountPage />} path='/account' />
           <Route element={<SignIn />} path='/signin' />

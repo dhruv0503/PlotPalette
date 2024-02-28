@@ -15,15 +15,15 @@ function HeroSection() {
   const im = "https://image.tmdb.org/t/p/original/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg%22"
   return (
     <section className='relative bg-custom-50 p-8'>
-        <div className='  sm:grid sm:grid-cols-2 mt-20'> 
-          <div className="w-full max-w-[500px] mx-[15px]  z-10 ">
+      <div className=' flex flex-col justify-center items-center lg:grid lg:grid-cols-2 mt-20'> 
+        <div className="w-full max-w-[500px] mx-[15px] justify-center items-center   z-10 ">
           <img src={im} className='shadow-sm p-1 mb-5 bg-custom-20 rounded-md' alt="" />
             <div className="text-white text-[15px] font-bold text-lg leading-5 font-medium">PLOT PALETTE</div>
             <div className="text-white text-[15px] leading-5">Platform for the plot.</div>
             <Separator.Root className="bg-white data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px my-[15px]" />
             
         </div>
-        <div className='bg-white  bg-dotted-spacing-2 bg-dotted-radius-0.5 bg-dotted-custom-10   gap-3 z-10 p-10 border border-black rounded-lg  '>
+        <div className='bg-white max-w-[500px] bg-dotted-spacing-2 bg-dotted-radius-0.5 bg-dotted-custom-10   gap-3 z-10 p-10 border border-black rounded-lg '>
           <Card asChild style={{ maxWidth: 350 , margin:3  }}>
             <>              <Text as="div" size="2" weight="bold">
                 The Dark Knight

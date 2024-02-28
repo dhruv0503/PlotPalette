@@ -12,8 +12,6 @@ poster_path
     , imdbRating }) => {
     
     
-    
-    
     const navigate = useNavigate();
     const { genres } = useApi();
 
@@ -59,12 +57,12 @@ poster_path
             <div className="bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45"></div>
             <div className="relative">
                 <img className="w-full h-full object-contain object-center rounded-t-lg border-2 border-custom-20 transition duration-300 transform hover:scale-125" src={`https://image.tmdb.org/t/p/original${poster_path}`} alt={`${title} backdrop_path`} />
-                <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 hover:opacity-95  m-20 transition duration-300 bg-white">
+                <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 hover:opacity-95 m-5 lg:m-20 transition duration-300 bg-white">
                     <div className="font-bold text-grey-200 text-xl mb-2 bg-white rounded-lg p-5 m-2">{title}</div>
-                    <div className="text-black text-sm mb-2">{`Release Date: ${release_date}`}</div>
-                    <div className="flex">
-                        {matchid.map(genre => (
-                            <p className="text-black text-sm inline-block m-1" key={genre.id}>{genre.name}</p>
+                    <div className="text-black text-sm mb-2 p-2">{`Released: ${release_date}`}</div>
+                    <div className=" m-1">
+                        {matchid.slice(0,3).map(genre => (
+                            <p className="text-black text-sm inline-block p-2" key={genre.id}>{genre.name}</p>
                         ))}
                     </div>
                     <div className='mt-4 '>

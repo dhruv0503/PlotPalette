@@ -58,8 +58,8 @@ export function MyContextProvider({ children }) {
     const [top_rated, setTopRatedMovies] = useState([]);
     const [all_movie, setAll_movie] = useState(new Set());
     const [searchResults, setSearchResults] = useState([]);
-    const [userUid, setUserUid] = useState(null);
-
+    const [userUid, setUserUid] = useState();
+    const [islogin, setislogin] = useState();
     useEffect(() => {
         const fetchMovies = async () => {
             try {
@@ -85,6 +85,12 @@ export function MyContextProvider({ children }) {
 
         fetchMovies();
     }, []);
+     
+    useEffect(() => {
+        setislogin(userUid)
+
+    },[userUid])
+
 
     useEffect(() => {
         const all_movie = [
@@ -103,7 +109,7 @@ export function MyContextProvider({ children }) {
 
     
     return (
-        <MyContext.Provider value={{upcomingMovies , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,TAGS ,genres , userUid , setUserUid}} >
+        <MyContext.Provider value={{upcomingMovies , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,TAGS ,genres , userUid , islogin, setUserUid}} >
             {children}
         </MyContext.Provider>
     )

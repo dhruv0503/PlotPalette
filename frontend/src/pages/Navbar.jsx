@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
-import { CaretDownIcon } from '@radix-ui/react-icons';
+import { CaretDownIcon, Cross2Icon, EnterIcon, PersonIcon } from '@radix-ui/react-icons';
 import { Link ,useNavigate } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
 import data from "../assets/Data"
@@ -12,7 +12,7 @@ import { useApi } from '../Context/Contxt';
 
 function Navbar() {
     const navigate = useNavigate();
-    const { userUid } = useApi();
+    const { userUid ,islogin } = useApi();
     const handleLogout = async (e) => {
         e.preventDefault();
     
@@ -24,15 +24,11 @@ function Navbar() {
           console.error('Error signing out:', error.message);
           alert(error.message);
         }
-      };
-    console.log(userUid, "hello");
+    };
     
+    // console.log(userUid, "hello");
 
-   
-
-
-
-
+ 
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -49,13 +45,13 @@ function Navbar() {
         <NavigationMenu.Root className=" flex  justify-between bg-custom-50">
                 <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
                     <NavigationMenu.Item >
-                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
-                         PLOT_PALETTE{}
+                        <NavigationMenu.Trigger onClick={() => navigate('/')}  className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
+                         PLOT_PALETTE {islogin} {}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
                     <NavigationMenu.Item>
                         <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            MOVIES{' '}
+                            MOVIES {' '}
                             <CaretDownIcon
                                 className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
@@ -72,10 +68,12 @@ function Navbar() {
                     </NavigationMenu.Item>
                       
                     </NavigationMenu.List>
-                <NavigationMenu.List className={`sm:flex  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 `}
-                onClick={closeDropdown} >
+                <NavigationMenu.List className={`sm:flex justify-center  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 items-center   list-none  text-custom-10 p-1 `}
+                     >
                     <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
-                        <button>CLOSE</button>
+                        <div className=' flex flex-row items-center justify-center m-2 ' ><Cross2Icon className='m-1' height={24} width={24} onClick={closeDropdown} />
+                          CLOSE NAV
+                        </div>
                         <Searchbar/>
                          </NavigationMenu.Item>
                         
@@ -86,6 +84,7 @@ function Navbar() {
                             </NavigationMenu.Item >
 
                     <div className="flex gap-5 sm:ml-4 mt-3 sm:mt-0">
+                              
                                 <button>
                                     <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                                         <Avatar.Image
@@ -97,7 +96,7 @@ function Navbar() {
                                             className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
                                             delayMs={600}
                                         >
-                                            {userUid?'LOGGED':'LOGIN'}
+                                            {userUid?<PersonIcon/>:'LOGIN'}
                                         </Avatar.Fallback>
                                     </Avatar.Root>
                                 </button>
@@ -121,17 +120,12 @@ function Navbar() {
                 <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
                     <div className="flex gap-5 ">
                         <button onClick={handleLogout}>
-                            <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                                <Avatar.Image
-                                    className="h-full w-full rounded-[inherit] object-cover"
-                                    src=""
-                                    alt="Colm Tuite"
-                                />
+                            <Avatar.Root className="bg-blackA1 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle">    
                                 <Avatar.Fallback
-                                    className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
-                                    delayMs={600}
+                                    className="text-custom-30 leading-1 flex h-full w-full items-center justify-center  bg-white text-[15px] font-bold"
+                                    
                                 >
-                                    CT
+                                    {userUid ? <PersonIcon height={24} width={24} />: <EnterIcon height={24} width={24} />}
                                 </Avatar.Fallback>
                             </Avatar.Root>
                         </button>
