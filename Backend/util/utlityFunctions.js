@@ -1,6 +1,5 @@
 const { db } = require("../firebaseConfig");
 const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
-const User = collection(db, 'User')
 const movieFunctions = require("./movieFunctions")
 
 module.exports.getUser = async (user) => {
@@ -22,7 +21,7 @@ module.exports.getMovie = async (tmdbId) => {
 }
 
 module.exports.getSubCollectionMovies = async(user, tmdbId) => {
-    const userObj = await getUser(user);
+    const userObj = await module.exports.getUser(user);
     const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
     const result = movieFunctions.findObjectById(response, tmdbId);
     return result;

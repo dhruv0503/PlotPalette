@@ -104,10 +104,11 @@ module.exports.rating = async(req, res, next) => {
     const { tmdbId } = req.params;
     const { rating } = req.body;
 
+    const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
-    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
+    const result = await utilityFunctions.getSubCollectionMovies(user, tmdbId);
 
-    await updateDoc(doc(User, userObj.id, 'movies', result.id), rating);
+    await updateDoc(doc(User, userObj.id, 'movies', result.id), {rating});
     const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
     const ratingNum = result.rating === 0 ? movieObj.numRating + 1 : movieObj.numRating
 
@@ -125,11 +126,11 @@ module.exports.favourite = async(req, res, next) => {
     const { tmdbId } = req.params;
     const {favourite} = req.body;
 
+    const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
-    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
-
-    await updateDoc(doc(User, userObj.id, 'movies', result.id), favourite);
-    const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
+    const result = await utilityFunctions.getSubCollectionMovies(user, tmdbId);
+    await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), {favourite});
+    const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
         "favourite" : increment(favourite === true ? 1 : 0)
     }
@@ -142,10 +143,11 @@ module.exports.watchLater = async(req, res, next) => {
     const { tmdbId } = req.params;
     const {watchLater} = req.body;
 
+    const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
-    const result = utilityFunctions.getSubCollectionMovies(user, tmdbId);
+    const result = await utilityFunctions.getSubCollectionMovies(user, tmdbId);
 
-    await updateDoc(doc(User, userObj.id, 'movies', result.id), watchLater);
+    await updateDoc(doc(User, userObj.id, 'movies', result.id), {watchLater});
     const updatedDoc = await getDoc(doc(User, userObj.id, 'movies', result.id));
     const movieUpdates = {
         "watchLater" : increment(watchLater === true ? 1 : 0)
@@ -155,19 +157,29 @@ module.exports.watchLater = async(req, res, next) => {
 }
 
 module.exports.getReviews = async (req, res, next) => {
-    const { movieId } = req.params;
+    const { tmdbId } = req.params;
     const userRef = auth.currentUser
     
-    const userQuery = query(collection(db, 'Review'), where('movieId', '==', String(movieId)));
-    const querySnapshot = await getDocs(userQuery)
+    const userQuery = query(collection(db, 'Review'), where('tmdbId', '==', String(tmdbId)));
+    const querySnapshot = await getDocs(userQuery);
     const reviews = querySnapshot.docs.map((ele) => ({"reviewId" : ele.id, ...ele.data()}));
+    const matchedReviews = reviews.map((ele) => ({...ele}))
 
     if(userRef !== null){
         const user = await utilityFunctions.getUser(userRef);
-        const review = reviews.find((ele) => ele.userId == user.id )
-        if(review) review.owner = true;
+        const userVoteListRef = await getDocs(collection(doc(User, user.id), "reviews"))
+        const userVoteList = userVoteListRef.docs.map((ele) => ele.data())
+        //intersting, can't  use map
+        for(let i = 0; i < matchedReviews.length; i++){
+            const x = matchedReviews[i];
+            if(x.userId == user.id) x.owner = true;
+            const matchingVote = userVoteList.find((vote) => vote.reviewId === x.reviewId);
+            if (matchingVote) {
+                x.vote = matchingVote.upvote ? "upvote" : "downvote";
+            }
+        }
     }
-    res.send(reviews);
+    res.send(matchedReviews);
 }   
 
 module.exports.getMovieByGenre = async (req, res, next) => {

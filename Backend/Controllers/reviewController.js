@@ -18,7 +18,7 @@ module.exports.makeReview = async (req, res, next) => {
 
     const formattedTime = new Date(Date.now()).toLocaleString();
 
-    const obj = {"text": reviewText, "userId" : userObj.id, "movieId" : movieObj.id, "timeStamp" : formattedTime, "upVote" : 0, "downVote" : 0}
+    const obj = {"text": reviewText, "userId" : userObj.id, "movieId" : movieObj.id, tmdbId, "timeStamp" : formattedTime, "votes" : 0}
     const review = await addDoc(Review, obj);
     const reviewId = review.id;
     const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
@@ -34,15 +34,8 @@ module.exports.makeReview = async (req, res, next) => {
 }
 
 module.exports.updateReview = async(req, res, next) => {
-    const user = auth.currentUser;
-    const {tmdbId} = req.params
+    const { reviewId } = req.params
     const { reviewText } = req.body;
-
-    const userObj = await utilityFunctions.getUser(user);
-
-    const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
-    const movie = movieFunctions.findObjectById(response, tmdbId);
-    const reviewId = movie.reviewId;
 
     await updateDoc(doc(Review, reviewId), { "text" : reviewText })
     const reviewDoc = await getDoc(doc(Review, reviewId))
@@ -50,26 +43,55 @@ module.exports.updateReview = async(req, res, next) => {
 }
 
 module.exports.deleteReview = async(req, res, next) => {
-    const user = auth.currentUser;
-    const {tmdbId} = req.params;
+    const userRef = auth.currentUser
+    const {tmdbId, reviewId} = req.params;
+    const movie = await utilityFunctions.getMovie(tmdbId)
+    const user = await utilityFunctions.getUser(userRef);
+    const result = await utilityFunctions.getSubCollectionMovies(userRef, tmdbId)
 
-    const userObj = await utilityFunctions.getUser(user);
-    const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
-
-    const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
-    const movie = movieFunctions.findObjectById(response, tmdbId);
-    const reviewId = movie.reviewId
-
-    await updateDoc(doc(User, userObj.id, 'movies', movie.id),{
+    await updateDoc(doc(collection(User, user.id, 'movies'), result.id),{
         reviewId : deleteField()
     });
 
-    await updateDoc(doc(Movie, movieObj.id), {
+    await updateDoc(doc(Movie, movie.id), {
         "reviewCount" : increment(-1),
         "reviews" : arrayRemove(reviewId)
     })
+
     await deleteDoc(doc(Review, reviewId));
-    const reviewsRef = await getDocs(collection(Review));
-    const reviews = reviewsRef.map(rev => ({...rev.data()}))
+    const reviewsRef = await getDocs(Review);
+    const reviews = reviewsRef.docs.map(rev => ({...rev.data()}))
     res.send(reviews);
+}
+
+module.exports.upVote = async(req, res, next) => {
+    const userRef = auth.currentUser;
+    const { reviewId } = req.params;
+    const user = await utilityFunctions.getUser(userRef);
+    
+    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    if(userReviews) {
+        const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
+        if (upvotedReview) next(new expressError("You can't upvote the same review multiple times", 400));
+    }
+    await updateDoc(doc(Review, reviewId), { votes: increment(1) }),
+    await addDoc(collection(doc(User, user.id), "reviews"), { reviewId, upvote: true, downvote: false })
+    const review = await getDoc(doc(Review, reviewId));
+    res.send(review.data());
+}
+
+module.exports.downVote = async(req, res, next) => {
+    const userRef = auth.currentUser;
+    const {reviewId} = req.params;
+    const user = await utilityFunctions.getUser(userRef);
+
+    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    if(userReviews){
+        const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
+        if(upvotedReview) next(new expressError("You can't downvote the same review multiple times", 400));
+    }    
+    await updateDoc(doc(Review, reviewId), {votes : increment(-1)})
+    await addDoc(collection(doc(User, user.id) , "reviews"), {reviewId, upvote : false, downvote : true})
+    const review = await getDoc(doc(Review, reviewId))
+    res.send(review.data());
 }

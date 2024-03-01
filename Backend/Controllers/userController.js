@@ -3,7 +3,6 @@ const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, que
 const User = collection(db, "User");
 const movieFunctions = require("../util/movieFunctions")
 const utilityFunctions = require("../util/utlityFunctions");
-const { sendPasswordResetEmail } = require("firebase/auth");
 const expressError = require("../util/expressError");
 
 
