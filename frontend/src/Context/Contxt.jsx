@@ -2,6 +2,32 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 const MyContext = createContext();
 
+// my profile api
+const myProfile = async (e) => {
+    // e.preventDefault();
+    try {
+      const response = await axios.get('http://localhost:5000/api/users/myProfile');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error in getting myProfile:', error.message);
+      alert(error.message);
+    }
+  };
+  myProfile();
+
+// all users list
+  const allUsers = async (e) => {
+    // e.preventDefault();
+    try {
+      const response = await axios.get('http://localhost:5000/api/users/all');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error in getting all users:', error.message);
+      alert(error.message);
+    }
+  };
+  allUsers();
+
 //now_playing
 //popular
 //top_rated

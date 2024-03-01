@@ -3,7 +3,6 @@ const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, que
 const User = collection(db, "User");
 const movieFunctions = require("../util/movieFunctions")
 const utilityFunctions = require("../util/utlityFunctions");
-const { sendPasswordResetEmail } = require("firebase/auth");
 const expressError = require("../util/expressError");
 
 
@@ -17,7 +16,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const user = await getDoc(doc(User, id));
+    const user = await getUser(doc(User, id));
     res.send(user.data());
 };
 
