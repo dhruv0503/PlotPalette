@@ -1,5 +1,5 @@
 const { db, auth } = require("../firebaseConfig")
-const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayUnion, arrayRemove } = require("firebase/firestore/lite")
+const { collection, getDoc, doc, updateDoc, increment, arrayUnion, arrayRemove } = require("firebase/firestore/lite")
 const User = collection(db, "User");
 const utilityFunctions = require("../util/utlityFunctions")
 
@@ -50,7 +50,7 @@ module.exports.denyFriend = async(req, res, next) => {
     await updateDoc(doc(User, mainUser.id), {
         requestList : arrayRemove(userId)
     })
-    const userResult = await getUser(doc(User, mainUser.id));
+    const userResult = await getDoc(doc(User, mainUser.id));
     res.send({"msg" : "Request Denied", ...userResult.data()});
 }
 

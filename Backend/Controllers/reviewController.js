@@ -36,8 +36,9 @@ module.exports.makeReview = async (req, res, next) => {
 module.exports.updateReview = async(req, res, next) => {
     const { reviewId } = req.params
     const { reviewText } = req.body;
+    const formattedTime = new Date(Date.now()).toLocaleString();
 
-    await updateDoc(doc(Review, reviewId), { "text" : reviewText })
+    await updateDoc(doc(Review, reviewId), { "text" : reviewText, formattedTime, "editted" : true })
     const reviewDoc = await getDoc(doc(Review, reviewId))
     res.send(reviewDoc.data());
 }
