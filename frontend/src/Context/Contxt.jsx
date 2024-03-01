@@ -33,31 +33,7 @@ const myProfile = async (e) => {
 //top_rated
 //upcoming
 
-
 export function MyContextProvider({ children }) {
-    const TAGS = [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Mystery",
-        "Romance",
-        "Sci-Fi",
-        "Thriller",
-        "Animation",
-        "Documentary",
-        "Family",
-        "Musical",
-        "War",
-        "Western",
-        "Crime",
-        "Historical",
-        "Biography",
-        "Sports",
-    ];
-
     const genres = [
         { "id": 28, "name": "Action" },
         { "id": 12, "name": "Adventure" },
@@ -77,7 +53,8 @@ export function MyContextProvider({ children }) {
         { "id": 10770, "name": "TV Movie" }, { "id": 53, "name": "Thriller" },
         { "id": 10752, "name": "War" },
         { "id": 37, "name": "Western" }];
-
+    const [pagesToShow] = useState(5); // Number of pages to show in the pagination bar
+    const [startPage, setStartPage] = useState(5);
     const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [now_playing, setNowPlayingMovies] = useState([]);
     const [popular, setPopularMovies] = useState([]);
@@ -86,24 +63,25 @@ export function MyContextProvider({ children }) {
     const [searchResults, setSearchResults] = useState([]);
     const [userUid, setUserUid] = useState();
     const [islogin, setislogin] = useState();
+    const [genre, setgenre] = useState();
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 // Fetch upcoming movies
                 const upcomingResponse = await axios.get('http://localhost:5000/api/movies/type/upcoming');
-                setUpcomingMovies(upcomingResponse.data.movies);
+                setUpcomingMovies(upcomingResponse.data.movies.results);
 
                 // Fetch now playing movies
                 const nowPlayingResponse = await axios.get('http://localhost:5000/api/movies/type/now_playing');
-                setNowPlayingMovies(nowPlayingResponse.data.movies);
+                setNowPlayingMovies(nowPlayingResponse.data.movies.results);
 
                 // Fetch popular movies
                 const popularResponse = await axios.get('http://localhost:5000/api/movies/type/popular');
-                setPopularMovies(popularResponse.data.movies);
+                setPopularMovies(popularResponse.data.movies.results);
 
                 // Fetch top rated movies
                 const topRatedResponse = await axios.get('http://localhost:5000/api/movies/type/top_rated');
-                setTopRatedMovies(topRatedResponse.data.movies);
+                setTopRatedMovies(topRatedResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
             }
@@ -114,7 +92,6 @@ export function MyContextProvider({ children }) {
      
     useEffect(() => {
         setislogin(userUid)
-
     },[userUid])
 
 
@@ -127,21 +104,13 @@ export function MyContextProvider({ children }) {
         ];
         setAll_movie(all_movie);
     }, [upcomingMovies,now_playing, popular, top_rated]);
-
-
-
-
-
-
     
     return (
-        <MyContext.Provider value={{upcomingMovies , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,TAGS ,genres , userUid , islogin, setUserUid}} >
+        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin, setUserUid}} >
             {children}
         </MyContext.Provider>
-    )
-    
+    )    
 }
-
 
 export function useApi() {
     return useContext(MyContext);

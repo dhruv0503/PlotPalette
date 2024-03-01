@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { Tabs ,Text } from '@radix-ui/themes'
 import { useApi } from '../Context/Contxt.jsx';
 
-function Booktemplate() {
+export default React.memo(function Booktemplate() {
 
     const { all_movie } = useApi();
 
@@ -13,20 +13,18 @@ function Booktemplate() {
     const movie = all_movie.find(movie => movie.title === movieId);
 
     // const actor = movie.Actors.split(',');
-     
-    console.log(all_movie)
+
      
     var img = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
     
     return (
         <div className='relative '>
-            <div style={{backgroundImage: `url(${img}`}} className='bg-cover bg-center  p-10  gap-3 md:grid sm:grid-cols-3 mt-20 '>   
-                <div className='m-2 z-10 '>
-                    <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
+            <div style={{ backgroundImage: `url(${img}` }} className='bg-cover bg-center  p-10  gap-3 md:grid sm:grid-cols-3 '>
+                <div className='mt-20 z-10 '>
+                    <div className='shadow-md  rounded-lg overflow-hidden'>
 
                         <div className='relative'>
-                            <div className='bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45'></div>
-
+                           
                             <img
                                 src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
                                 alt="Bold typography"
@@ -47,42 +45,41 @@ function Booktemplate() {
 
                     </div>
                 </div>
-             
 
-                <div className='z-10 col-span-2 p-5 rounded-lg px-10 text-custom-10 bg-custom-50 font-bold '>  
-                <Tabs.Root
-                    className="flex flex-col shadow-[0_2px_10px] shadow-blackA2"
-                    defaultValue="tab1"
-                >
-                    <Tabs.List className="shrink-0 flex border-b border-mauve6"  >
-                       <Tabs.Trigger
-                            className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                <div className='z-10 mt-20 col-span-2 p-5 rounded-lg px-10 text-custom-10  font-bold '>
+                    <Tabs.Root
+                        className="flex flex-col shadow-[0_2px_10px] shadow-blackA2"
+                        defaultValue="tab1"
+                    >
+                        <Tabs.List className="shrink-0 flex border-b border-mauve6"  >
+                            <Tabs.Trigger
+                                className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab1"
+                            >
+                                Movie
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab2"
+                            >
+                                Cast and Crew
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab3"
+                            >
+                                More
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab4"
+                            >
+                                Account
+                            </Tabs.Trigger>
+                        </Tabs.List>
+                        <Tabs.Content
+                            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-2"
                             value="tab1"
-                        >
-                            Movie
-                        </Tabs.Trigger>       
-                        <Tabs.Trigger
-                            className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab2"
-                        >
-                            Cast and Crew
-                        </Tabs.Trigger>
-                        <Tabs.Trigger
-                            className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab3"
-                        >
-                            More 
-                        </Tabs.Trigger>
-                        <Tabs.Trigger
-                            className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab4"
-                        >
-                            Account
-                        </Tabs.Trigger>
-                    </Tabs.List>
-                    <Tabs.Content
-                        className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-2"
-                        value="tab1"
                         >
                     
                             <div className='bg-black p-4 flex flex-col border border-gray-800 '>
@@ -91,7 +88,7 @@ function Booktemplate() {
                                 <p className='text-gray-400'>GENRE: {movie.genre_ids}</p>
                             </div>
 
-                        <div>   
+                            <div>
                            
                                 <div className='bg-custom-40 p-3'>
                                     <p className='text-custom-50 font-mono text-lg mb-2'>MOVIE PLOT</p>
@@ -100,16 +97,16 @@ function Booktemplate() {
                                     </Text>
                                 </div>
 
-                        </div>
-                    <div className=' flex gap-2 m-2 text-custom-50'>
-                              <div className='flex items-center'>
-                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.22303 0.665992C7.32551 0.419604 7.67454 0.419604 7.77702 0.665992L9.41343 4.60039C9.45663 4.70426 9.55432 4.77523 9.66645 4.78422L13.914 5.12475C14.18 5.14607 14.2878 5.47802 14.0852 5.65162L10.849 8.42374C10.7636 8.49692 10.7263 8.61176 10.7524 8.72118L11.7411 12.866C11.803 13.1256 11.5206 13.3308 11.2929 13.1917L7.6564 10.9705C7.5604 10.9119 7.43965 10.9119 7.34365 10.9705L3.70718 13.1917C3.47945 13.3308 3.19708 13.1256 3.25899 12.866L4.24769 8.72118C4.2738 8.61176 4.23648 8.49692 4.15105 8.42374L0.914889 5.65162C0.712228 5.47802 0.820086 5.14607 1.08608 5.12475L5.3336 4.78422C5.44573 4.77523 5.54342 4.70426 5.58662 4.60039L7.22303 0.665992Z" fill="currentColor"></path></svg><h1 className='text-xl'>{ movie.imdbRating}</h1>
+                            </div>
+                            <div className=' flex gap-2 m-2 text-custom-50'>
+                                <div className='flex items-center'>
+                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.22303 0.665992C7.32551 0.419604 7.67454 0.419604 7.77702 0.665992L9.41343 4.60039C9.45663 4.70426 9.55432 4.77523 9.66645 4.78422L13.914 5.12475C14.18 5.14607 14.2878 5.47802 14.0852 5.65162L10.849 8.42374C10.7636 8.49692 10.7263 8.61176 10.7524 8.72118L11.7411 12.866C11.803 13.1256 11.5206 13.3308 11.2929 13.1917L7.6564 10.9705C7.5604 10.9119 7.43965 10.9119 7.34365 10.9705L3.70718 13.1917C3.47945 13.3308 3.19708 13.1256 3.25899 12.866L4.24769 8.72118C4.2738 8.61176 4.23648 8.49692 4.15105 8.42374L0.914889 5.65162C0.712228 5.47802 0.820086 5.14607 1.08608 5.12475L5.3336 4.78422C5.44573 4.77523 5.54342 4.70426 5.58662 4.60039L7.22303 0.665992Z" fill="currentColor"></path></svg><h1 className='text-xl'>{movie.imdbRating}</h1>
                                 </div>
                                 <div className='flex items-center'>
                                     <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2C3.22386 2 3 2.22386 3 2.5V13.5C3 13.6818 3.09864 13.8492 3.25762 13.9373C3.41659 14.0254 3.61087 14.0203 3.765 13.924L7.5 11.5896L11.235 13.924C11.3891 14.0203 11.5834 14.0254 11.7424 13.9373C11.9014 13.8492 12 13.6818 12 13.5V2.5C12 2.22386 11.7761 2 11.5 2H3.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><h1 className='text-xl'>{movie.imdbVotes}</h1>
-                                </div>        
-                    </div>
-                    </Tabs.Content>
+                                </div>
+                            </div>
+                        </Tabs.Content>
                   
                         <Tabs.Content
                             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-3"
@@ -120,7 +117,7 @@ function Booktemplate() {
                                 <p>{movie.Country}</p>
                                 <p>{movie.totalSeasons}</p>
 
-                        </div>
+                            </div>
                         </Tabs.Content>
                         <Tabs.Content
                             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
@@ -136,7 +133,7 @@ function Booktemplate() {
             </div>
 
         </div>
-  )
-}
+    )
+});
 
-export default Booktemplate
+

@@ -8,16 +8,17 @@ import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
+import LoadingPage from './LoadingPage.jsx';
 
-function Upcoming() {
-    const [genre, setgenre] = useState(null);
-
-
-    const { upcomingMovies , searchResults ,TAGS} = useApi();
-
-
+export default React.memo(function Upcoming() {
+ 
+    
+    const [genre, setgenre] = useState();
+    const [Genres, setGenres] = useState([]);
+    const { upcomingMovies, searchResults, genres } = useApi();
     const handleSelectChange = (newValue) => {
-        setgenre(newValue);
+        console.log(newValue)
+        setgenre(newValue.name);
     };
 
     const data = searchResults
@@ -28,16 +29,23 @@ function Upcoming() {
         )
         : upcomingMovies;
 
-   
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
 
-
-
-    const filteredMovies = genre ? data.filter(movie => movie.Genre.includes(genre)) : data;
+                const upcomingResponse = await axios.get(`http://localhost:5000/api/movies/genres/${genre}`);
+                setGenres(upcomingResponse.data.results);
+            } catch (error) {
+                console.error('Error fetching movies:', error.message);
+            }
+        };
+        fetchGenres();
+    }, [genre]);
 
     return (
-        <div className='bg-custom-30 bg-dotted-spacing-1 bg-dotted-custom-10 '>
+        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10  '>
             <Navbar />
-            <div className='mt-20 p-2'>
+            <div className='mt-20 p-2 '>
                 <div className='p-2'>
                     <Select.Root value={genre} onValueChange={handleSelectChange} >
                         <Select.Trigger
@@ -60,9 +68,9 @@ function Upcoming() {
                                             Category
                                         </Select.Label>
                                         {
-                                            TAGS.map((tag, index) => (
-                                                <SelectItem key={index} value={tag}>
-                                                    {tag}
+                                            genres.map((genre, index) => (
+                                                <SelectItem key={index} value={genre}>
+                                                    {genre.name}
                                                 </SelectItem>
                                             ))
                                         }
@@ -78,20 +86,28 @@ function Upcoming() {
                         </Select.Portal>
                     </Select.Root>
                 </div>
-                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around  ">
+                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around ">
 
 
-                    {data.length > 0 ?
-                        (data.map((movie, index) => (
-                            <MovieCard key={index} {...movie} />
-                        ))) :
-                        <p>SORRY NO MOVIES </p>
+                    {genre ? (
+                        Genres.length > 0 ?
+                            (Genres.map((movie, index) => (
+                                <MovieCard key={index} {...movie} />
+                            ))) :
+                            <LoadingPage />)
+                        : (
+                            data.length > 0 ?
+                                (data.map((movie, index) => (
+                                    <MovieCard key={index} {...movie} />
+                                ))) :
+                                <LoadingPage />)
                     }
                 </div>
             </div>
         </div>
     )
-}
+
+});
 
 const SelectItem = React.forwardRef(({ children, className, ...props }, forwardedRef) => {
     return (
@@ -111,7 +127,5 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
     );
 });
 
-
-export default Upcoming
 
 

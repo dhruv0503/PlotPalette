@@ -14,9 +14,9 @@ module.exports = {
         custom:{
           10: '#EDE9E3',
           20: '#E7D7C9',
-          30: '#BE8F6E',
+          30: '#2E4057',
           40: '#87816E',
-          50: '#241F19',
+          50: '#2F2D2E',
         },
       },
       keyframes: {

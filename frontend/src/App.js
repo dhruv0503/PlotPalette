@@ -14,6 +14,8 @@ import Popular from './components/Popular';
 import { MyContextProvider } from "./Context/Contxt";
 import NowPlaying from './components/NowPlaying';
 import FavList from './pages/FavList';
+import NoPage from './pages/NoPage';
+import Category from './components/Category';
 
 function App() {
   return (
@@ -30,8 +32,9 @@ function App() {
           <Route element={<TopRated />} path='/movies/toprated' />
           <Route element={<NowPlaying />} path='/movies/nowplaying' />
           <Route element={<Popular/>} path='/movies/popular' />
-          
+          <Route element={<NoPage />} path='*' />
           <Route element={<Aboutsus />} path='/about' />
+          <Route element={<Category/>} path='/movies/Category' />
         </Routes>
       </Router>
     </MyContextProvider>

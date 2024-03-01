@@ -5,38 +5,54 @@ import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
+import Pagination from './Pagination.jsx';
 
 export default React.memo(function TopRated() {
-    const [genre, setgenre] = useState(null);
-    const { top_rated, searchResults, TAGS, genres } = useApi();
-    const handleSelectChange = (newValue) => {
-        setgenre(newValue);
-    };
-    
-    const data = searchResults
+    const [top_rated, setTopRatedMovies] = useState([]);
+    const [startPage, setStartPage] = useState(1)
+    const { searchResults } = useApi();
+  
+
+   const data =searchResults
         ? top_rated.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
         : top_rated;
-    
-    const filteredMovies = genre ? genres.map((item2) => {
-        const genresid = data.filter((movie) => movie.genre_id.includes(item2.id));
-        return { genresid }
-    }) : null
 
-
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const topRatedResponse = await axios.get(`http://localhost:5000/api/movies/type/top_rated?pageNo=${startPage}`);
+                setTopRatedMovies(topRatedResponse.data.movies.results);
+            } catch (error) {
+                console.error('Error fetching movies:', error.message);
+            }
+        };
+        fetchData();
+    }, [startPage]);
     
+
+    const nextPage = () => {
+
+        setStartPage(startPage +1);
+    }
+    const prevPage = () => {
+        if (startPage >2) {
+            setStartPage(startPage - 1);
+        }
+    }
+
     return (
-        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10  '>
+        <div className='bg-custom-30 h-full   '>
             <Navbar />
             <div className='mt-20 p-2 '>
                 <div className='p-2'>
-                    <Select.Root value={genre} onValueChange={handleSelectChange} >
+                    {/* <Select.Root value={genre} onValueChange={handleSelectChange} >
                         <Select.Trigger
                             className="inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-custom-30 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-custom-30 outline-none"
                             aria-label="Food"
@@ -73,12 +89,23 @@ export default React.memo(function TopRated() {
                                 </Select.ScrollDownButton>
                             </Select.Content>
                         </Select.Portal>
-                    </Select.Root>
+                    </Select.Root> */}
+                    <div class="flex gap-3 justify-center items-center">
+                        <DoubleArrowLeftIcon  className='cursor-pointer' onClick={prevPage} height={32} width={32} />
+                        <BorderDottedIcon height={32} width={32} />
+                        <div className='bg-gray-400 border border-black p-2' >{startPage}</div>
+                        <BorderDottedIcon height={32} width={32} />
+                        <DoubleArrowRightIcon className='cursor-pointer' onClick={nextPage} height={32} width={32} />
+                    </div>
+
                 </div>
-                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around ">
+               
+
+                <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
                 
 
-                    {data.length > 0 ?
+                    {
+                        data.length > 0 ?
                         (data.map((movie, index) => (
                             <MovieCard key={index} {...movie} />
                         ))) :
@@ -86,6 +113,7 @@ export default React.memo(function TopRated() {
                     }
                 </div>
             </div>
+       
         </div>
     )
 });
