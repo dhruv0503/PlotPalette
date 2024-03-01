@@ -36,7 +36,7 @@ module.exports.isLoggedIn = () => {
     }
 }
 
-module.exports.isWatched = () => {
+module.exports.isWatched = (parameter) => {
     return async (req, res, next) => {
         const { tmdbId } = req.params
         const user = auth.currentUser;
@@ -44,7 +44,17 @@ module.exports.isWatched = () => {
         const movie = await utilityFunctions.getMovie(tmdbId);
         const movies = await getDocs(collection(User, userObj.id, 'movies'))
         const movieObj = movies.docs.find(ele => ele.data().movieId == movie.id);
-        if (!movieObj.data().watched) return next(new expressError("You can't leave reviews without watching the movie", 400))
+        if (!movieObj.data().watched){
+            if(parameter == "fav"){
+                return next(new expressError("You need to watch the movie before assigning it favourite", 400))
+            }
+            else if( parameter == "rate"){
+                return next(new expressError("You need to watch the movie before rating it", 400))
+            }
+            else if( parameter == "review"){
+                return next(new expressError("You need to watch the movie before reviewing it", 400))
+            }
+        }
         next();
     }
 }
