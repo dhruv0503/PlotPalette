@@ -3,47 +3,56 @@ import Navbar from '../pages/Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
-import data from '../assets/Data.jsx';
+import NoPage from '../pages/NoPage.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
+import Pagination from './Pagination.jsx';
 
-export default React.memo(function Popular() {
-
-
-    const [genre, setgenre] = useState();
+export default React.memo(function Category() {
+    const { genres , searchResults } = useApi();
+    const [startPage, setStartPage] = useState(1);
+    const [genre, setgenre] = useState("Action");
     const [Genres, setGenres] = useState([]);
-    const { popular, searchResults, genres } = useApi();
     const handleSelectChange = (newValue) => {
-        console.log(newValue)
         setgenre(newValue.name);
+        setStartPage(1)
     };
-
+    const nextPage = () => {
+        setStartPage(startPage + 1);
+    }
+    const prevPage = () => {
+        if (startPage > 2) {
+            setStartPage(startPage - 1);
+        }
+    }
+    
     const data = searchResults
-        ? popular.filter(article =>
+        ? Genres.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
-        : popular;
+        : Genres;
+    
+    console.log(Genres)
 
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-
-                const upcomingResponse = await axios.get(`http://localhost:5000/api/movies/genres/${genre}`);
+                const upcomingResponse = await axios.get(`http://localhost:5000/api/movies/genres/${genre}?pageNo=${startPage}`);
                 setGenres(upcomingResponse.data.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
             }
         };
         fetchGenres();
-    }, [genre]);
+    }, [genre, startPage]);
 
     return (
-        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10  '>
+        <div className='bg-custom-30 h-full   '>
             <Navbar />
             <div className='mt-20 p-2 '>
                 <div className='p-2'>
@@ -85,25 +94,24 @@ export default React.memo(function Popular() {
                             </Select.Content>
                         </Select.Portal>
                     </Select.Root>
+                    <div class="flex gap-3 justify-center items-center">
+                        <DoubleArrowLeftIcon className='cursor-pointer' onClick={prevPage} height={32} width={32} />
+                        <BorderDottedIcon height={32} width={32} />
+                        <div className='bg-gray-400 border border-black p-2' >{startPage}</div>
+                        <BorderDottedIcon height={32} width={32} />
+                        <DoubleArrowRightIcon className='cursor-pointer' onClick={nextPage} height={32} width={32} />
+                    </div>
                 </div>
-                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around ">
-
-
-                    {genre ? (
-                        Genres.length > 0 ?
-                            (Genres.map((movie, index) => (
-                                <MovieCard key={index} {...movie} />
-                            ))) :
-                            <LoadingPage />)
-                        : (
-                            data.length > 0 ?
-                                (data.map((movie, index) => (
-                                    <MovieCard key={index} {...movie} />
-                                ))) :
-                                <LoadingPage />)
+                <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
+                     {data.length > 0 ?
+                        (data.map((movie, index) => (
+                    <MovieCard key={index} {...movie} />
+                    ))) :
+                        <NoPage/>
                     }
                 </div>
             </div>
+
         </div>
     )
 });
@@ -125,7 +133,3 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
         </Select.Item>
     );
 });
-
-
-
-
