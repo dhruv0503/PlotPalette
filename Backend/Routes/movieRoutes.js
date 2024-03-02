@@ -14,7 +14,8 @@ router.route("/reviews/:tmdbId").get(wrapAsync(movieController.getReviews));
 
 router.route("/type/:parameter").get(wrapAsync(movieController.getMovieList));
 
-router.route("/search").get(wrapAsync(movieController.searchMovie));
+router.route("/search/movie").get(wrapAsync(movieController.searchMovie));
+router.route("/search/person").get(wrapAsync(movieController.searchPerson));
 
 router.route("/:tmdbId")
     .get(wrapAsync(movieController.getMovie))
