@@ -68,6 +68,7 @@ module.exports.getMovie = async (req, res, next) => {
     }
 }
 
+
 //now_playing
 //popular
 //top_rated

@@ -3,105 +3,72 @@ import Navbar from '../pages/Navbar'
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { MovieCard, BookCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
-import data from '../assets/Data.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
+import Pagination from './Pagination.jsx';
 
 export default React.memo(function Popular() {
-
-
-    const [genre, setgenre] = useState();
-    const [Genres, setGenres] = useState([]);
-    const { popular, searchResults, genres } = useApi();
-    const handleSelectChange = (newValue) => {
-        console.log(newValue)
-        setgenre(newValue.name);
-    };
+    const [UpcomingMovies, setUpcomingMovies] = useState([]);
+    const [startPage, setStartPage] = useState(1)
+    const { searchResults } = useApi();
 
     const data = searchResults
-        ? popular.filter(article =>
+        ? UpcomingMovies.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
-        : popular;
+        : UpcomingMovies;
 
     useEffect(() => {
-        const fetchGenres = async () => {
+        const fetchData = async () => {
             try {
-
-                const upcomingResponse = await axios.get(`http://localhost:5000/api/movies/genres/${genre}`);
-                setGenres(upcomingResponse.data.results);
+                const UpcomingResponse = await axios.get(`http://localhost:5000/api/movies/type/popular?pageNo=${startPage}`);
+                setUpcomingMovies(UpcomingResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
             }
         };
-        fetchGenres();
-    }, [genre]);
+        fetchData();
+    }, [startPage]);
+
+
+
+    const nextPage = () => {
+
+        setStartPage(startPage + 1);
+    }
+    const prevPage = () => {
+        if (startPage > 2) {
+            setStartPage(startPage - 1);
+        }
+    }
 
     return (
-        <div className='bg-custom-30  bg-dotted-spacing-1 bg-dotted-custom-10  '>
+        <div className='bg-custom-30 h-full   '>
             <Navbar />
             <div className='mt-20 p-2 '>
-                <div className='p-2'>
-                    <Select.Root value={genre} onValueChange={handleSelectChange} >
-                        <Select.Trigger
-                            className="inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-custom-30 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-custom-30 outline-none"
-                            aria-label="Food"
-                        >
-                            <Select.Value placeholder=" " />
-                            <Select.Icon className="text-custom-50">
-                                <ChevronDownIcon />
-                            </Select.Icon>
-                        </Select.Trigger>
-                        <Select.Portal>
-                            <Select.Content className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-                                <Select.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
-                                    <ChevronUpIcon />
-                                </Select.ScrollUpButton>
-                                <Select.Viewport className="p-[5px]">
-                                    <Select.Group >
-                                        <Select.Label className="px-[25px] text-xs leading-[25px] text-mauve11">
-                                            Category
-                                        </Select.Label>
-                                        {
-                                            genres.map((genre, index) => (
-                                                <SelectItem key={index} value={genre}>
-                                                    {genre.name}
-                                                </SelectItem>
-                                            ))
-                                        }
-                                    </Select.Group>
+                <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
 
-                                    <Select.Separator className="h-[1px] bg-violet6 m-[5px]" />
-
-                                </Select.Viewport>
-                                <Select.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
-                                    <ChevronDownIcon />
-                                </Select.ScrollDownButton>
-                            </Select.Content>
-                        </Select.Portal>
-                    </Select.Root>
-                </div>
-                <div className="p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 md:grid-cols-3  sm:justify-around ">
-
-
-                    {genre ? (
-                        Genres.length > 0 ?
-                            (Genres.map((movie, index) => (
+                    {
+                        data.length > 0 ?
+                            (data.map((movie, index) => (
                                 <MovieCard key={index} {...movie} />
                             ))) :
-                            <LoadingPage />)
-                        : (
-                            data.length > 0 ?
-                                (data.map((movie, index) => (
-                                    <MovieCard key={index} {...movie} />
-                                ))) :
-                                <LoadingPage />)
+                            <LoadingPage />
                     }
+                </div>
+            </div>
+            <div className='p-2'>
+                <div class="flex gap-3 justify-center items-center">
+                    <DoubleArrowLeftIcon className='cursor-pointer' onClick={prevPage} height={32} width={32} />
+                    <BorderDottedIcon height={32} width={32} />
+                    <div className='bg-gray-400 border border-black p-2' >{startPage}</div>
+                    <BorderDottedIcon height={32} width={32} />
+                    <DoubleArrowRightIcon className='cursor-pointer' onClick={nextPage} height={32} width={32} />
                 </div>
             </div>
         </div>
@@ -125,7 +92,3 @@ const SelectItem = React.forwardRef(({ children, className, ...props }, forwarde
         </Select.Item>
     );
 });
-
-
-
-
