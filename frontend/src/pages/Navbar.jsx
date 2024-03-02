@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
-import { CaretDownIcon } from '@radix-ui/react-icons';
+import { CaretDownIcon, Cross2Icon, EnterIcon, PersonIcon } from '@radix-ui/react-icons';
 import { Link ,useNavigate } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
-import data from "../assets/Data"
 import * as Avatar from '@radix-ui/react-avatar';
 import axios from 'axios'
 import { useApi } from '../Context/Contxt';
 
 
+
 function Navbar() {
     const navigate = useNavigate();
-    const { userUid } = useApi();
+    const { userUid ,islogin } = useApi();
     const handleLogout = async (e) => {
         e.preventDefault();
-    
         try {
           const response = await axios.get('http://localhost:5000/api/signout');
           console.log("Logged out");
@@ -24,15 +23,13 @@ function Navbar() {
           console.error('Error signing out:', error.message);
           alert(error.message);
         }
-      };
-    console.log(userUid, "hello");
+};
     
 
-   
 
+    
 
-
-
+ 
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -45,17 +42,18 @@ function Navbar() {
     };
     
     return (
-        <div className='fixed top-0 z-20 w-screen '>
-        <NavigationMenu.Root className=" flex  justify-between bg-custom-50">
+
+        <div className='bg-custom-50 fixed top-0 z-20 w-screen '>
+        <NavigationMenu.Root className=" flex justify-between ">
                 <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
                     <NavigationMenu.Item >
-                        <NavigationMenu.Trigger className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
-                         PLOT_PALETTE{}
+                        <NavigationMenu.Trigger onClick={() => navigate('/')}  className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
+                         PLOT_PALETTE {islogin} {}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
                     <NavigationMenu.Item>
                         <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            MOVIES{' '}
+                            MOVIES {' '}
                             <CaretDownIcon
                                 className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                                 aria-hidden
@@ -72,73 +70,33 @@ function Navbar() {
                     </NavigationMenu.Item>
                       
                     </NavigationMenu.List>
-                <NavigationMenu.List className={`sm:flex  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 `}
-                onClick={closeDropdown} >
-                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
-                        <button>CLOSE</button>
-                        <Searchbar/>
-                         </NavigationMenu.Item>
-                        
-                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
-                                <NavigationMenu.Trigger onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
-                                    Account{' '}
-                                </NavigationMenu.Trigger>
-                            </NavigationMenu.Item >
-
-                    <div className="flex gap-5 sm:ml-4 mt-3 sm:mt-0">
-                                <button>
-                                    <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                                        <Avatar.Image
-                                            className="h-full w-full rounded-[inherit] object-cover"
-                                            src=""
-                                            alt="Bhavya"
-                                        />
-                                        <Avatar.Fallback
-                                            className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
-                                            delayMs={600}
-                                        >
-                                            {userUid?'LOGGED':'LOGIN'}
-                                        </Avatar.Fallback>
-                                    </Avatar.Root>
-                                </button>
-                            </div>           
-                </NavigationMenu.List>
+               
                 
-                <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
-                    <NavigationMenu.Item className='flex'>
-                      
+                <NavigationMenu.List className="flex flex-row m-5 text-custom-10" style={{ minWidth: '600px' }}> 
+                    <NavigationMenu.Item > 
                         <Searchbar />
                     </NavigationMenu.Item>
-                    </NavigationMenu.List>
-
-                    <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
-                    <NavigationMenu.Item className=''>
+                    
+                    <NavigationMenu.Item >
                         <NavigationMenu.Trigger onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
                             Account{' '}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item >
-                    </NavigationMenu.List>
-                <NavigationMenu.List className=" hidden sm:block flex  gap-6  bg-custom-50 justify-between items-center m-5  list-none  text-custom-10 p-1 " >
-                    <div className="flex gap-5 ">
+                
+                    <div className="flex gap-5 " >
                         <button onClick={handleLogout}>
-                            <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                                <Avatar.Image
-                                    className="h-full w-full rounded-[inherit] object-cover"
-                                    src=""
-                                    alt="Colm Tuite"
-                                />
+                            <Avatar.Root className="bg-blackA1 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle">    
                                 <Avatar.Fallback
-                                    className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
-                                    delayMs={600}
+                                    className="text-custom-30 leading-1 flex h-full w-full items-center justify-center  bg-white text-[15px] font-bold"   
                                 >
-                                    CT
+                                    {userUid ? <PersonIcon height={24} width={24} />: <EnterIcon height={24} width={24} />}
                                 </Avatar.Fallback>
                             </Avatar.Root>
                         </button>
                     </div>
                 </NavigationMenu.List>
                 
-
+ 
                 <NavigationMenu.List className=" sm:hidden flex justify-between items-center m-5  list-none  text-custom-10 p-1 ">
                
                         <button onClick={toggleDropdown} className="focus:outline-none">
@@ -163,6 +121,41 @@ function Navbar() {
                         </button>
             
                 </NavigationMenu.List>
+
+                {/* <NavigationMenu.List className={`sm:flex justify-center  sm:hidden ${isDropdownOpen ? 'block' : 'hidden'}  flex gap-6 flex-col bg-custom-50 items-center   list-none  text-custom-10 p-1 `}
+                >
+                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
+                        <div className=' flex flex-row items-center justify-center m-2 ' ><Cross2Icon className='m-1' height={24} width={24} onClick={closeDropdown} />
+                            CLOSE NAV
+                        </div>
+                        <Searchbar />
+                    </NavigationMenu.Item>
+
+                    <NavigationMenu.Item className='sm:ml-4 mt-3 sm:mt-0'>
+                        <NavigationMenu.Trigger onClick={() => navigate('/account')} className="  focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[14px] px-5 py-2 text-[15px] font-medium leading-none border-white focus:shadow-[0_0_0_2px]">
+                            Account{' '}
+                        </NavigationMenu.Trigger>
+                    </NavigationMenu.Item >
+
+                    <div className="flex gap-5 sm:ml-4 mt-3 sm:mt-0">
+
+                        <button>
+                            <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                <Avatar.Image
+                                    className="h-full w-full rounded-[inherit] object-cover"
+                                    src=""
+                                    alt="Bhavya"
+                                />
+                                <Avatar.Fallback
+                                    className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
+                                    delayMs={600}
+                                >
+                                    {userUid ? <PersonIcon /> : 'LOGIN'}
+                                </Avatar.Fallback>
+                            </Avatar.Root>
+                        </button>
+                    </div>
+                </NavigationMenu.List> */}
 
             <div className="perspective-[2000px] absolute top-full left-0 flex w-full justify-center">
                 <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />

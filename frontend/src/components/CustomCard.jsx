@@ -5,13 +5,11 @@ import { useApi } from '../Context/Contxt';
 
 const MovieCard = ({ 
 title, genre_ids
-, release_date
-    , 
+, release_date ,
+id, 
 backdrop_path,
 poster_path
     , imdbRating }) => {
-    
-    
     
     
     const navigate = useNavigate();
@@ -22,59 +20,43 @@ poster_path
     const matchid = genres.filter(genre => genre_ids.includes(genre.id))
 
 
-    return (  
-//         <div className="max-w-sm bg-custom-50 p-6 overflow-hidden shadow-lg">
+    return ( 
 
-//             <div className="relative">
-//                 <div className="bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45"></div>
-//                 <img className="w-full h-full object-contain object-center rounded-t-lg border-2 border-custom-20" src={`https://image.tmdb.org/t/p/original${poster_path}`}alt={`${title}
-// backdrop_path
-// `} />
-
-//                 <div className="mt-3">
-//                     <div className="font-bold text-white text-xl mb-2">{
-//                         title}</div>
-//                                       {
-//                         matchid.map(genre => (
-//                             <p className="text-gray-200 text-sm inline-block m-1 mb-2" key={genre.id}>{genre.name}</p>
-//                         ))
-                        
-//                     }
-                
-
-//                     <p className="text-gray-200 text-sm mb-2">{`Release Date
-// : ${release_date
-// }`}</p>
-//                 </div>
-
-//                 <div className='mt-4'>
-//                     <Link to={`/movies/${title}`} className='block bg-custom-10 border border-black p-2 rounded-b-lg text-center text-custom-50 hover:bg-custom-30 hover:text-white transition duration-300'>
-//                         View Details
-//                     </Link>
-//                 </div>
-//             </div>
-        //         </div>
-        
-        <div className="max-w-sm bg-custom-50 p-6 overflow-hidden shadow-lg relative">
-            <div className="bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45"></div>
-            <div className="relative">
-                <img className="w-full h-full object-contain object-center rounded-t-lg border-2 border-custom-20 transition duration-300 transform hover:scale-125" src={`https://image.tmdb.org/t/p/original${poster_path}`} alt={`${title} backdrop_path`} />
-                <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 hover:opacity-95  m-20 transition duration-300 bg-white">
-                    <div className="font-bold text-grey-200 text-xl mb-2 bg-white rounded-lg p-5 m-2">{title}</div>
-                    <div className="text-black text-sm mb-2">{`Release Date: ${release_date}`}</div>
-                    <div className="flex">
-                        {matchid.map(genre => (
-                            <p className="text-black text-sm inline-block m-1" key={genre.id}>{genre.name}</p>
-                        ))}
-                    </div>
-                    <div className='mt-4 '>
-                        <Link to={`/movies/${title}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
+        <div className="max-w-md min-h-sm p-4 overflow-hidden rounded-lg shadow-s m-2 relative">
+        <div className="relative overflow-hidden w-sm h-sm">
+                <img className="p-1 w-full h-full object-cover rounded-t-lg border-2 transition duration-300 transform hover:scale-125 " src={`https://image.tmdb.org/t/p/original${poster_path}`} alt={`${title} backdrop_path`} />
+                <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 hover:opacity-95 m-5 lg:m-20 transition duration-300">
+                     <div className="font-bold text-grey-200 text-xl mb-2 bg-white rounded-lg p-5 m-2">{title}</div>
+                  
+                    <div className='mt-4 '> 
+                        <Link to={`/movies/${id}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
                             View Details
                         </Link>
                     </div>
                 </div>
-            </div>
         </div>
+      </div>
+     
+
+        
+        // <div className="relative overflow-hidden  ">
+        //         <img className=" p-10 w-sm h-sm object-contain object-center rounded-t-lg border-2  transition duration-300 transform " src={`https://image.tmdb.org/t/p/original${poster_path}`} alt={`${title} backdrop_path`}  />
+        //         <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 hover:opacity-95 m-5 lg:m-20 transition duration-300 bg-white">
+        //             <div className="font-bold text-grey-200 text-xl mb-2 bg-white rounded-lg p-5 m-2">{title}</div>
+        //             <div className="text-black text-sm mb-2 p-2">{`Released: ${release_date}`}</div>
+        //             <div className=" m-1">
+        //                 {matchid.slice(0,3).map(genre => (
+        //                     <p className="text-black text-sm inline-block p-2" key={genre.id}>{genre.name}</p>
+        //                 ))}
+        //             </div>
+        //             <div className='mt-4 '>
+        //                 <Link to={`/movies/${title}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
+        //                     View Details
+        //                 </Link>
+        //             </div>
+        //         </div>
+        //     </div>
+  
 
 
 

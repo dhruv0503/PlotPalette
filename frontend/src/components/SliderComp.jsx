@@ -9,10 +9,10 @@ function SliderComp(props) {
     const { topic, config } = props;
     var settings = {
         dots: true,
-        infinite: false,
+        infinite: true,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 4,
+        slidesToShow: 4,
+        slidesToScroll: 2,
         initialSlide: 0,
         responsive: [
             {
@@ -41,18 +41,20 @@ function SliderComp(props) {
             }
         ]
     };
+   
     return (
         <div className='p-6 gap-3 '>
-            <h1 className='p-4 bg-gradient-to-r from-custom-50 to-custom-40 text-white font-bold text-2xl mb-4 rounded-md shadow-lg'>
+            <h1 className='p-4 bg-gradient-to-b from-custom-50 to-custom-10 text-black font-bold text-2xl mb-4 rounded-md shadow-lg'>
                 {props.topic}
             </h1>
             <div className='p-1'>
-                <Slider {...settings}>
+            <Slider {...settings}>
                     {config.map((movie, index) => (
                         <div className='focus:outline-none' key={index}>
                             <MovieCard  {...movie} />
                         </div>
                     ))}
+                    
                 </Slider>
             </div>
         </div>

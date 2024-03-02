@@ -1,34 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import CommentSection from './CommentSection'
 import { useParams } from 'react-router-dom'
-import { Tabs ,Text } from '@radix-ui/themes'
+import { Tabs, Text } from '@radix-ui/themes'
+import axios from 'axios'
 import { useApi } from '../Context/Contxt.jsx';
+import AvatarSlider from './AvatarSlider.jsx'
 
-function Booktemplate() {
+export default React.memo(function Booktemplate() {
 
     const { all_movie } = useApi();
-
+    const [moviedata, setmoviedata] = useState([]);
     const { movieId } = useParams();
-    const movie = all_movie.find(movie => movie.title === movieId);
 
-    // const actor = movie.Actors.split(',');
-     
-    console.log(all_movie)
-     
-    var img = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
-    
+    useEffect(() => {
+            const MovieDetails = async () => {
+                try {
+                    const MovDetails = await axios.get(`http://localhost:5000/api/movies/${movieId}`);
+                    setmoviedata(MovDetails.data);
+                } catch (error) {
+                    console.error('Error fetching movi:', error.message);
+                }
+            };
+            MovieDetails();
+         
+    }, [])
+
+    console.log(moviedata)
+
     return (
+       
         <div className='relative '>
-            <div style={{backgroundImage: `url(${img}`}} className='bg-cover bg-center  p-10  gap-3 md:grid sm:grid-cols-3 mt-20 '>   
-                <div className='m-2 z-10 '>
-                    <div className='shadow-md bg-custom-50 rounded-lg overflow-hidden'>
+            <div  className='bg-cover bg-custom-30 bg-center  p-10  gap-3 md:grid sm:grid-cols-3 '>
+                <div className='mt-20 z-10 bg-custom-50 '>
+                    <div className='shadow-md  rounded-lg overflow-hidden'>
 
                         <div className='relative'>
-                            <div className='bg-white w-6 h-6 absolute top-0 left-0 transform -skew-x-45'></div>
-
+                           
                             <img
-                                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                                src={`https://image.tmdb.org/t/p/original/${moviedata.poster_path}`}
                                 alt="Bold typography"
                                 className='p-2 h-[400px] w-[300px] w-full rounded-md object-cover hover:opacity-90 transition duration-300'
                                 style={{ clipPath: 'polygon(0 0, 100% 0, 100% 80%, 0 100%)' }}
@@ -47,80 +57,137 @@ function Booktemplate() {
 
                     </div>
                 </div>
-             
-
-                <div className='z-10 col-span-2 p-5 rounded-lg px-10 text-custom-10 bg-custom-50 font-bold '>  
-                <Tabs.Root
-                    className="flex flex-col shadow-[0_2px_10px] shadow-blackA2"
-                    defaultValue="tab1"
-                >
-                    <Tabs.List className="shrink-0 flex border-b border-mauve6"  >
-                       <Tabs.Trigger
-                            className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                
+ 
+     <div className='z-10 mt-20 col-span-2 p-5 rounded-lg px-10 text-custom-10  font-bold '>
+                    <Tabs.Root
+                        className="flex flex-col shadow-[0_2px_10px] shadow-blackA2"
+                        defaultValue="tab1"
+                    >
+                        <Tabs.List className="shrink-0 flex border-b border-mauve6"  >
+                            <Tabs.Trigger
+                                className=" px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-black select-none first:rounded-tl-md last:rounded-tr-md hover:text-gray-900 data-[state=active]:text-gray-900 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab1"
+                            >
+                                Movie
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className="px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-black select-none first:rounded-tl-md last:rounded-tr-md hover:text-gray-900 data-[state=active]:text-gray-900 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab2"
+                            >
+                                Where to Watch
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className=" px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-black select-none first:rounded-tl-md last:rounded-tr-md hover:text-gray-900 data-[state=active]:text-gray-900 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab3"
+                            >
+                                More
+                            </Tabs.Trigger>
+                            <Tabs.Trigger
+                                className=" px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-black select-none first:rounded-tl-md last:rounded-tr-md hover:text-gray-900 data-[state=active]:text-gray-900 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+                                value="tab4"
+                            >
+                                Account
+                            </Tabs.Trigger>
+                        </Tabs.List>
+                        <Tabs.Content
+                            className="grow p-5 rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-2"
                             value="tab1"
                         >
-                            Movie
-                        </Tabs.Trigger>       
-                        <Tabs.Trigger
-                            className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab2"
-                        >
-                            Cast and Crew
-                        </Tabs.Trigger>
-                        <Tabs.Trigger
-                            className="bg-black px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab3"
-                        >
-                            More 
-                        </Tabs.Trigger>
-                        <Tabs.Trigger
-                            className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-                            value="tab4"
-                        >
-                            Account
-                        </Tabs.Trigger>
-                    </Tabs.List>
-                    <Tabs.Content
-                        className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-2"
-                        value="tab1"
-                        >
-                    
-                            <div className='bg-black p-4 flex flex-col border border-gray-800 '>
-                                <h2 className='text-white text-lg font-bold mb-2'>{movie.title} ({movie.release_date})</h2>
-                                <p className='text-gray-400 mb-2'>RELEASED ON: {movie.release_date}</p>
-                                <p className='text-gray-400'>GENRE: {movie.genre_ids}</p>
+                            <div className=' p-4 flex flex-col border border-gray-800 '>
+                                <h2 className='text-black text-lg font-bold mb-2'>{moviedata.title} ({moviedata.release_date})
+                                </h2>
+                                <p className='text-gray-900 mb-2'>RELEASED ON: {moviedata.release_date}</p>
+                                <p className='text-gray-900 mb-2'> Runtime :{moviedata.runTime} minutes</p>
+                                <p className='text-gray-900'>GENRE: </p>
                             </div>
 
-                        <div>   
+                            <div>
                            
                                 <div className='bg-custom-40 p-3'>
                                     <p className='text-custom-50 font-mono text-lg mb-2'>MOVIE PLOT</p>
                                     <Text as="p" size="3" className='text-white'>
-                                        {movie.overview}
+                                        {moviedata.overview}
                                     </Text>
+                                    <div className='p-10'>
+                                        <p>Production Companies</p>
+                                        <ul className='flex flex-row-3 gap-3 p-4'>
+                                            {moviedata.production_companies?.slice(0, 3).map(company => (
+                                                <li key={company.id}>
+                                                    <div>
+                                                        <h3>{company.name}</h3>
+                                                        <p>Origin Country: {company.origin_country}</p>
+                                                        
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
 
-                        </div>
-                    <div className=' flex gap-2 m-2 text-custom-50'>
-                              <div className='flex items-center'>
-                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.22303 0.665992C7.32551 0.419604 7.67454 0.419604 7.77702 0.665992L9.41343 4.60039C9.45663 4.70426 9.55432 4.77523 9.66645 4.78422L13.914 5.12475C14.18 5.14607 14.2878 5.47802 14.0852 5.65162L10.849 8.42374C10.7636 8.49692 10.7263 8.61176 10.7524 8.72118L11.7411 12.866C11.803 13.1256 11.5206 13.3308 11.2929 13.1917L7.6564 10.9705C7.5604 10.9119 7.43965 10.9119 7.34365 10.9705L3.70718 13.1917C3.47945 13.3308 3.19708 13.1256 3.25899 12.866L4.24769 8.72118C4.2738 8.61176 4.23648 8.49692 4.15105 8.42374L0.914889 5.65162C0.712228 5.47802 0.820086 5.14607 1.08608 5.12475L5.3336 4.78422C5.44573 4.77523 5.54342 4.70426 5.58662 4.60039L7.22303 0.665992Z" fill="currentColor"></path></svg><h1 className='text-xl'>{ movie.imdbRating}</h1>
+                            </div>
+                            <div className=' flex gap-2 m-2 text-custom-50'>
+                                <div className='flex items-center'>
+                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.22303 0.665992C7.32551 0.419604 7.67454 0.419604 7.77702 0.665992L9.41343 4.60039C9.45663 4.70426 9.55432 4.77523 9.66645 4.78422L13.914 5.12475C14.18 5.14607 14.2878 5.47802 14.0852 5.65162L10.849 8.42374C10.7636 8.49692 10.7263 8.61176 10.7524 8.72118L11.7411 12.866C11.803 13.1256 11.5206 13.3308 11.2929 13.1917L7.6564 10.9705C7.5604 10.9119 7.43965 10.9119 7.34365 10.9705L3.70718 13.1917C3.47945 13.3308 3.19708 13.1256 3.25899 12.866L4.24769 8.72118C4.2738 8.61176 4.23648 8.49692 4.15105 8.42374L0.914889 5.65162C0.712228 5.47802 0.820086 5.14607 1.08608 5.12475L5.3336 4.78422C5.44573 4.77523 5.54342 4.70426 5.58662 4.60039L7.22303 0.665992Z" fill="currentColor"></path></svg><h1 className='text-xl'>{moviedata.imdbRating}</h1>
                                 </div>
                                 <div className='flex items-center'>
-                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2C3.22386 2 3 2.22386 3 2.5V13.5C3 13.6818 3.09864 13.8492 3.25762 13.9373C3.41659 14.0254 3.61087 14.0203 3.765 13.924L7.5 11.5896L11.235 13.924C11.3891 14.0203 11.5834 14.0254 11.7424 13.9373C11.9014 13.8492 12 13.6818 12 13.5V2.5C12 2.22386 11.7761 2 11.5 2H3.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><h1 className='text-xl'>{movie.imdbVotes}</h1>
-                                </div>        
-                    </div>
-                    </Tabs.Content>
+                                    <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2C3.22386 2 3 2.22386 3 2.5V13.5C3 13.6818 3.09864 13.8492 3.25762 13.9373C3.41659 14.0254 3.61087 14.0203 3.765 13.924L7.5 11.5896L11.235 13.924C11.3891 14.0203 11.5834 14.0254 11.7424 13.9373C11.9014 13.8492 12 13.6818 12 13.5V2.5C12 2.22386 11.7761 2 11.5 2H3.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><h1 className='text-xl'>{moviedata.imdbVotes}</h1>
+                                </div>
+                            </div>
+                        </Tabs.Content>
                   
                         <Tabs.Content
-                            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-3"
-                            value="tab3"
+                            className="grow p-5  rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black m-3"
+                            value="tab2"
                         >
-                            <div className='text-custom-40 flex flex-col'>
-                                <p>{movie.Awards}</p>
-                                <p>{movie.Country}</p>
-                                <p>{movie.totalSeasons}</p>
-
-                        </div>
+                            <div className='grid grid-rows-3 p-10 ' >
+                            <div className='flex gap-3' >
+                                <h2>Buy:</h2>
+                                <ul className='flex gap-3 m-3' >
+                                    {moviedata.platforms?.buy.slice(0, 3).map(item => (
+                                        <li key={item.provider_id}>
+                                            <div>
+                                                <h3>{item.provider_name}</h3>
+                                                {item.logo_path && (
+                                                    <img className='max-h-[50px]' src={`https://image.tmdb.org/t/p/w200${item.logo_path}`} alt={`${item.provider_name} Logo`} />
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                                </div>
+                                <div className='flex gap-3'>
+                                <h2>Rent:</h2>
+                                <ul className='flex gap-3 m-3'>
+                                    {moviedata.platforms?.rent?.slice(0, 3).map(item => (
+                                        <li key={item.provider_id}>
+                                            <div>
+                                                <h3>{item.provider_name}</h3>
+                                                {item.logo_path && (
+                                                    <img className='max-h-[50px]' src={`https://image.tmdb.org/t/p/w200${item.logo_path}`} alt={`${item.provider_name} Logo`} />
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                                </div>
+                                {/* <div className='flex gap-3' >
+                                <h2>Flatrate:</h2>
+                                <ul className='flex m-3 gap-3'>
+                                    {moviedata.platforms?.flatrate?.slice(0, 3).map(item => (
+                                        <li key={item.provider_id}>
+                                            <div> 
+                                                <h3>{item.provider_name}</h3>
+                                                {item.logo_path && (
+                                                    <img className='max-h-[50px]' src={`https://image.tmdb.org/t/p/w200${item.logo_path}`} alt={`${item.provider_name} Logo`} />
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div> */}
+                            </div>
+                            
                         </Tabs.Content>
                         <Tabs.Content
                             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
@@ -128,15 +195,18 @@ function Booktemplate() {
                         >
                         </Tabs.Content>
                     </Tabs.Root>
-                </div>
-            </div>
+    </div> 
+            </div> 
+            <div className='p-5 bg-custom-30'>
+                <AvatarSlider props={moviedata.cast} />
+        </div>
              
             <div className='p-4 bg-custom-50 gap-3 items-center relative flex  shadow-lg'>
                 <CommentSection />
             </div>
 
         </div>
-  )
-}
+    )
+});
 
-export default Booktemplate
+

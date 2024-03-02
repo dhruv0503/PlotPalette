@@ -15,25 +15,23 @@ export default function SignIn() {
   const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
+  const [error, seterror] = useState(false);
   const navigate = useNavigate();
   const { setUserUid } = useApi();
   
-
+ 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
-       console.log(response.data.signInObj.user.uid);
+      console.log(response.data.signInObj.user.uid);
       setUserUid(response.data.signInObj.user.uid);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
-      alert(error.message);
+      seterror(true)
     }
-    };
- 
-
-
+  };
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
@@ -42,6 +40,7 @@ export default function SignIn() {
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
+      seterror(true)
       alert(error.message);
     }
   };
@@ -50,15 +49,26 @@ export default function SignIn() {
   return (
     <>
       <Navbar/>
-      <div className='bg-custom-30 p-10 mt-20  h-100vh bg-dotted-spacing-1 bg-dotted-custom-10  '>
-       
-        <div  >
+      <div className='bg-custom-30 p-10 mt-20  '>
+        <div>
+        {
+            error ? (<div class="bg-red-100 border p-3 mb-3 border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Bad Credentials!</strong>
+              <span class="block sm:inline">  Try to sign Up again</span>
+              <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg  class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+              </span>
+            </div>
+            ) :
+            <div></div>
+        }
+
       <h1 className='font-bold font-mono text-lg  text-custom-50 font-bold' >PLOT PALETTE.</h1>
-      <div className="justify-center md:grid md:grid-cols-2  m-2 ">
-      <div className='z-10 h-full flex justify-center items-center hidden md:block '>
+          <div className=" md:grid md:grid-cols-2 p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 sm:justify-around m-2 ">
+      <div className='z-10 h-full flex  hidden md:block '>
         <img className='h-[410px] w-[500px] border-3 border-black rounded-lg sm:rounded-none ' src={Bookim} alt="" />
       </div>
-      <div className='z-10 inline-block '>
+      <div className='z-10  '>
         <Tabs.Root
           className="flex flex-col w-[400px] h-[410px]  "
           defaultValue="tab1"
@@ -90,19 +100,16 @@ export default function SignIn() {
               </label>
                 <input
                   value={email} onChange={(e)=>setemail(e.target.value)}
-                  className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none"
-                id="name"
-               
-              />
+                  className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none required "
+                id="name" />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
                   Password
               </label>
                 <input value={password} onChange={(e) => setpassword(e.target.value)}
-                className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
+                className="grow required shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
-            
               />
             </fieldset>
             <div className="flex justify-end mt-5">
