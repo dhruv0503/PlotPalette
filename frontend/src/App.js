@@ -16,6 +16,8 @@ import NowPlaying from './components/NowPlaying';
 import FavList from './pages/FavList';
 import NoPage from './pages/NoPage';
 import Category from './components/Category';
+import SearchResults from './pages/SearchResults';
+import Actors from './pages/Actors';
 
 function App() {
   return (
@@ -34,7 +36,9 @@ function App() {
           <Route element={<Popular/>} path='/movies/popular' />
           <Route element={<NoPage />} path='*' />
           <Route element={<Aboutsus />} path='/about' />
-          <Route element={<Category/>} path='/movies/Category' />
+          <Route element={<Category />} path='/movies/Category' />
+          <Route element={<SearchResults />} path='/search/:searchID' />
+          <Route element={<Actors />} path='/Actor/:ActorId' />
         </Routes>
       </Router>
     </MyContextProvider>

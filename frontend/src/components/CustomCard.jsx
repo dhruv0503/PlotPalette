@@ -5,8 +5,8 @@ import { useApi } from '../Context/Contxt';
 
 const MovieCard = ({ 
 title, genre_ids
-, release_date
-    , 
+, release_date ,
+id, 
 backdrop_path,
 poster_path
     , imdbRating }) => {
@@ -29,15 +29,11 @@ poster_path
                      <div className="font-bold text-grey-200 text-xl mb-2 bg-white rounded-lg p-5 m-2">{title}</div>
                   
                     <div className='mt-4 '> 
-                        <Link to={`/movies/${title}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
+                        <Link to={`/movies/${id}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
                             View Details
                         </Link>
                     </div>
                 </div>
-
-
-
-    
         </div>
       </div>
      

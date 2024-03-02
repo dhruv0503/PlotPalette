@@ -2,31 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 const MyContext = createContext();
 
-// my profile api
-const myProfile = async (e) => {
-    // e.preventDefault();
-    try {
-      const response = await axios.get('http://localhost:5000/api/users/myProfile');
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error in getting myProfile:', error.message);
-      alert(error.message);
-    }
-  };
-  myProfile();
 
-// all users list
-  const allUsers = async (e) => {
-    // e.preventDefault();
-    try {
-      const response = await axios.get('http://localhost:5000/api/users/all');
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error in getting all users:', error.message);
-      alert(error.message);
-    }
-  };
-  allUsers();
 
 //now_playing
 //popular
@@ -34,6 +10,38 @@ const myProfile = async (e) => {
 //upcoming
 
 export function MyContextProvider({ children }) {
+
+  //my profile api
+  useEffect(() => {
+    const myProfile = async (e) => {
+      // e.preventDefault();
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/myProfile');
+        console.log(response.data);
+        setUserData(response.data)
+      } catch (error) {
+        console.error('Error in getting myProfile:', error.message);
+
+      }
+    };
+    myProfile();
+  },[])
+
+  // all users list 
+  useEffect(() => {
+    const allUsers = async (e) => {
+      // e.preventDefault();
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/all');
+        console.log(response.data);
+      
+      } catch (error) {
+        console.error('Error in getting all users:', error.message)
+      }
+    };
+    allUsers();
+  }, []);
+
     const genres = [
         { "id": 28, "name": "Action" },
         { "id": 12, "name": "Adventure" },
@@ -52,7 +60,8 @@ export function MyContextProvider({ children }) {
         { "id": 878, "name": "Science Fiction" },
         { "id": 10770, "name": "TV Movie" }, { "id": 53, "name": "Thriller" },
         { "id": 10752, "name": "War" },
-        { "id": 37, "name": "Western" }];
+    { "id": 37, "name": "Western" }];
+  
     const [pagesToShow] = useState(5); // Number of pages to show in the pagination bar
     const [startPage, setStartPage] = useState(5);
     const [upcomingMovies, setUpcomingMovies] = useState([]);
@@ -64,17 +73,16 @@ export function MyContextProvider({ children }) {
     const [userUid, setUserUid] = useState();
     const [islogin, setislogin] = useState();
     const [genre, setgenre] = useState();
+    const [userData, setUserData] = useState();
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 // Fetch upcoming movies
-                const upcomingResponse = await axios.get('http://localhost:5000/api/movies/type/upcoming');
+               const upcomingResponse = await axios.get('http://localhost:5000/api/movies/type/upcoming');
                 setUpcomingMovies(upcomingResponse.data.movies.results);
-
                 // Fetch now playing movies
                 const nowPlayingResponse = await axios.get('http://localhost:5000/api/movies/type/now_playing');
                 setNowPlayingMovies(nowPlayingResponse.data.movies.results);
-
                 // Fetch popular movies
                 const popularResponse = await axios.get('http://localhost:5000/api/movies/type/popular');
                 setPopularMovies(popularResponse.data.movies.results);
@@ -106,7 +114,7 @@ export function MyContextProvider({ children }) {
     }, [upcomingMovies,now_playing, popular, top_rated]);
     
     return (
-        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin, setUserUid}} >
+        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin, setUserUid ,userData}} >
             {children}
         </MyContext.Provider>
     )    
