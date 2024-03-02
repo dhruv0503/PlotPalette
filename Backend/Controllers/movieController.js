@@ -209,7 +209,13 @@ module.exports.getCastMember = async (req, res, next) => {
 }
 
 module.exports.searchMovie = async(req, res, next) => {
-    const { name } = req.body;
-    const searches = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${name}&api_key=${process.env.TMDB_API_KEY}`)
+    const { name, pageNo = 1 } = req.query;
+    const searches = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${name}&pageNo=${pageNo}&api_key=${process.env.TMDB_API_KEY}`)
     res.send(searches.data.results);
+}
+
+module.exports.searchPerson = async(req, res, next) => {
+    const { name, pageNo = 1 } = req.query
+    const searches = await axios.get(`https://api.themoviedb.org/3/search/person?query=${name}&pageNo=${pageNo}&api_key=${process.env.TMDB_API_KEY}`)
+    res.send(searches.data.results)
 }
