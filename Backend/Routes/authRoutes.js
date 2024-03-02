@@ -10,6 +10,8 @@ router.route("/signin").post(wrapAsync(authController.signIn));
 
 router.route("/signout").get(isLoggedIn(), wrapAsync(authController.signOut))
 
-router.route("/resetPassword").get(isLoggedIn(), wrapAsync(authController.resetPassword))
+router.route("/resetPassword").post(isLoggedIn(), wrapAsync(authController.resetPassword))
+
+router.route("/forgetPassword").post(wrapAsync(authController.forgetPassword))
 
 module.exports = router;
