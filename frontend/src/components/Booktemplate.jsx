@@ -71,12 +71,10 @@ export default React.memo(function Booktemplate() {
                         <Blockquote size={"5"} >{ moviedata.overview}</Blockquote>
                     </div>
                     <div className='flex m-2'>
-                        <h1>Watch on :</h1>
-                        {moviedata.platforms?.buy?.map((comp) => {
+                        <Em className='text-custom-10' >Watch on : </Em>
+                        {moviedata.platforms?.buy?.slice(0,3).map((comp) => {
                             return <>
-                            
-                                <h1 className='text-orange-900'>{comp.provider_name}</h1>
-                               
+                                <h1 className='text-custom-20'>{comp.provider_name}</h1>
                             </>
                             
                         })}

@@ -5,6 +5,7 @@ import { MovieCard } from '../components/CustomCard';
 import LoadingPage from '../components/LoadingPage';
 import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import axios from 'axios'
+import Navbar from './Navbar';
 import AvatarSlider from '../components/AvatarSlider';
 import { Text } from '@radix-ui/themes';
 function SearchResults() {
@@ -53,17 +54,18 @@ function SearchResults() {
 
   return (
     <div className='bg-custom-30' >
+      <div className='bg-gray-900'  ><Navbar className /></div>
        
-      <Text className='text-custom-10 m-3' size={"8"}>search results for {searchID}</Text>
-      <hr className='m-3' />
+      <Text className='text-custom-10 m-10 p-6 ' size={"8"}>search results for {searchID}</Text>
+      <hr className='m-5' />
     
-      <div className='p-5 bg-custom-30'>
+      <div className='p-5 bg-custom-30 text-custom-20'>
         <AvatarSlider props={searchperson} />
       </div>
 
 
-      <Text className='text-custom-10 m-3' size={"8"}>search results for {searchID}</Text>
-      <hr  className='m-3' />
+      <Text className='text-custom-10 m-3' size={"8"}>Movie results for {searchID}</Text>
+      <hr  className='m-5' />
       <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
         {
           Search?.length  ?
