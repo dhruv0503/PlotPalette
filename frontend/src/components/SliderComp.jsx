@@ -52,10 +52,12 @@ function SliderComp(props) {
             <div className='p-1'>
             <Slider {...settings}>
                     {config.map((movie, index) => (
+                    
                         <div className='focus:outline-none' key={index}>
                             <MovieCard  {...movie} />
                         </div>
                     ))}
+                   
                     
                 </Slider>
             </div>

@@ -166,6 +166,7 @@ module.exports.getReviews = async (req, res, next) => {
     const querySnapshot = await getDocs(userQuery);
     const reviews = querySnapshot.docs.map((ele) => ({"reviewId" : ele.id, ...ele.data()}));
     const matchedReviews = reviews.map((ele) => ({...ele}))
+    
 
     if(userRef !== null){
         const user = await utilityFunctions.getUser(userRef);
