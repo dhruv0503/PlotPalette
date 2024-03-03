@@ -16,7 +16,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const user = await getDoc(doc(User, id));
+    const user = await getUser(doc(User, id));
     res.send(user.data());
 };
 

@@ -12,11 +12,11 @@ module.exports = {
         ...mauve,
         ...violet,
         custom:{
-          10: '#EDE9E3',
-          20: '#E7D7C9',
-          30: '#BE8F6E',
+          10: '#F8F8FF',
+          20: '#E5E4E2',
+          30: '#010B13',
           40: '#87816E',
-          50: '#241F19',
+          50: '#2A3439',
         },
       },
       keyframes: {

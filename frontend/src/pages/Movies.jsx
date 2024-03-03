@@ -12,8 +12,6 @@ import { useApi } from '../Context/Contxt.jsx';
 
 function Movies() {
   const [genre, setgenre] = useState(null);
-
-  
   const { upcomingMovies } = useApi();
   
   const handleSelectChange = (newValue) => {

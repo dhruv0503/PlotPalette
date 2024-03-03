@@ -13,10 +13,11 @@ function Homepage() {
   return (
     <div className='bg-custom-30  '>
       <Navbar />
-      <HeroSection />
-      <div className='p-4 '>
+      <div className='bg-custom-50 '>
+        <HeroSection />
+      </div>
+      <div className='p-0'>
         <SliderComp topic={"TOP RATED"} config={top_rated} />
-     
         <SliderComp topic={"Popular"} config={popular} />
         <SliderComp topic={"Now Playing"} config={now_playing} />
         <SliderComp topic={"Upcoming Movies"} config={upcomingMovies} />

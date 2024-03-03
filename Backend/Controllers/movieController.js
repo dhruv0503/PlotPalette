@@ -68,6 +68,7 @@ module.exports.getMovie = async (req, res, next) => {
     }
 }
 
+
 //now_playing
 //popular
 //top_rated
@@ -79,6 +80,7 @@ module.exports.getMovieList = async (req, res, next) => {
     if (!response) {
         return next(new expressError("Error Fetching Popular Movies", 500))
     }
+    
     const movies = response.data;
     res.json({ movies });
 }

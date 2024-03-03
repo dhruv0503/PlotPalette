@@ -10,7 +10,7 @@ router.route("/friend/:userId").delete(isLoggedIn(), wrapAsync(userController.re
 
 router.route("/options/:parameter").get(isLoggedIn(), wrapAsync(userController.optionsList));
 
-router.route("/all").get(isLoggedIn(), authorizeRoles("Admin"),wrapAsync(userController.getAllUsers));
+router.route("/all").get(isLoggedIn(),wrapAsync(userController.getAllUsers));
 
 router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile))
 
