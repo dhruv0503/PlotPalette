@@ -217,5 +217,6 @@ module.exports.searchMovie = async(req, res, next) => {
 module.exports.searchPerson = async(req, res, next) => {
     const { name, pageNo = 1 } = req.query
     const searches = await axios.get(`https://api.themoviedb.org/3/search/person?query=${name}&pageNo=${pageNo}&api_key=${process.env.TMDB_API_KEY}`)
-    res.send(searches.data.results)
+    const people = searches.data.results.filter((ele) => ele.known_for_department == "Acting")
+    res.send(people);
 }

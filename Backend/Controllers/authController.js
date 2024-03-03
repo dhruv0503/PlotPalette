@@ -1,6 +1,7 @@
 const { db ,auth } = require("../firebaseConfig");
 const {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} = require("firebase/auth");
-const {addDoc, collection } = require("firebase/firestore/lite")
+const {addDoc, collection, getDocs } = require("firebase/firestore/lite");
+const expressError = require("../util/expressError");
 const User = collection(db, "User");
 
 module.exports.signUp = async(req, res, next) => {
@@ -32,7 +33,6 @@ module.exports.signIn = async (req, res, next) => {
     }
 };
 
-
 module.exports.signOut = async(req,res, next) => {
    const signoutobj =  await signOut(auth);
    res.send({success : true,"msg" : signoutobj});
@@ -47,6 +47,22 @@ module.exports.resetPassword = async(req, res, next) => {
     }
     catch(error){
         next(new expressError(500, "Error sending reset password email"));
+    }
+}
+
+module.exports.forgetPassword = async(req, res, next) => {
+    const {email} = req.body;
+    const users = await getDocs(User);
+    const found = users.docs.find((ele) => ele.data().email == email)
+    if(found === undefined) next(new expressError("No User with this email address exists"));
+    else{
+        try{
+            await sendPasswordResetEmail(auth, email);
+            res.status(200).json({message : 'Password reset email sent successfully.'})
+        }
+        catch(error){
+            next(new expressError(500, "Error sending reset password email"));
+        }
     }
 }
 
