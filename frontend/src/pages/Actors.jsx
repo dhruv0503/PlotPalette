@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Footer from '../components/Footer';
 import LoadingPage from '../components/LoadingPage';
 import { MovieCard } from '../components/CustomCard';
+import { Text } from '@radix-ui/themes';
 
 function Actors() {
     const [ActorInfo, setActorInfo] = useState([]);
@@ -40,14 +41,17 @@ function Actors() {
 
     return (
     
-    <div className='bg-custom-30 h-full'>
+        <div className='bg-custom-30 h-full'>
+            <div className='bg-gray-900'  ><Navbar className /></div>
             
-            <h1 className='font-bold justify-center flex p-2'>{ActorInfo.name}</h1>
+            
+            <Text size={"8"}  className='font-bold text-custom-10 justify-center flex p-2'>{ActorInfo.name}</Text>
+            <hr className='m-5' />
             <div className='grid grid-cols-4' >
                 
                 <div className='items-center' >
                     <img className=' justify-center flex  max-h-[300px] m-3 rounded-lg border border-custom-40 ' src={`https://image.tmdb.org/t/p/original${ActorInfo.profile_path}`} alt="" />
-                    <p className='m-3 p-2 ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
+                    <p className='m-3 p-2 text-custom-10 ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
                         {!showMore && '...'}</p>
                     {!showMore && (
                         <button className='text-blue-500 ml-10 bg-black p-2' onClick={toggleShowMore}>

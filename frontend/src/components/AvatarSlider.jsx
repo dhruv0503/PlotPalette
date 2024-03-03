@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import * as Avatar from '@radix-ui/react-avatar';
 import { useNavigate } from 'react-router-dom';
+import { Strong, Text } from '@radix-ui/themes';
 
 function AvatarSlider({ props }) {
     var settings = {
@@ -46,14 +47,15 @@ function AvatarSlider({ props }) {
     return (
       
         <div className='p-6 gap-3  items-center '>
-            <h1 className='p-3 font-bold '>Cast </h1>
+            <Text size={"8"} ><Strong className='p-3 font-bold '>Cast </Strong></Text>
+            <hr className='m-3' />
             <div className='p-1'>
             <Slider {...settings}>
                     {props?.map((movie, index) => (
                         <div  >
                             <Avatar.Root  className="bg-blackA1 inline-flex h-[100px] w-[100px] select-none items-center justify-center overflow-hidden rounded-full align-middle"  >
                                 <Avatar.Image height={64} width={64}
-                                    className="h-full w-full rounded-[inherit] object-cover"
+                                    className="h-full w-full rounded-[inherit] object-cover border border-custom-10  "
                                     src={`https://image.tmdb.org/t/p/original${movie.profile_path}`}
                                     alt="Colm Tuite"
                                 />
