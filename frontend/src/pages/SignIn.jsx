@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useApi } from '../Context/Contxt';
+import { Text } from  '@radix-ui/themes'
 // import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 // import {auth} from '../firebaseconfig/firebaseConfig.js'
 import Footer from "../components/Footer"
@@ -47,9 +48,9 @@ export default function SignIn() {
 
 
   return (
-    <>
+    <div className='bg-gray-900' >
       <Navbar/>
-      <div className='bg-custom-30 p-10 mt-20  '>
+      <div className='bg-custom-30 p-10   '>
         <div>
         {
             error ? (<div class="bg-red-100 border p-3 mb-3 border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -63,10 +64,10 @@ export default function SignIn() {
             <div></div>
         }
 
-      <h1 className='font-bold font-mono text-lg  text-custom-50 font-bold' >PLOT PALETTE.</h1>
+      <Text className='font-bold font-mono text-lg  text-custom-10 ' >PLOT PALETTE.</Text>
           <div className=" md:grid md:grid-cols-2 p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 sm:justify-around m-2 ">
-      <div className='z-10 h-full flex  hidden md:block '>
-        <img className='h-[410px] w-[500px] border-3 border-black rounded-lg sm:rounded-none ' src={Bookim} alt="" />
+      <div className='z-10 h-full   hidden md:block '>
+        <img className='h-[410px] w-[500px] border border-custom-10 rounded-lg sm:rounded-none ' src={Bookim} alt="" />
       </div>
       <div className='z-10  '>
         <Tabs.Root
@@ -181,7 +182,7 @@ export default function SignIn() {
     
       </div>
     </div>
-    <Footer   /></>
+    <Footer   /></div>
   )
 }
 
