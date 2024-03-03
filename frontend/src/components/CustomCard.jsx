@@ -18,7 +18,7 @@ poster_path
     // genre_ids
 
     const matchid = genres.filter(genre => genre_ids.includes(genre.id))
-
+  
 
     return ( 
 

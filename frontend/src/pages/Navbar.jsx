@@ -15,13 +15,13 @@ function Navbar() {
     const { userUid ,islogin } = useApi();
     const handleLogout = async (e) => {
         e.preventDefault();
+        navigate('/signin');
         try {
           const response = await axios.get('http://localhost:5000/api/signout');   
         localStorage.removeItem("uid");
-          navigate('/signin');
+         
         } catch (error) {
           console.error('Error signing out:', error.message);
-        
         }
 };
   

@@ -26,8 +26,10 @@ export default React.memo(function Booktemplate() {
          
     }, [])
 
+
     console.log(moviedata)
     //style={{ backgroundImage: `url(${moviedata.poster_path})` }}
+
     return (
        
         <div className='relative '>
@@ -86,7 +88,7 @@ export default React.memo(function Booktemplate() {
         </div>
              
             <div className='p-4 bg-custom-50 gap-3 items-center relative flex  shadow-lg'>
-                <CommentSection />
+                <CommentSection props={movieId} />
             </div>
 
         </div>
