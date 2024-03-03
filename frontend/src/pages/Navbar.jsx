@@ -16,16 +16,17 @@ function Navbar() {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.get('http://localhost:5000/api/signout');
-          console.log("Logged out");
+          const response = await axios.get('http://localhost:5000/api/signout');   
+        localStorage.removeItem("uid");
           navigate('/signin');
         } catch (error) {
+
+           
           console.error('Error signing out:', error.message);
-          alert(error.message);
+        
         }
 };
-    
-
+  
 
     
 
@@ -48,7 +49,7 @@ function Navbar() {
                 <NavigationMenu.List className=" flex m-5  list-none items-center text-custom-10 p-1 ">
                     <NavigationMenu.Item >
                         <NavigationMenu.Trigger onClick={() => navigate('/')}  className="text-pink  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]" >
-                         PLOT_PALETTE {islogin} {}
+                         PLOT_PALETTE  {}
                         </NavigationMenu.Trigger>
                     </NavigationMenu.Item>
                     <NavigationMenu.Item>
@@ -89,7 +90,7 @@ function Navbar() {
                                 <Avatar.Fallback
                                     className="text-custom-30 leading-1 flex h-full w-full items-center justify-center  bg-white text-[15px] font-bold"   
                                 >
-                                    {userUid ? <PersonIcon height={24} width={24} />: <EnterIcon height={24} width={24} />}
+                                    {localStorage.getItem("uid") ? <PersonIcon height={24} width={24} />: <EnterIcon height={24} width={24} />}
                                 </Avatar.Fallback>
                             </Avatar.Root>
                         </button>

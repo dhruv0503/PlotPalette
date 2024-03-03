@@ -21,26 +21,13 @@ export function MyContextProvider({ children }) {
         setUserData(response.data)
       } catch (error) {
         console.error('Error in getting myProfile:', error.message);
-
       }
     };
     myProfile();
   },[])
 
   // all users list 
-  useEffect(() => {
-    const allUsers = async (e) => {
-      // e.preventDefault();
-      try {
-        const response = await axios.get('http://localhost:5000/api/users/all');
-        console.log(response.data);
-      
-      } catch (error) {
-        console.error('Error in getting all users:', error.message)
-      }
-    };
-    allUsers();
-  }, []);
+
 
     const genres = [
         { "id": 28, "name": "Action" },

@@ -22,6 +22,7 @@ export default React.memo(function TopRated() {
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
         : top_rated;
+    
 
     useEffect(() => {
         const fetchData = async () => {

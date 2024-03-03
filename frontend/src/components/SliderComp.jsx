@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import data from '../assets/Data'
 import { MovieCard } from './CustomCard';
+import { Text ,Strong } from '@radix-ui/themes';
 
 function SliderComp(props) {
     const { topic, config } = props;
@@ -44,9 +45,10 @@ function SliderComp(props) {
    
     return (
         <div className='p-6 gap-3 '>
-            <h1 className='p-4 bg-gradient-to-b from-custom-50 to-custom-10 text-black font-bold text-2xl mb-4 rounded-md shadow-lg'>
-                {props.topic}
-            </h1>
+            <Text size={"8"} className='p-4 text-custom-10  mb-4 rounded-md shadow-lg'>
+                <Strong>{props.topic}</Strong>
+            </Text>
+            <hr className='m-3' />
             <div className='p-1'>
             <Slider {...settings}>
                     {config.map((movie, index) => (
