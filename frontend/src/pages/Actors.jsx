@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Footer from '../components/Footer';
 import LoadingPage from '../components/LoadingPage';
 import { MovieCard } from '../components/CustomCard';
+import { Text ,Link } from '@radix-ui/themes';
 
 function Actors() {
     const [ActorInfo, setActorInfo] = useState([]);
@@ -40,41 +41,46 @@ function Actors() {
 
     return (
     
-    <div className='bg-custom-30 h-full'>
+        <div className='bg-custom-30 h-full'>
+            <div className='bg-gray-900'  ><Navbar className /></div>
             
-            <h1 className='font-bold justify-center flex p-2'>{ActorInfo.name}</h1>
-            <div className='grid grid-cols-4' >
+            
+            <Text size={"8"}  className='font-bold text-custom-10 justify-center flex p-2'>{ActorInfo.name}</Text>
+            <hr className='m-5' />
+            <div className='md:grid md:grid-cols-4' >
                 
-                <div className='items-center' >
+                <div className='items-center flex md:flex-col ' >
                     <img className=' justify-center flex  max-h-[300px] m-3 rounded-lg border border-custom-40 ' src={`https://image.tmdb.org/t/p/original${ActorInfo.profile_path}`} alt="" />
-                    <p className='m-3 p-2 ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
-                        {!showMore && '...'}</p>
-                    {!showMore && (
-                        <button className='text-blue-500 ml-10 bg-black p-2' onClick={toggleShowMore}>
-                            {showMore ? 'Show Less' : 'Read More'}
-                        </button>
-                    )}
+                    <div className='m-3 gap-2 flex'>
+                    <Text className=' text-custom-10 ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
+                            
+                            {!showMore && (<Link onClick={toggleShowMore} >{showMore ? 'show Less' : 'read more...'}</Link>)}</Text>
+                    
+                    </div>
                 </div>   
-                <div className='grid grid-cols-4 col-span-3' >
-                    {ActorInfo.cast?.length > 0 ? (
+                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:col-span-3' >
+                    {ActorInfo.cast?.length  ? (
                         ActorInfo.cast?.length < 10 ? (
                             ActorInfo.cast.map((movie, index) => (
                                 <MovieCard key={index} {...movie} />
                             ))
                         ) : (
-                            ActorInfo.cast.slice(0, showAll ? ActorInfo.cast.length : 20).map((movie, index) => (
+                                ActorInfo.cast.filter(movie=>movie.poster_path).
+                                    slice(0, showAll ? ActorInfo.cast.length : 20).map((movie, index) => (
                                 <MovieCard key={index} {...movie} />
                             ))
                         )
                     ) : (
                         <LoadingPage />
                     )}
-
-                    <div className='flex justify-center min-w-[100px] bg-black m-3 p-3 rounded-lg '>
-                        <button className='text-custom-10' onClick={toggleShowAll}>
-                            {showAll ? 'Show Less Movies' : 'SHOW ALL MOVIES'}
-                        </button>
-                    </div>
+                    {ActorInfo.cast?.length > 10 &&
+                        <div className='flex justify-center min-w-[100px] bg-black m-3 p-3 rounded-lg '>
+                      
+                            <button className='text-custom-10' onClick={toggleShowAll}>
+                                {showAll ? 'Show Less Movies' : 'SHOW ALL MOVIES'}
+                            </button>
+                        </div>
+                    }
                 </div>
                 
             </div>

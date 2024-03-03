@@ -13,10 +13,10 @@ module.exports = {
         ...violet,
         custom:{
           10: '#F8F8FF',
-          20: '#E7D7C9',
+          20: '#E5E4E2',
           30: '#010B13',
           40: '#87816E',
-          50: '#2F2D2E',
+          50: '#2A3439',
         },
       },
       keyframes: {
