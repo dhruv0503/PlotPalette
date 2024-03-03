@@ -1,6 +1,6 @@
 const { db, auth } = require("./firebaseConfig");
 const expressError = require("./util/expressError");
-const { collection, getDocs, query, where } = require("firebase/firestore/lite");
+const { collection, getDocs, query, where, doc } = require("firebase/firestore/lite");
 const Review = collection(db, "Review")
 const utilityFunctions = require("./util/utlityFunctions")
 const User = collection(db, "User")
@@ -56,5 +56,21 @@ module.exports.isWatched = (parameter) => {
             }
         }
         next();
+    }
+}
+
+module.exports.singleReview = () => {
+    return async(req, res, next) => {
+        const {tmdbId} = req.params;
+        const userRef = auth.currentUser;
+        const user = await utilityFunctions.getUser(userRef);
+        const moviesRef = await getDocs(collection(doc(User, user.id), "movies"));
+        const movie = moviesRef.docs.find((ele) => ele.data().tmdbId == tmdbId);
+        if(movie){
+            if (movie.data().reviewId){
+                next(new expressError("You can't leave two reviews on the same movie", 400))
+            }
+        next()
+        }
     }
 }
