@@ -37,6 +37,7 @@ function App() {
           <Route element={<NoPage />} path='*' />
           <Route element={<Aboutsus />} path='/about' />
           <Route element={<Category />} path='/movies/Category' />
+          <Route element={<Movies />} path='/movies' />
           <Route element={<SearchResults />} path='/search/:searchID' />
           <Route element={<Actors />} path='/Actor/:ActorId' />
         </Routes>
