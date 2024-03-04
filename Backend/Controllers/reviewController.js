@@ -5,7 +5,6 @@ const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const Review = collection(db, "Review");
 const expressError = require("../util/expressError");
-const movieFunctions = require("../util/movieFunctions");
 const utilityFunctions = require("../util/utlityFunctions");
 
 module.exports.makeReview = async (req, res, next) => {
@@ -22,8 +21,8 @@ module.exports.makeReview = async (req, res, next) => {
     
     const review = await addDoc(Review, obj);
     const reviewId = review.id;
-    const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
-    const movie = movieFunctions.findObjectById(response, tmdbId);
+    const response = await utilityFunctions.hasSubcollection(userObj.id, 'movies');
+    const movie = response.find((doc) => doc.tmdbId == tmdbId);
     await updateDoc(doc(User, userObj.id, 'movies', movie.id), {reviewId} );
 
     await updateDoc(doc(Movie, movieObj.id), {

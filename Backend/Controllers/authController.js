@@ -6,6 +6,12 @@ const User = collection(db, "User");
 
 module.exports.signUp = async(req, res, next) => {
     const data = req.body;
+
+    const usersRef = await getDocs(User);
+    const user = usersRef.docs.find((ele) => ele.data().userName == data.userName);
+
+    if(user) next(new expressError("Username already exists", 400))
+
     const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
     delete data.password;
     const formattedTime = new Date(Date.now()).toLocaleString();
@@ -14,29 +20,23 @@ module.exports.signUp = async(req, res, next) => {
 }
 
 module.exports.signIn = async (req, res, next) => {
-    const { email, password } = req.body;
-    const signInObj = await signInWithEmailAndPassword(auth, email, password);
-   try { const user = await new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            unsubscribe();
-            resolve(user);
-        });
-    });
-    if (user) {
-        res.send({success : true,"msg" : `Signed in with id: ${signInObj.user.uid}`, signInObj});
-    } else {
-        next(new expressError('Error signing in: User not found', 404));
-    }}
-    catch (error) {
-        console.log(error);
-        res.json({ success: false })
+    try {
+      const { email, password } = req.body;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      if (user) {
+        res.send({ success: true, message: `Signed in with id: ${user.uid}`, data: user});
+      } else {
+        throw new expressError('User not found', 404); 
+      }
+    } catch (error) {
+      next(error);
     }
 };
-
+  
 module.exports.signOut = async(req,res, next) => {
    const signoutobj =  await signOut(auth);
    res.send({success : true,"msg" : signoutobj});
-    // res.send("Logged Out",signoutobj)
 }
 
 module.exports.resetPassword = async(req, res, next) => {
