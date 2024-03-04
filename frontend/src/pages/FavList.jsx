@@ -6,10 +6,9 @@ import { Link ,useNavigate } from 'react-router-dom'
 function FavList() {
     const {upcomingMovies} = useApi();
     return (
-        <>
-            <Navbar />
+        < div className='bg-custom-30' >
+            <div className='bg-custom-50' ><Navbar/></div>
       <div className='bg-custom-30  p-3' >
-         <div className='m-10'>hello</div>
           <div className='m-10'>
               {upcomingMovies.map((movie, index) => (
                   <div className='justify-center items-center '>
@@ -22,7 +21,7 @@ function FavList() {
                               <div className='flex md:items-center md:justify-center '>
                               <BookmarkIcon  height={32} width={32} />
                                   <StarIcon height={32} width={32} />
-                            </div>
+                              </div>
                               <Link to={`/movies/${movie.id}`} className='block bg-custom-50 border border-black p-2 rounded-b-lg text-center text-white hover:bg-custom-30 transition duration-300'>
                                   View Details
                               </Link>
@@ -34,7 +33,7 @@ function FavList() {
               )) }
         </div>
             </div>
-    </>
+    </div>
   )
 }
 
