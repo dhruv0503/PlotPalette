@@ -1,7 +1,6 @@
 const { db, auth } = require("../firebaseConfig")
 const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, query, where } = require("firebase/firestore/lite")
 const User = collection(db, "User");
-const movieFunctions = require("../util/movieFunctions")
 const utilityFunctions = require("../util/utlityFunctions");
 const expressError = require("../util/expressError");
 
@@ -19,6 +18,14 @@ module.exports.findUser = async (req, res, next) => {
     const user = await getDoc(doc(User, id));
     res.send(user.data());
 };
+
+module.exports.getUserByUsername = async(req, res, next) => {
+    const { userName } = req.query;
+    const usersRef = await getDocs(User);
+    const user = usersRef.docs.find((ele) => ele.data().userName == userName);
+    if(user) res.send(user.data())
+    else next(new expressError("No such user exists", 404))
+}
 
 module.exports.getProfile = async(req, res, next) => {
     const userRef = auth.currentUser
@@ -44,11 +51,11 @@ module.exports.optionsList = async (req, res, next) => {
     const user = await utilityFunctions.getUser(userRef)
 
     const parentDocPath = `User/${user.id}`;
-    const response = await movieFunctions.hasSubcollection(parentDocPath, 'movies');
+    const response = await utilityFunctions.hasSubcollection(parentDocPath, 'movies');
     let list = [];
     response.map(obj => {
         if (obj[parameter]) {
-            const newObject = movieFunctions.removeField(obj, 'movieId')
+            const newObject = utilityFunctions.removeField(obj, 'movieId')
             list.push(newObject);
         }
     })
