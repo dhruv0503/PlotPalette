@@ -1,6 +1,5 @@
 const { db } = require("../firebaseConfig");
 const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
-const movieFunctions = require("./movieFunctions")
 
 module.exports.getUser = async (user) => {
     const userQuery = query(collection(db, 'User'), where('uid', '==', user.uid));
@@ -22,7 +21,19 @@ module.exports.getMovie = async (tmdbId) => {
 
 module.exports.getSubCollectionMovies = async(user, tmdbId) => {
     const userObj = await module.exports.getUser(user);
-    const response = await movieFunctions.hasSubcollection(userObj.id, 'movies');
-    const result = movieFunctions.findObjectById(response, tmdbId);
+    const response = await module.exports.hasSubcollection(userObj.id, 'movies');
+    const result = module.exports.findObjectById(response, tmdbId);
     return result;
 }
+
+module.exports.hasSubcollection = async(userId, subcollectionName) => {
+    const subcollectionSnapshot = await getDocs(collection(User, userId, subcollectionName));
+    const subcollectionData = subcollectionSnapshot.docs.map(doc => ({ "id" : doc.id, ...doc.data() }));
+    
+    return  subcollectionData ;
+}
+
+module.exports.removeField = (obj, fieldToRemove) => {
+    const { [fieldToRemove]: removedField, ...rest } = obj;
+    return rest;
+  };

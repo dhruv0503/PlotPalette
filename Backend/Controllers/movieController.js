@@ -5,7 +5,6 @@ const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, ge
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const expressError = require("../util/expressError");
-const movieFunctions = require("../util/movieFunctions");
 const utilityFunctions = require("../util/utlityFunctions");
 
 module.exports.getMovie = async (req, res, next) => {
@@ -43,7 +42,7 @@ module.exports.getMovie = async (req, res, next) => {
         const cast = credits.data.cast;
         const data = movie.data;
         const mid = providers.data.results.US;
-        const platforms = mid ? movieFunctions.removeField(mid, 'link') : null;
+        const platforms = mid ? utilityFunctions.removeField(mid, 'link') : null;
 
         const movieObj = { "tmdbId": data.id, "title": data.title, "language": data.original_language, "overview": data.overview, "poster_path": path + data.poster_path, "release_date": data.release_date, "reviewCount": 0, "rating": 0, "numRating": 0, "favourite": 0, "reviews": [], "genres": data.genres, "production_companies": data.production_companies, "runTime": data.runtime, cast, platforms };
         const newMovie = await addDoc(Movie, movieObj);
