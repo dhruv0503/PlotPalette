@@ -15,11 +15,16 @@ function Navbar() {
     const { userUid ,islogin } = useApi();
     const handleLogout = async (e) => {
         e.preventDefault();
-        navigate('/signin');
+        if (!localStorage.getItem("uid")) {
+            navigate('/signin');
+            return; 
+        }
         try {
-          const response = await axios.get('http://localhost:5000/api/signout');   
+
         localStorage.removeItem("uid");
-         
+            const response = await axios.get('http://localhost:5000/api/signout');  
+            navigate('/signin');  
+        
         } catch (error) {
           console.error('Error signing out:', error.message);
         }
@@ -62,7 +67,7 @@ function Navbar() {
             
             <div class="hidden sm:block flex-shrink flex-grow-0 justify-start px-2  ">
                         <a class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="#">
-                            <div class="flex items-center relative cursor-pointer whitespace-nowrap">Become a host</div>
+                            {/* <div class="flex items-center relative cursor-pointer whitespace-nowrap">Become a host</div> */}
                         </a>
                         
                     </div>
@@ -90,7 +95,6 @@ function Navbar() {
                                 <button class="pl-1">
                                     <HomeIcon onClick={()=>navigate('/account')}  height={24} width={24} />
                                 </button>
-                                
 
                                 <button onClick={handleLogout} class="block flex-grow-0 flex-shrink-0 h-10 w-12 pl-5">
                                 {localStorage.getItem("uid") ? <PersonIcon height={24} width={24} /> : <EnterIcon height={24} width={24} />}

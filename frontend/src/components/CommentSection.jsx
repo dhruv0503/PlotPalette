@@ -83,40 +83,39 @@ const CommentSection = ({props}) => {
     return (
         <div className="container p-1 mx-auto mt-8">
             <div className="bg-custom-10 p-6 rounded-lg shadow-md">
-              
-              <form method="get">
-            <textarea
-                        value={reviewText}
-                        onChange={(e) => setreviewText(e.target.value)}
-                        name="reviewText"
-                        id="reviewText"
-                        rows="4"
-                        placeholder="Add a comment..."
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                    <button  onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
-                        Post Comment
-                    </button>
+                <div className='m-3' >
+                    <form method="get">
+                        <textarea
+                            value={reviewText}
+                            onChange={(e) => setreviewText(e.target.value)}
+                            name="reviewText"
+                            id="reviewText"
+                            rows="4"
+                            placeholder="Add a comment..."
+                            className="w-full p-2 border border-gray-300 rounded"
+                        />
+                        <button onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
+                            Post Comment
+                        </button>
                     </form> 
+              </div>
+              
                 
 
                 
-                <div className="space-y-4">
+                <div className=" overflow-y-auto space-y-4 h-[200px] ">
                      <div className="flex">
-                       
                         <div>
                       {moviedata.map((movie, index) => (
-                        <div>
+                          <div className=''>
+                              <div className='flex' >
                             <img src="https://via.placeholder.com/40" alt="User Avatar" className="rounded-full w-8 h-8 mr-2" />
-                            <button onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
+                                  <button onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
+                             </div>
                            <p>{movie.text}</p>
                         </div>
                          
                         ))}
-
-                  
-                            {/* <p className="font-semibold">John Doe</p>
-                            <p className="text-gray-600">An epic tale of power, loyalty, and the irresistible allure of the underworld, 'The Godfather' remains an unshakable cornerstone of cinematic greatness.</p> */}
                         </div>
                     </div>
                 </div>
