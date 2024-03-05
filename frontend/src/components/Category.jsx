@@ -53,8 +53,8 @@ export default React.memo(function Category() {
 
     return (
         <div className='bg-custom-30 h-full   '>
-            <Navbar />
-            <div className='mt-20 p-2 '>
+        <div className='bg-gray-900' ><Navbar/></div>
+            <div className='p-2 '>
                 <div className='p-2'>
                     <Select.Root value={genre} onValueChange={handleSelectChange} >
                         <Select.Trigger

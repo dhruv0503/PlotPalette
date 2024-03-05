@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import * as Avatar from '@radix-ui/react-avatar';
+import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
 const CommentSection = ({ props }) => {
   const [moviedata, setmoviedata] = useState([]);
@@ -86,7 +89,19 @@ const CommentSection = ({ props }) => {
     } catch (error) {
       console.error('Error updating review:', error.message);
     }
-  };
+    };
+    
+
+    function getInitials(name) {
+        const words = name?.split(/\s+/);
+        let initials = "";
+        words?.forEach(word => {
+            if (word.length > 0) {
+                initials += word[0].toUpperCase();
+            }
+        });
+        return initials;
+    }
 
 
   const handleDelete = async ({ rid }) => {
@@ -97,37 +112,92 @@ const CommentSection = ({ props }) => {
            catch (error) {
       console.error('Error deleting review:', error.message);
     }
-  };
+    };
+    console.log(localStorage.getItem("uid"))
 
   return (
     <div className="container p-1 mx-auto mt-8">
-      <div className="bg-custom-10 p-6 rounded-lg shadow-md">
-      <form method="get">
-             <textarea
-                        value={reviewText}
-                        onChange={(e) => setreviewText(e.target.value)}
-                        name="reviewText"
-                        id="reviewText"
-                        rows="4"
-                        placeholder="Add a comment..."
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                    <button  onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
-                        Post Comment
-                    </button>
-                    </form> 
+          <div className="bg-custom-10 p-6 rounded-lg shadow-md">
+              {localStorage.getItem("uid") ? 
+                  <form method="get">
+                      {moviedata.watched ? 
+                          <textarea
+                              value={reviewText}
+                              onChange={(e) => setreviewText(e.target.value)}
+                              name="reviewText"
+                              id="reviewText"
+                              rows="4"
+                              placeholder="Add a comment..."
+                              className="w-full p-2 border border-gray-300 rounded"
+                          /> :
+                          <div class=" ">
+                              <div class="flex flex-row space-y-2 items-center justify-center h-full py-4 bg-gray-800 rounded-xl space-x-10">
+                                  <div class="w-2/3">
+                                      <p class="w-full text-2xl font-semibold text-white">Have you Watched this movie ?
+                                      </p>
+                                      <p class="w-full pb-8 text-sm tracking-wide leading-tight text-white">You can only comment if you have watched the movie</p>
+                                      <div class="rounded w-1/3">
+                                          <div class="opacity-95 border rounded-lg border-white px-4">
+                                              <button class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                                                  <EyeOpenIcon height={24} width={24} />   Yes I have</button>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                      }
+                      
+                      <button onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
+                          Post Comment
+                      </button>
+                  </form> :
+                  <div class=" ">
+                      <div class="flex flex-row space-y-2 items-center justify-center h-full py-4 bg-gray-800 rounded-xl space-x-10">
+                          <div class="w-2/3">
+                              <p class="w-full text-2xl font-semibold text-white">Login to comment
+                              </p>
+                              <p class="w-full pb-8 text-sm tracking-wide leading-tight text-white">You can only comment if you are logged in</p>
+                              <div class="rounded w-1/3">
+                                  <div class="opacity-95 border rounded-lg border-white px-4">
+                                      <button class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                                          <EyeOpenIcon height={24} width={24} />
+                                          SIGN IN 
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+        }
+      
                     
         <div className="space-y-4">
           {moviedata.map((movie, index) => (
             <div key={index}>
-              <img
-                src="https://via.placeholder.com/40"
-                alt="User Avatar"
-                className="rounded-full w-8 h-8 mr-2"
-              />
-              <button onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
-              <p>{movie.text}</p>
-              {updateReviewData && updateReviewData.movieId === movie.movieId && (
+                  <div className='flex m-2 ' >
+                      <div className=' m-3' >
+                          <Avatar.Root className="bg-blackA1 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle border border-black ">
+                              <Avatar.Fallback className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium">
+                                  {getInitials(movie.reviewer)}
+                              </Avatar.Fallback>
+                          </Avatar.Root>
+                      </div>
+                      <div>
+                          
+              <button className='font-bold text-lg'  onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
+                          <p>{movie.text}</p>
+                          <div className='flex  items-center gap-3 ' >
+                          <ThickArrowUpIcon height={24} width={24} />
+                          <ThickArrowDownIcon height={24} width={24} />
+                          <UpdateIcon height={24} width={24} onClick={() => handleform({ rid: movie.reviewId })}  />
+                            
+                          <Cross2Icon height={24} width={24} onClick={() => handleDelete({ rid: movie.reviewId })} />
+                              
+                        </div>
+            </div>
+              {/* {updateReviewData && updateReviewData.movieId === movie.movieId && (
                  <form method="get">
                  <textarea
                             value={reviewText}
@@ -143,16 +213,12 @@ const CommentSection = ({ props }) => {
                         </button>
                         </form> 
                 
-              )}
+              )} */}
               
-              <button onClick={() => handleform({ rid: movie.reviewId })} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
-                            Update
-                        </button>
-                        <button onClick={() => handleDelete({ rid: movie.reviewId })} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
-                           Delete
-                        </button>
               
-            </div>
+              
+                  </div>
+             </div>
           ))}
         </div>
       </div>

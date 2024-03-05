@@ -20,7 +20,6 @@ function Navbar() {
             return; 
         }
         try {
-
         localStorage.removeItem("uid");
             const response = await axios.get('http://localhost:5000/api/signout');  
             navigate('/signin');  
@@ -71,9 +70,6 @@ function Navbar() {
                         </a>
                         
                     </div>
-
-
-       
             <div class="flex-initial">
                 <div class="flex justify-end items-center relative">
 

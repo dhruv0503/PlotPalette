@@ -31,13 +31,13 @@ export default React.memo(function AccountPage() {
     const { userData } = useApi();
     const navigate = useNavigate();
 
-    useEffect(() => {
+    // useEffect(() => {
        
-        if (!userData) {
-            console.log("User not logged in. Navigating to signin page.");
-            navigate('/signin');
-        }
-    }, [userData , navigate]);
+    //     if (!userData) {
+    //         console.log("User not logged in. Navigating to signin page.");
+    //         navigate('/signin');
+    //     }
+    // }, [userData , navigate]);
 
 
     function formatDate(inputDate) {

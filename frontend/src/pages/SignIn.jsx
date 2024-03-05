@@ -16,6 +16,7 @@ export default function SignIn() {
   const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
+  const [userName, setUserName] = useState("");
   const [error, seterror] = useState(false);
   const navigate = useNavigate();
   const { setUserUid } = useApi();
@@ -36,7 +37,7 @@ export default function SignIn() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signup', { email,name, password });
+      const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName, password });
       console.log(response.data.msg);
       navigate('/');
     } catch (error) {
@@ -92,16 +93,14 @@ export default function SignIn() {
             className="grow p-5 bg-white  outline-none "
             value="tab1"
           >
-            <p className="mb-5 text-mauve11 text-[15px] leading-normal">
-              Make changes to your account here. Click save when you're done.
-            </p>
+           
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                Email
               </label>
                 <input
                   value={email} onChange={(e)=>setemail(e.target.value)}
-                  className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none required "
+                  className="grow shrink-0 rounded px-2.5 text-[15px]  shadow-[0_0_0_1px] shadow-violet7  focus:shadow-[0_0_0_2px] focus:shadow-violet8 leading-none text-violet11  h-[35px]  outline-none required "
                 id="name" />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
@@ -123,9 +122,7 @@ export default function SignIn() {
             className="grow p-5 bg-white  "
             value="tab2"
           >
-            <p className="mb-5 text-mauve11 text-[15px] leading-normal">
-              Change your password here. After saving, you'll be logged out.
-            </p>
+           
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label
                 className="text-[13px] leading-none mb-2.5 text-violet12 block"
@@ -139,7 +136,21 @@ export default function SignIn() {
                 id="currentPassword"
                 
               />
-            </fieldset>
+                  </fieldset>
+                  <fieldset className="mb-[15px] w-full flex flex-col justify-start">
+                    <label
+                      className="text-[13px] leading-none mb-2.5 text-violet12 block"
+                      htmlFor="newPassword"
+                    >
+                      Name
+                    </label>
+                    <input
+                      value={name} onChange={(e) => setname(e.target.value)}
+                      className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
+                      id="newPassword"
+
+                    />
+                  </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
               <label
                 className="text-[13px] leading-none mb-2.5 text-violet12 block"
@@ -148,7 +159,7 @@ export default function SignIn() {
                UserName
               </label>
                 <input
-                  value={name} onChange={(e) => setname(e.target.value)}
+                  value={userName} onChange={(e) => setUserName(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="newPassword"
                 

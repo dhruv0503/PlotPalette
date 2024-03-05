@@ -49,10 +49,9 @@ export default React.memo(function TopRated() {
 
     return (
         <div className='bg-custom-30 h-full   '>
-            <Navbar />
+            <div className='bg-gray-900' ><Navbar/></div>
             <div className='mt-20 p-2 '>
              
-               
 
                 <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
                 
