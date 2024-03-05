@@ -35,7 +35,6 @@ module.exports.isLoggedIn = () => {
         next();
     }
 }
-
 module.exports.isWatched = (parameter) => {
     return async (req, res, next) => {
         const { tmdbId } = req.params

@@ -6,6 +6,7 @@ import { Blockquote, Em, Quote, Tabs, Text } from '@radix-ui/themes'
 import axios from 'axios'
 import { useApi } from '../Context/Contxt.jsx';
 import AvatarSlider from './AvatarSlider.jsx'
+// import { favourite } from '../../../Backend/Controllers/movieController.js'
 
 export default React.memo(function Booktemplate() {
 
@@ -25,6 +26,29 @@ export default React.memo(function Booktemplate() {
             MovieDetails();
          
     }, [])
+
+    useEffect(() => {
+        const movieWatched= async () => {
+            try {
+                const response = await axios.patch(`http://localhost:5000/api/movies/${movieId}`);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching movi:', error.message);
+            }
+        };
+        movieWatched();
+     
+}, [])
+
+            const handlefav= async () => {
+                try {
+                    const response = await axios.post(`http://localhost:5000/api/movies/${movieId}/favourite`);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error('Error fetching movi:', error.message);
+                }
+            };
+            
 
 
     console.log(moviedata)
@@ -46,7 +70,7 @@ export default React.memo(function Booktemplate() {
                         <div className='absolute bottom-0 left-0 flex gap-3  rounded-lg p-4 text-custom-50'>
                             <PaperPlaneIcon height={32} width={32} />
                             <HeartIcon height={32} width={32} />
-                            <StarIcon height={32} width={32} />
+                           <button onClick={handlefav}> <StarIcon height={32} width={32} /> </button>
                         </div>
                     </div>
 

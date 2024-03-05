@@ -5,7 +5,7 @@ const wrapAsync = require("../util/catchAsync");
 const router = express.Router();
 
 router.route("/:tmdbId").post(isLoggedIn(), isWatched("review"), singleReview(), wrapAsync(reviewController.makeReview))
-
+router.route("/:tmdbId/:reviewId").get(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.getReview))
 router.route("/:tmdbId/:reviewId/update").put(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.updateReview))
 router.route("/:tmdbId/:reviewId/delete").delete(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.deleteReview))
 router.route("/:reviewId/upvote").put(isLoggedIn(), wrapAsync(reviewController.upVote))
