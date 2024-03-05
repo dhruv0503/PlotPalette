@@ -43,6 +43,13 @@ module.exports.updateReview = async(req, res, next) => {
     res.send(reviewDoc.data());
 }
 
+module.exports.getReview = async(req, res, next) => {
+    const { reviewId } = req.params
+    const formattedTime = new Date(Date.now()).toLocaleString();
+    const reviewDoc = await getDoc(doc(Review, reviewId))
+    res.send(reviewDoc.data());
+}
+
 module.exports.deleteReview = async(req, res, next) => {
     const userRef = auth.currentUser
     const {tmdbId, reviewId} = req.params;
