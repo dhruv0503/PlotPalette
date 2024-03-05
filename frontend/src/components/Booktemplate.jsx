@@ -67,8 +67,8 @@ export default React.memo(function Booktemplate() {
                             alt="Bold typography"
                             className='py-10 px-1 h-[500px] w-full rounded-md object-cover '
                         />
-                        <div className='absolute bottom-0 left-0 flex gap-3  rounded-lg p-4 text-custom-50'>
-                            <PaperPlaneIcon height={32} width={32} />
+                        <div className='absolute bottom-0 left-5 flex   gap-3  rounded-lg mb-1 mr-10 text-custom-50'>
+                            
                             <HeartIcon height={32} width={32} />
                            <button onClick={handlefav}> <StarIcon height={32} width={32} /> </button>
                         </div>
@@ -112,8 +112,9 @@ export default React.memo(function Booktemplate() {
         </div>
              
             <div className='p-4 bg-custom-50 gap-3 items-center relative flex  shadow-lg'>
-                <CommentSection props={movieId} />
-            </div>
+              
+                    <CommentSection props={movieId} /> :
+                  </div>
 
         </div>
     )

@@ -18,6 +18,7 @@ import NoPage from './pages/NoPage';
 import Category from './components/Category';
 import SearchResults from './pages/SearchResults';
 import Actors from './pages/Actors';
+import OthersPage from './pages/OthersPage';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route element={<Movies />} path='/movies' />
           <Route element={<SearchResults />} path='/search/:searchID' />
           <Route element={<Actors />} path='/Actor/:ActorId' />
+          <Route element={<OthersPage />} path='/Account/otherpage' />
         </Routes>
       </Router>
     </MyContextProvider>
