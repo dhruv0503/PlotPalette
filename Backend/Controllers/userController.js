@@ -84,3 +84,14 @@ module.exports.removeFriend = async(req, res, next) => {
     const userResult = await getDoc(doc(User, mainUser.id));
     res.send(userResult.data());
 }
+
+module.exports.updateBio = async(req, res, next) => {
+    const {bio} = req.body;
+    const userRef =  auth.currentUser;
+    const user = await utilityFunctions.getUser(userRef);
+
+    await updateDoc(doc(User, user.id), {bio});
+
+    const updatedUser = await getDoc(doc(User, user.id));
+    res.send(updatedUser.data());
+}

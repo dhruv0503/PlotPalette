@@ -16,6 +16,8 @@ router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile
 
 router.route("/search").get(wrapAsync(userController.getUserByUsername));
 
+router.route("/bio").post(isLoggedIn(), wrapAsync(userController.updateBio));
+
 router.route("/:id")
     .get(wrapAsync(userController.findUser))
     .put(isLoggedIn(), authorizeRoles("Admin"),(wrapAsync(userController.makeAdmin)));
