@@ -21,8 +21,8 @@ router.route("/:tmdbId")
     .get(wrapAsync(movieController.getMovie))
     .patch(isLoggedIn(), wrapAsync(movieController.watched));
 
-router.route("/:tmdbId/favourite").get(isLoggedIn(), isWatched("fav"), movieController.favourite);
-router.route("/:tmdbId/rating").get(isLoggedIn(), isWatched("rate"), movieController.rating);
-router.route("/:tmdbId/watchLater").get(isLoggedIn(), movieController.watchLater);
+router.route("/:tmdbId/favourite").post(isLoggedIn(), isWatched("fav"), movieController.favourite);
+router.route("/:tmdbId/rating").post(isLoggedIn(), isWatched("rate"), movieController.rating);
+router.route("/:tmdbId/watchLater").post(isLoggedIn(), movieController.watchLater);
 
 module.exports = router;
