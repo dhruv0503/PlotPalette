@@ -27,6 +27,29 @@ export default React.memo(function Booktemplate() {
          
     }, [])
 
+    useEffect(() => {
+        const movieWatched= async () => {
+            try {
+                const response = await axios.patch(`http://localhost:5000/api/movies/${movieId}`);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching movi:', error.message);
+            }
+        };
+        movieWatched();
+     
+}, [])
+
+            const handlefav= async () => {
+                try {
+                    const response = await axios.post(`http://localhost:5000/api/movies/${movieId}/favourite`);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error('Error fetching movi:', error.message);
+                }
+            };
+            
+
 //     useEffect(() => {
 //         const movieWatched= async () => {
 //             try {
@@ -82,9 +105,9 @@ const handleRating= async () => {
                                 </> :
                                 <>
                                     <button  > <EyeOpenIcon height={32} width={32} /></button>
-                                    <button  > <CardStackIcon height={32} width={32} /> </button>
+                                   <button onClick={handlefav}> <button  > <CardStackIcon height={32} width={32} /> </button>
                                 </>
-                            }
+                            } </button>
                         </div>
                     </div>
 
