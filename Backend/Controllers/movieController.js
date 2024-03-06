@@ -21,17 +21,17 @@ module.exports.getMovie = async (req, res, next) => {
             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
             if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title,  rating : 0, favourite : false, watchLater : false, }
+                const obj = { watchedByUser: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title,  rating : 0, favourite : false, watchLater : false, }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watched: false, loggedIn : true,  ...movieData.data() })
+                res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true,  ...movieData.data() })
                 return;
             }
             if (movieObj.data().watched) {
-                res.send({ watched: true, loggedIn : true, ...movieData.data() })
+                res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, ...movieData.data() })
                 return;
             }
         }
-        res.send({ watched: false, loggedIn : false, ...movieData.data()});
+        res.send({ watchedByUser: false, loggedIn : false, ...movieData.data()});
 
     } else {
         const path = "https://image.tmdb.org/t/p/original"
@@ -55,11 +55,11 @@ module.exports.getMovie = async (req, res, next) => {
             if (!movies || !movieObj) {
                 const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title,  rating : 0, favourite : false, watchLater : false, }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watched: false,loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watched: false, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
             if (movieObj.data().watched) {
-                res.send({ watched: true, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watched: true, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
         }
