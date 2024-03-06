@@ -15,7 +15,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
-    const user = await getUser(doc(User, id));
+    const user = await getDoc(doc(User, id));
     res.send(user.data());
 };
 
@@ -53,7 +53,7 @@ module.exports.optionsList = async (req, res, next) => {
         if (obj[parameter]) {
             const newObject = utilityFunctions.removeField(obj, 'movieId')
             return newObject;
-        }
+        }else return null;
     })
     const filteredList = list.filter((ele) => ele !== null);
     res.send(filteredList);
