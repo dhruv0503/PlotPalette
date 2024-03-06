@@ -4,24 +4,29 @@ import { useNavigate } from 'react-router-dom';
 import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
-const CommentSection = ({ props }) => {
+const CommentSection = ({ props ,watched }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
   const [reviewid, setreviewid] = useState('');
   const [updateReviewData, setUpdateReviewData] = useState(null); // State for review update data
 
   useEffect(() => {
+
+    const MovieDetails = async () => {
+      try {
+        const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews/${props}`);
+        
+        setmoviedata(MovDetails.data);
+      } catch (error) {
+        console.error('Error fetching movies:', error.message);
+      }
+    };
+
     MovieDetails();
   }, [props]);
+  console.log(props)
 
-  const MovieDetails = async () => {
-    try {
-      const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews/${props}`);
-      setmoviedata(MovDetails.data);
-    } catch (error) {
-      console.error('Error fetching movies:', error.message);
-    }
-  };
+
 
   const handlePost = async (e) => {
     e.preventDefault();
@@ -30,7 +35,6 @@ const CommentSection = ({ props }) => {
       console.error('Review text is empty.');
       return;
     }
-
     try {
       const response = await axios.post(`http://localhost:5000/api/reviews/${props}`, { reviewText });
       console.log('Comment posted:', response.data);
@@ -41,6 +45,8 @@ const CommentSection = ({ props }) => {
       console.error('Error posting comment:', error.message);
     }
   };
+
+
 
   const handleUser = async ({ id }) => {
     try {
@@ -120,7 +126,7 @@ const CommentSection = ({ props }) => {
           <div className="bg-custom-10 p-6 rounded-lg shadow-md">
               {localStorage.getItem("uid") ? 
                   <form method="get">
-                      {moviedata.watched ? 
+                      {watched ? 
                           <textarea
                               value={reviewText}
                               onChange={(e) => setreviewText(e.target.value)}

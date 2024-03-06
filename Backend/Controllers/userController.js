@@ -27,11 +27,16 @@ module.exports.getUserByUsername = async(req, res, next) => {
     else next(new expressError("No such user exists", 404))
 }
 
-module.exports.getProfile = async(req, res, next) => {
+module.exports.getProfile = async (req, res, next) => {
     const userRef = auth.currentUser
     const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);
     const data = querySnapshot.docs[0].data();
+
+    const subCollectionMovies = await getDocs(collection(doc(User, querySnapshot.docs[0].id), 'movies'));
+    const moviesWithNull = subCollectionMovies.docs.map((ele) => ele.data().favourite ? ele.data() : null)
+    const movies = moviesWithNull.filter(ele => ele !== null);
+    data.movies = movies;
     res.send(data);
 }
 
