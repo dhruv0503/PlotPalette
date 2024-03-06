@@ -8,7 +8,7 @@ router.route("/friendList/:userId").get(isLoggedIn(), wrapAsync(userController.f
 
 router.route("/friend/:userId").delete(isLoggedIn(), wrapAsync(userController.removeFriend))
 
-router.route("/options/:parameter").get(isLoggedIn(), wrapAsync(userController.optionsList));
+router.route("/options").get(isLoggedIn(), wrapAsync(userController.optionsList));
 
 router.route("/all").get(isLoggedIn(),wrapAsync(userController.getAllUsers));
 

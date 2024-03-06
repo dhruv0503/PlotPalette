@@ -173,11 +173,11 @@ module.exports.getReviews = async (req, res, next) => {
         const userVoteList = userVoteListRef.docs.map((ele) => ele.data())
         //intersting, can't  use map
         for(let i = 0; i < matchedReviews.length; i++){
-            const x = matchedReviews[i];
-            if(x.userId == user.id) x.owner = true;
-            const matchingVote = userVoteList.find((vote) => vote.reviewId === x.reviewId);
+            const reviews = matchedReviews[i];
+            if(reviews.userId == user.id) reviews.owner = true;
+            const matchingVote = userVoteList.find((vote) => vote.reviewId === reviews.reviewId);
             if (matchingVote) {
-                x.vote = matchingVote.upvote ? "upvote" : "downvote";
+                reviews.vote = matchingVote.upvote ? "upvote" : "downvote";
             }
         }
     }
