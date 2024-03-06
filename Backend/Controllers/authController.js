@@ -65,6 +65,3 @@ module.exports.forgetPassword = async(req, res, next) => {
         }
     }
 }
-
-
-//When completed with the rest of the auth, check signIn promise section
