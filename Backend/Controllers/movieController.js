@@ -103,7 +103,7 @@ module.exports.watched = async (req, res, next) => {
 module.exports.rating = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const { rating } = req.body;
+    const { rating } = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -125,7 +125,7 @@ module.exports.rating = async(req, res, next) => {
 module.exports.favourite = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const {favourite} = req.body;
+    const {favourite} = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -142,7 +142,7 @@ module.exports.favourite = async(req, res, next) => {
 module.exports.watchLater = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const {watchLater} = req.body;
+    const {watchLater} = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
