@@ -20,7 +20,7 @@ module.exports.findUser = async (req, res, next) => {
 };
 
 module.exports.getUserByUsername = async(req, res, next) => {
-    const { userName } = req.query;
+    const { userName } = req.query;  
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
     if(user) res.send(user.data())
