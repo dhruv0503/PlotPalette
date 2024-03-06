@@ -26,8 +26,9 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
-      setUserUid(response.data.signInObj.user.uid);
-      localStorage.setItem("uid" , response.data.signInObj.user.uid)
+      setUserUid(response.data.data.uid);
+      localStorage.setItem("uid" , response.data.data.uid);
+      console.log(localStorage.getItem("uid"));
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
@@ -38,7 +39,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName, password });
-      console.log(response.data.msg);
+      console.log(response.data);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);

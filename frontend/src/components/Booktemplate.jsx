@@ -40,9 +40,18 @@ export default React.memo(function Booktemplate() {
      
 }, [])
 
+
+const handleRating= async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/rating?rating={Number}`);
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error fetching movi:', error.message);
+    }
+};
             const handlefav= async () => {
                 try {
-                    const response = await axios.post(`http://localhost:5000/api/movies/${movieId}/favourite`);
+                    const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/favourite?favourite=${true}`);
                     console.log(response.data);
                 } catch (error) {
                     console.error('Error fetching movi:', error.message);
@@ -69,7 +78,7 @@ export default React.memo(function Booktemplate() {
                         />
                         <div className='absolute bottom-0 left-5 flex   gap-3  rounded-lg mb-1 mr-10 text-custom-50'>
                             
-                            <HeartIcon height={32} width={32} />
+                           <button onClick={handleRating}> <HeartIcon height={32} width={32} /></button>
                            <button onClick={handlefav}> <StarIcon height={32} width={32} /> </button>
                         </div>
                     </div>
