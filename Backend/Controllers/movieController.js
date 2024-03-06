@@ -103,7 +103,7 @@ module.exports.watched = async (req, res, next) => {
 module.exports.rating = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const { rating } = req.body;
+    const { rating } = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -125,7 +125,7 @@ module.exports.rating = async(req, res, next) => {
 module.exports.favourite = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const {favourite} = req.body;
+    const {favourite} = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -142,7 +142,7 @@ module.exports.favourite = async(req, res, next) => {
 module.exports.watchLater = async(req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.params;
-    const {watchLater} = req.body;
+    const {watchLater} = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -172,11 +172,11 @@ module.exports.getReviews = async (req, res, next) => {
         const userVoteList = userVoteListRef.docs.map((ele) => ele.data())
         //intersting, can't  use map
         for(let i = 0; i < matchedReviews.length; i++){
-            const x = matchedReviews[i];
-            if(x.userId == user.id) x.owner = true;
-            const matchingVote = userVoteList.find((vote) => vote.reviewId === x.reviewId);
+            const reviews = matchedReviews[i];
+            if(reviews.userId == user.id) reviews.owner = true;
+            const matchingVote = userVoteList.find((vote) => vote.reviewId === reviews.reviewId);
             if (matchingVote) {
-                x.vote = matchingVote.upvote ? "upvote" : "downvote";
+                reviews.vote = matchingVote.upvote ? "upvote" : "downvote";
             }
         }
     }
