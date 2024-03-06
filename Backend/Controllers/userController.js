@@ -45,21 +45,18 @@ module.exports.makeAdmin = async (req, res, next) => {
 //shows all rated / favourited / watched etc. hence parameter.
 //Note : Put all the parameters in a comment
 module.exports.optionsList = async (req, res, next) => {
-    const { parameter } = req.params;
-
+    const { parameter } = req.query;
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef)
-
-    const parentDocPath = `User/${user.id}`;
-    const response = await utilityFunctions.hasSubcollection(parentDocPath, 'movies');
-    let list = [];
-    response.map(obj => {
+    const response = await utilityFunctions.hasSubcollection(user.id, 'movies');
+    const list = response.map(obj => {
         if (obj[parameter]) {
             const newObject = utilityFunctions.removeField(obj, 'movieId')
-            list.push(newObject);
+            return newObject;
         }
     })
-    res.send(list);
+    const filteredList = list.filter((ele) => ele !== null);
+    res.send(filteredList);
 }
 
 //friendList

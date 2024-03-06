@@ -14,7 +14,7 @@ router.route("/all").get(isLoggedIn(),wrapAsync(userController.getAllUsers));
 
 router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile));
 
-router.route("/search/userName").get(wrapAsync(userController.getUserByUsername));
+router.route("/search").get(wrapAsync(userController.getUserByUsername));
 
 router.route("/:id")
     .get(wrapAsync(userController.findUser))
