@@ -55,15 +55,15 @@ module.exports.getMovie = async (req, res, next) => {
             if (!movies || !movieObj) {
                 const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title,  rating : 0, favourite : false, watchLater : false, }
                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watched: false, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
             if (movieObj.data().watched) {
-                res.send({ watched: true, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+                res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
                 return;
             }
         }
-        res.send({ watched: false, loggedIn : false, id: newMovieData.id, ...newMovieData.data() });
+        res.send({ watchedByUser: false, loggedIn : false, id: newMovieData.id, ...newMovieData.data() });
     }
 }
 
