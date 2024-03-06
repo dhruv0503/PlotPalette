@@ -53,7 +53,7 @@ module.exports.optionsList = async (req, res, next) => {
         if (obj[parameter]) {
             const newObject = utilityFunctions.removeField(obj, 'movieId')
             return newObject;
-        }
+        }else return null;
     })
     const filteredList = list.filter((ele) => ele !== null);
     res.send(filteredList);
