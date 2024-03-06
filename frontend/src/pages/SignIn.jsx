@@ -27,8 +27,7 @@ export default function SignIn() {
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
       setUserUid(response.data.data.uid);
-      localStorage.setItem("uid" , response.data.data.uid);
-      console.log(localStorage.getItem("uid"));
+      localStorage.setItem("uid" , response.data.data.uid)
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);

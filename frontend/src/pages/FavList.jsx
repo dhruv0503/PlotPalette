@@ -2,9 +2,11 @@ import React from 'react'
 import Navbar from './Navbar'
 import { useApi } from '../Context/Contxt'
 import { BookmarkIcon, StarIcon } from '@radix-ui/react-icons'
-import { Link ,useNavigate } from 'react-router-dom'
+import { Link ,useNavigate, useParams } from 'react-router-dom'
 function FavList() {
-    const {upcomingMovies} = useApi();
+    const { userData ,upcomingMovies } = useApi();
+    const { collectionid } = useParams();
+    console.log(userData)
     return (
         < div className='bg-custom-30' >
             <div className='bg-custom-50' ><Navbar/></div>

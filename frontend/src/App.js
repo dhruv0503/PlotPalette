@@ -25,7 +25,7 @@ function App() {
     <MyContextProvider>
       <Router>
         <Routes>
-          <Route element={<FavList/>} path='/account/favlist' />
+          <Route element={<FavList/>} path='/collections/:collectionid' />
           <Route element={<Homepage />} path='/' />
           <Route element={<AccountPage />} path='/account' />
           <Route element={<SignIn />} path='/signin' />
@@ -37,11 +37,11 @@ function App() {
           <Route element={<Popular/>} path='/movies/popular' />
           <Route element={<NoPage />} path='*' />
           <Route element={<Aboutsus />} path='/about' />
-          <Route element={<Category />} path='/movies/Category' />
+          <Route element={<Category />} path='/movies/Category/:categoryID' />
           <Route element={<Movies />} path='/movies' />
           <Route element={<SearchResults />} path='/search/:searchID' />
           <Route element={<Actors />} path='/Actor/:ActorId' />
-          <Route element={<OthersPage />} path='/Account/otherpage' />
+          <Route element={<OthersPage />} path='/Account/:UserID' />
         </Routes>
       </Router>
     </MyContextProvider>
