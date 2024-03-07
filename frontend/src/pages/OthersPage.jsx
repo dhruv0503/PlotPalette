@@ -73,8 +73,9 @@ export default React.memo(function OthersPage() {
                                     <div class="col-span-full lg:col-span-2 overflow-hidden flex relative p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
                                         <div class="size-fit m-auto relative">
                                             <div class="relative h-24 w-56 flex flex-col items-center">
-                                                <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                                <Text>
+                                            <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                                   <button onClick={() => navigate(`/account/${UserID}/friend`)} className='bg-custom-20 rounded-lg p-1 m-2 border border-custom-30'   > <Text>
                                                 FriendCount: {userData?.friendCount}</Text>
+                                            </button>
                                                 <button onClick={handleAddfriend} className='bg-custom-20 rounded-lg p-1 text-custom-30 flex items-center' >Add Friend <PlusIcon height={20} width={20} /></button>
                                                 <Text>{formatDate(userData?.joinedOn)}</Text>
 

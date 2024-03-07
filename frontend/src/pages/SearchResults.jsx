@@ -19,7 +19,6 @@ function SearchResults() {
     const SearchBarResults = async () => {
       try {
         const SearchBarRes = await axios.get(`http://localhost:5000/api/movies/search/person?name=${searchID}&pageNo=${startPage}`)
-        console.log(SearchBarRes.data)
         setsearchperson(SearchBarRes.data);
       } catch (error) {
         console.error('Error fetching movies:', error.message);
@@ -42,7 +41,6 @@ function SearchResults() {
         SearchBarResults();
     }, [startPage])
   const nextPage = () => {
-
     setStartPage(startPage + 1);
   }
   const prevPage = () => {
@@ -69,14 +67,14 @@ function SearchResults() {
       <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
         {
           Search?.length  ?
-            (Search.map((movie, index) => (
+            (Search.filter(movie => movie.poster_path).map((movie, index) => (
               <MovieCard key={index} {...movie} />
             ))) :
             <LoadingPage />
         }
       </div>
      
-      <div className='p-2'>
+      {/* <div className='p-2'>
         <div class="flex gap-3 justify-center items-center">
           <DoubleArrowLeftIcon className='cursor-pointer' onClick={prevPage} height={32} width={32} />
           <BorderDottedIcon height={32} width={32} />
@@ -84,8 +82,7 @@ function SearchResults() {
           <BorderDottedIcon height={32} width={32} />
           <DoubleArrowRightIcon className='cursor-pointer' onClick={nextPage} height={32} width={32} />
         </div>
-      </div>
-      
+      </div> */}
 
     </div>
   )
