@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
-const CommentSection = ({ props ,watched }) => {
+const CommentSection = ({ props,watched }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
   const [reviewid, setreviewid] = useState('');
@@ -25,6 +25,18 @@ const CommentSection = ({ props ,watched }) => {
     MovieDetails();
   }, [props]);
   console.log(props)
+    
+
+  function getInitials(name) {
+    const words = name?.split(/\s+/);
+    let initials = "";
+    words?.forEach(word => {
+        if (word.length > 0) {
+            initials += word[0].toUpperCase();
+        }
+    });
+    return initials;
+}
 
 
 
@@ -107,6 +119,27 @@ const CommentSection = ({ props ,watched }) => {
     }
   };
 
+
+  const handleUpvote = async ({ id }) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/reviews/${id}/upvote`);
+      // Handle user details (e.g., display username)
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching user:', error.message);
+    }
+  };
+
+  const handleDownvote = async ({ id }) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/reviews/${id}/downvote`);
+      console.log(response);
+      // Handle user details (e.g., display username)
+    } catch (error) {
+      console.error('Error fetching user:', error.message);
+    }
+  };
+
   return (
     <div className="container p-1 mx-auto mt-8">
           <div className="bg-custom-10 p-6 rounded-lg shadow-md">
@@ -181,15 +214,16 @@ const CommentSection = ({ props ,watched }) => {
               <button className='font-bold text-lg'  onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
                           <p>{movie.text}</p>
                           <div className='flex  items-center gap-3 ' >
-                          <ThickArrowUpIcon height={24} width={24} />
-                          <ThickArrowDownIcon height={24} width={24} />
+                          <ThickArrowUpIcon height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
+                          {movie.votes}
+                          <ThickArrowDownIcon height={24} width={24} onClick={() => handleDownvote({ id: movie.reviewId })}/>
                           <UpdateIcon height={24} width={24} onClick={() => handleform({ rid: movie.reviewId })}  />
                             
                           <Cross2Icon height={24} width={24} onClick={() => handleDelete({ rid: movie.reviewId })} />
                               
                         </div>
             </div>
-              {/* {updateReviewData && updateReviewData.movieId === movie.movieId && (
+              {updateReviewData && updateReviewData.movieId === movie.movieId && (
                  <form method="get">
                  <textarea
                             value={reviewText}
@@ -205,7 +239,7 @@ const CommentSection = ({ props ,watched }) => {
                         </button>
                         </form> 
                 
-              )} */}
+              )}
               
               
               

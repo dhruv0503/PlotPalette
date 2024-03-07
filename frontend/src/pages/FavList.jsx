@@ -7,6 +7,9 @@ function FavList() {
     const { userData ,upcomingMovies } = useApi();
     const { collectionid } = useParams();
     console.log(userData)
+
+ 
+
     return (
         < div className='bg-custom-30' >
             <div className='bg-custom-50' ><Navbar/></div>

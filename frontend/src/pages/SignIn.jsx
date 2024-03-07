@@ -37,8 +37,10 @@ export default function SignIn() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName, password });
-      console.log(response.data);
+      const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName,password });
+      // setUserUid(response.data.data.uid);
+      // localStorage.setItem("uid" , response.data.data.uid)
+      console.log(response);
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
