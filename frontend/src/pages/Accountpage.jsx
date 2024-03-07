@@ -10,7 +10,7 @@ import { IoBookSharp } from "react-icons/io5";
 import { useApi } from '../Context/Contxt';
 import * as Avatar from '@radix-ui/react-avatar';
 
-import { MagicWandIcon, PersonIcon, BookmarkIcon, FileTextIcon, HeartFilledIcon, EyeClosedIcon, StarIcon, StarFilledIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import { MagicWandIcon, PersonIcon, BookmarkIcon, FileTextIcon, HeartFilledIcon, EyeClosedIcon, StarIcon, StarFilledIcon, MagnifyingGlassIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
 
 
 export default React.memo(function AccountPage() {
@@ -40,7 +40,6 @@ export default React.memo(function AccountPage() {
     const navigate = useNavigate();
     console.log(userData)
   
-
     useEffect(() => {
        
         if (!localStorage.getItem("uid")) {
@@ -78,18 +77,14 @@ export default React.memo(function AccountPage() {
         }
     };
 
-    
-    
-   
- 
     return (
         <>
             {localStorage.getItem("uid")?
               
                 <section className='bg-custom-30'>
-                    <div className='bg-gray-900'  ><Navbar className /></div>
+                    <div className='bg-gray-900'  ><Navbar  /></div>
                   
-                <div class="p-2 relative mx-auto text-gray-600 ">
+                <div class="p-2 relative mx-auto text-gray-600 items-center ml-10 mr-10 flex justify-between ">
                     <div className='flex items-center' >
                     <input
                         className="border-2 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
@@ -107,6 +102,8 @@ export default React.memo(function AccountPage() {
                         <MagnifyingGlassIcon height={24} width={24} className="text-white" />
                     </button>
                       </div>
+
+                <div><DotsVerticalIcon/></div>
                     </div>
                 <div class="py-16">
                         
@@ -116,8 +113,9 @@ export default React.memo(function AccountPage() {
                     <div class="col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
                         <div class="size-fit m-auto relative">
                             <div class="relative h-24 w-56 flex flex-col items-center">
-                                                <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                                <Text>
+                                                <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                               <button onClick={()=>navigate('/user/friends')} className='bg-custom-20 rounded-lg p-1'   > <Text>
                                                     FriendCount: {userData?.friendCount}</Text>
+                                                    </button>
                                                 <Text>{formatDate(userData?.joinedOn)}</Text>
                                                 {userData?.requestList.map((request,index)=>(
                                                    <div> <button>{request}</button>

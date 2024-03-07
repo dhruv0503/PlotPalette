@@ -19,7 +19,7 @@ export default function SignIn() {
   const [userName, setUserName] = useState("");
   const [error, seterror] = useState(false);
   const navigate = useNavigate();
-  const { setUserUid } = useApi();
+  const { setUserUid, setislogin } = useApi();
   
  
   const handleLogin = async (e) => {
@@ -27,7 +27,8 @@ export default function SignIn() {
     try {
       const response = await axios.post('http://localhost:5000/api/signin', { email, password });
       setUserUid(response.data.data.uid);
-      localStorage.setItem("uid" , response.data.data.uid)
+      localStorage.setItem("uid", response.data.data.uid)
+      setislogin(true)
       navigate('/');
     } catch (error) {
       console.error('Error signing in:', error.message);
@@ -114,7 +115,8 @@ export default function SignIn() {
                 id="username"
               />
             </fieldset>
-            <div className="flex justify-end mt-5">
+                  <div className="flex justify-between mt-5">
+                <button onClick={()=>navigate('/signin/reset')} className='text-blue-500' >forget password ? </button>
               <button onClick={handleLogin} className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
                 LOGIN
               </button>

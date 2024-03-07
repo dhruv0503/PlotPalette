@@ -17,7 +17,7 @@ export default React.memo(function Booktemplate() {
   const { all_movie, userData } = useApi();
   const [moviedata, setmoviedata] = useState({}); // Initial state
   const { movieId } = useParams();
-  const [number, setNumber] = useState(1); 
+  const [number, setNumber] = useState(); 
   const handleChange = (event) => {
       const value = parseInt(event.target.value);
       if (value >= 1 && value <= 5) {
@@ -78,7 +78,7 @@ export default React.memo(function Booktemplate() {
     
 
    
-
+console.log(moviedata)
 
 
 
@@ -95,27 +95,28 @@ export default React.memo(function Booktemplate() {
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata.watchedByUser ? (
                 <>
+                  
                   <button onClick={handlefav}>
                     <HeartIcon height={32} width={32} />
                   </button>
                   <button onClick={handleRating}>
-                  <div>
+                    <div className='flex' onChange={handleChange} >
+                      <StarIcon height={32} width={32} />
             <input
                 type="number"
                 min="1"
                 max="5"
                 value={number}
-                onChange={handleChange}
+                
             />
-            <p>Value: {number}</p>
         </div>
-                    <StarIcon height={32} width={32} />
+                    
                   </button>
                 </>
               ) : (
                 <>
                   <button >
-                    <EyeOpenIcon  height={32} width={32} />
+                      <EyeOpenIcon    height={32} width={32} />
                   </button>
                   <button onClick={movieWatchedLater}>
                     <CardStackIcon height={32} width={32} />

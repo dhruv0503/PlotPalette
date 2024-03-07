@@ -11,6 +11,8 @@ const MyContext = createContext();
 
 export function MyContextProvider({ children }) {
 
+    const [islogin, setislogin] = useState();
+
   //my profile api
   useEffect(() => {
     const myProfile = async (e) => {
@@ -24,7 +26,7 @@ export function MyContextProvider({ children }) {
       }
     };
     myProfile();
-  },[])
+  },[islogin])
 
     // all users list
   
@@ -42,7 +44,7 @@ export function MyContextProvider({ children }) {
     const [all_movie, setAll_movie] = useState(new Set());
     const [searchResults, setSearchResults] = useState([]);
     const [userUid, setUserUid] = useState();
-    const [islogin, setislogin] = useState();
+    
     const [genre, setgenre] = useState();
     const [userData, setUserData] = useState();
     useEffect(() => {
@@ -68,10 +70,7 @@ export function MyContextProvider({ children }) {
 
         fetchMovies();
     }, []);
-     
-    useEffect(() => {
-        setislogin(userUid)
-    },[userUid])
+
 
 
     useEffect(() => {
@@ -85,7 +84,7 @@ export function MyContextProvider({ children }) {
     }, [upcomingMovies,now_playing, popular, top_rated]);
     
     return (
-        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin, setUserUid ,userData}} >
+        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin,setislogin, setUserUid ,userData}} >
             {children}
         </MyContext.Provider>
     )    
