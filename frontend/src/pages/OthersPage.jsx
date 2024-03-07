@@ -32,6 +32,19 @@ export default React.memo(function OthersPage() {
         };
         allUsers();
     }, []);
+
+
+    const handleAddfriend = async () => {
+      console.log(userData);
+        try {
+            const response = await axios.post(`http://localhost:5000/api/friend/${userData.id}/send`);
+            console.log(response);
+        } catch (error) {
+            console.error('Error in getting all users:', error.message)
+        }
+    };
+
+
     // const { userData } = useApi();
     const navigate = useNavigate();
     console.log(userData)
@@ -62,7 +75,7 @@ export default React.memo(function OthersPage() {
                                             <div class="relative h-24 w-56 flex flex-col items-center">
                                                 <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                                <Text>
                                                 FriendCount: {userData?.friendCount}</Text>
-                                                <button className='bg-custom-20 rounded-lg p-1 text-custom-30 flex items-center' >Add Friend <PlusIcon height={20} width={20} /></button>
+                                                <button onClick={handleAddfriend} className='bg-custom-20 rounded-lg p-1 text-custom-30 flex items-center' >Add Friend <PlusIcon height={20} width={20} /></button>
                                                 <Text>{formatDate(userData?.joinedOn)}</Text>
 
                                             </div>

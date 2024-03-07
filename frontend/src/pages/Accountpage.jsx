@@ -59,6 +59,27 @@ export default React.memo(function AccountPage() {
         const monthName = months[monthIndex];
         return `${day} ${monthName} ${year}`;
     }
+
+    const handleAccept = async ({id}) => {
+        try {
+            const response = await axios.post(`http://localhost:5000/api/friend/${id}/accept`)
+            console.log(response);
+        } catch (error) {
+            console.error('Error fetching movies:', error.message);
+        }
+    };
+
+    const handleDeny = async ({id}) => {
+        try {
+            const response = await axios.post(`http://localhost:5000/api/friend/${id}/deny`)
+            console.log(response);
+        } catch (error) {
+            console.error('Error fetching movies:', error.message);
+        }
+    };
+
+    
+    
    
  
     return (
@@ -98,6 +119,12 @@ export default React.memo(function AccountPage() {
                                                 <Text size={"7"} className='text-custom-20' >{userData?.name}</Text>                                                <Text>
                                                     FriendCount: {userData?.friendCount}</Text>
                                                 <Text>{formatDate(userData?.joinedOn)}</Text>
+                                                {userData?.requestList.map((request,index)=>(
+                                                   <div> <button>{request}</button>
+                                                    <button onClick={() => handleAccept({ id: request })}>accept</button>
+                                                    <button onClick={() => handleDeny({ id: request })}>deny</button>
+                                                    </div>
+                                                ))}
                                  
                             </div>
                             
