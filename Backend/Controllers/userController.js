@@ -20,14 +20,14 @@ module.exports.findUser = async (req, res, next) => {
 };
 
 module.exports.getUserByUsername = async(req, res, next) => {
-    const { userName } = req.query;
+    const { userName } = req.query;  
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
-    if(user) res.send(user.data())
+    if(user) res.send({id:user.id,...user.data()})
     else next(new expressError("No such user exists", 404))
 }
 
-module.exports.getProfile = async(req, res, next) => {
+module.exports.getProfile = async (req, res, next) => {
     const userRef = auth.currentUser
     const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);

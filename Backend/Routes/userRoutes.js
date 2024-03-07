@@ -13,7 +13,6 @@ router.route("/options").get(isLoggedIn(), wrapAsync(userController.optionsList)
 router.route("/all").get(isLoggedIn(),wrapAsync(userController.getAllUsers));
 
 router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile));
-
 router.route("/search").get(wrapAsync(userController.getUserByUsername));
 
 router.route("/bio").post(isLoggedIn(), wrapAsync(userController.updateBio));

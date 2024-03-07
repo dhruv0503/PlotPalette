@@ -31,7 +31,7 @@ function Navbar() {
   
 
       
-    console.log(localStorage.getItem("uid"))
+  console.log(localStorage.getItem("uid"))
 
  
 

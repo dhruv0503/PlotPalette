@@ -9,7 +9,7 @@ module.exports.requestList = async(req, res, next) => {
     const user = await getDoc(doc(User, userId));
     const userData = user.data();
     const requestList = userData.requestList;
-    res.send(requestList);
+    res.send(userData);
 }
 
 //Send Request
