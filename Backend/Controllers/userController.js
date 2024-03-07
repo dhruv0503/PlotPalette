@@ -32,6 +32,12 @@ module.exports.getProfile = async(req, res, next) => {
     const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);
     const data = querySnapshot.docs[0].data();
+
+    const subCollectionMovies = await getDocs(collection(doc(User, querySnapshot.docs[0].id), 'movies'));
+    const moviesWithNull = subCollectionMovies.docs.map((ele) => ele.data().favourite ? ele.data() : null)
+    const movies = moviesWithNull.filter(ele => ele !== null);
+    data.movies = movies;
+    data.id = querySnapshot.docs[0].id;
     res.send(data);
 }
 
@@ -45,10 +51,8 @@ module.exports.makeAdmin = async (req, res, next) => {
 //shows all rated / favourited / watched etc. hence parameter.
 //Note : Put all the parameters in a comment
 module.exports.optionsList = async (req, res, next) => {
-    const { parameter } = req.query;
-    const userRef = auth.currentUser;
-    const user = await utilityFunctions.getUser(userRef)
-    const response = await utilityFunctions.hasSubcollection(user.id, 'movies');
+    const { parameter, userId } = req.query;
+    const response = await utilityFunctions.hasSubcollection(userId, 'movies');
     const list = response.map(obj => {
         if (obj[parameter]) {
             const newObject = utilityFunctions.removeField(obj, 'movieId')
