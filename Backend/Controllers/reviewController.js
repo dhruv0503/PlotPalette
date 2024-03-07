@@ -29,8 +29,8 @@ module.exports.makeReview = async (req, res, next) => {
         "reviewCount" : increment(1),
         "reviews" : arrayUnion(reviewId)
       });
-      const reviewDoc = await getDoc(doc(Review, reviewId));
-      res.send(reviewDoc.data())
+    const reviewDoc = await getDoc(doc(Review, reviewId));
+    res.send(reviewDoc.data())
 }
 
 module.exports.updateReview = async(req, res, next) => {
