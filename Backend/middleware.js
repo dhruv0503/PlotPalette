@@ -37,7 +37,7 @@ module.exports.isLoggedIn = () => {
 }
 module.exports.isWatched = (parameter) => {
     return async (req, res, next) => {
-        const { tmdbId } = req.params
+        const { tmdbId } = req.query
         const user = auth.currentUser;
         const userObj = await utilityFunctions.getUser(user);
         const movie = await utilityFunctions.getMovie(tmdbId);
@@ -60,7 +60,7 @@ module.exports.isWatched = (parameter) => {
 
 module.exports.singleReview = () => {
     return async(req, res, next) => {
-        const {tmdbId} = req.params;
+        const {tmdbId} = req.query;
         const userRef = auth.currentUser;
         const user = await utilityFunctions.getUser(userRef);
         const moviesRef = await getDocs(collection(doc(User, user.id), "movies"));

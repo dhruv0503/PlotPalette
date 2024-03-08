@@ -67,7 +67,6 @@ module.exports.getMovie = async (req, res, next) => {
     }
 }
 
-
 //now_playing
 //popular
 //top_rated
@@ -85,9 +84,9 @@ module.exports.getMovieList = async (req, res, next) => {
 }
 
 module.exports.watched = async (req, res, next) => {
+    const { tmdbId } = req.params;
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
-    const { tmdbId } = req.query;
     const movieData = await utilityFunctions.getMovie(tmdbId);
 
     const movies = await getDocs(collection(User, user.id, 'movies'));
