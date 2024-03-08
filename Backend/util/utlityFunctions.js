@@ -1,9 +1,6 @@
 const { db } = require("../firebaseConfig");
 const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
-
 const User = collection(db,"User");
-
-
 
 module.exports.getUser = async (user) => {
     const userQuery = query(collection(db, 'User'), where('uid', '==', user.uid));

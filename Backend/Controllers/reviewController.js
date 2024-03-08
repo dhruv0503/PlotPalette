@@ -11,9 +11,8 @@ module.exports.makeReview = async (req, res, next) => {
     const user = auth.currentUser;
     const { tmdbId } = req.query;
     const { reviewText } = req.body;
-
     const userObj = await utilityFunctions.getUser(user);
-    const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
+    const movieObj = await utilityFunctions.getMovie(tmdbId)
 
     const formattedTime = new Date(Date.now()).toLocaleString();
 
@@ -101,4 +100,11 @@ module.exports.downVote = async(req, res, next) => {
     await addDoc(collection(doc(User, user.id) , "reviews"), {reviewId, upvote : false, downvote : true})
     const review = await getDoc(doc(Review, reviewId))
     res.send(review.data());
+}
+
+module.exports.test = async(req, res, next) => {
+    const {tmdbId} = req.params;
+    console.log(tmdbId);
+    const movie = await utilityFunctions.getMovie(tmdbId);
+    res.send(movie);
 }

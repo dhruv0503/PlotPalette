@@ -9,7 +9,6 @@ router.route("/")
     .get(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.getReview))
     .put(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.updateReview))
     .delete(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.deleteReview))
-    
 router.route("/upvote").put(isLoggedIn(), wrapAsync(reviewController.upVote))
 router.route("/downvote").put(isLoggedIn(), wrapAsync(reviewController.downVote))    
     
