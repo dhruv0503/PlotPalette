@@ -104,21 +104,21 @@ export default React.memo(function OthersPage() {
                                     <div class="col-span-full sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
                                         <Text size={"6"} className='justify-center text-custom-10 font-bold m-3 flex' >COLLECTION</Text>
                                         <Flex gap="3" className=' grid grid-cols-2'>
-                                        <Button onClick={() => navigate(`/account/${UserID}/Watched`)} className='bg-custom-30 p-7 ' variant="classic">
+                                        <Button onClick={() => navigate(`/account/${UserID}/watched`)} className='bg-custom-30 p-7 ' variant="classic">
                                                 <FileTextIcon height={32} width={32} />
                                                <Text><Strong>Watched</Strong></Text>
                                             </Button>
-                                        <Button onClick={() => navigate(`/account/${UserID}/rated`)} className='bg-custom-30 p-7 ' variant='classic'  >
+                                        <Button onClick={() => navigate(`/account/${UserID}/rating`)} className='bg-custom-30 p-7 ' variant='classic'  >
                                                 <HeartFilledIcon width={24} height={24} />
                                                 <Text><Strong>Rated</Strong></Text>
                                             </Button>
 
-                                        <Button onClick={() => navigate(`/account/${UserID}/yettowatch`)} className='bg-custom-30 p-7 ' variant="classic">
+                                        <Button onClick={() => navigate(`/account/${UserID}/watchLater`)} className='bg-custom-30 p-7 ' variant="classic">
                                             <EyeClosedIcon width={24} height={24} />
 
                                             <Text><Strong>Yet To Watch</Strong></Text>
                                             </Button>
-                                        <Button onClick={() => navigate(`/account/${UserID}/fav`)} className='bg-custom-30 p-7' variant="classic">
+                                        <Button onClick={() => navigate(`/account/${UserID}/favourite`)} className='bg-custom-30 p-7' variant="classic">
                                             <StarFilledIcon width={24} height={24} />
                                             <Text><Strong>Fav</Strong></Text>
 

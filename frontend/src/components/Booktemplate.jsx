@@ -18,6 +18,7 @@ export default React.memo(function Booktemplate() {
   const [moviedata, setmoviedata] = useState({}); // Initial state
   const { movieId } = useParams();
   const [number, setNumber] = useState(); 
+  const [rating, setrating] = useState(1);
   const handleChange = (event) => {
       const value = parseInt(event.target.value);
       if (value >= 1 && value <= 5) {
@@ -38,7 +39,12 @@ export default React.memo(function Booktemplate() {
   }, []);
 
 
-     
+  useEffect(() => {
+  handleRating()
+  },[rating])
+    
+
+
   const handleWatched= async () => {
     try {
         const response = await axios.patch(`http://localhost:5000/api/movies/${movieId}`);
@@ -64,8 +70,9 @@ export default React.memo(function Booktemplate() {
     
     const handleRating= async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/rating?rating=${number}`);
-            console.log(response.data);
+          const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/rating?rating=${number}`);
+           setrating(rating+1)
+            // console.log(response.data);
         } catch (error) {
             console.error('Error fetching movi:', error.message);
         }
@@ -105,7 +112,6 @@ console.log(moviedata)
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata.watchedByUser ? (
                 <>
-                  
                   <button onClick={handlefav}>
                     <HeartIcon height={32} width={32} />
                   </button>
@@ -170,7 +176,7 @@ console.log(moviedata)
       </div>
 
       <div className="p-4 bg-custom-50 gap-3 items-center relative flex shadow-lg">
-        // pass the function handleWatched
+        {/* // pass the function handleWatched */}
         <CommentSection props={movieId} watched={moviedata.watchedByUser}  />
       </div>
     </div>
