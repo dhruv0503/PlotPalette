@@ -4,7 +4,6 @@ const User = collection(db, "User");
 const utilityFunctions = require("../util/utlityFunctions");
 const expressError = require("../util/expressError");
 
-
 //Admin Route (Used to get all users informtaion)
 module.exports.getAllUsers = async (req, res, next) => {
     const allUsersSnapshot = await getDocs(User);
@@ -12,20 +11,8 @@ module.exports.getAllUsers = async (req, res, next) => {
     res.send(userArray);
 };
 
-<<<<<<< HEAD
 module.exports.findUser = async(req, res, next) => {
     const { userName } = req.query;
-=======
-//User Search
-module.exports.findUser = async (req, res, next) => {
-    const { id } = req.params;
-    const user = await getDoc(doc(User, id));
-    res.send(user.data());
-};
-
-module.exports.getUserByUsername = async(req, res, next) => {
-    const { userName } = req.query;  
->>>>>>> 08a4258eda2f9739a161cbe83d0278374f3465e0
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
     if(user) res.send({id:user.id,...user.data()})
