@@ -18,7 +18,7 @@ export default React.memo(function Homepage() {
       </div>
       <div className='p-10'>
         <SliderComp topic={"TOP RATED"} config={top_rated} />
-        <SliderComp topic={"Popular"} config={popular} />
+        {/* <SliderComp topic={"Popular"} config={popular} /> */}
         {/* <SliderComp topic={"Now Playing"} config={now_playing} /> */}
         <SliderComp topic={"Upcoming Movies"} config={upcomingMovies} />
       </div>

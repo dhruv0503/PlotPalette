@@ -8,7 +8,7 @@ module.exports.requestList = async(req, res, next) => {
     const userRef = auth.currentUser;
     const userData = await utilityFunctions.getUser(userRef);
     const requestList = userData.requestList;
-    res.send(requestList);
+    res.send(userData);
 }
 
 //Send Request

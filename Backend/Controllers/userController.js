@@ -12,15 +12,27 @@ module.exports.getAllUsers = async (req, res, next) => {
     res.send(userArray);
 };
 
+<<<<<<< HEAD
 module.exports.findUser = async(req, res, next) => {
     const { userName } = req.query;
+=======
+//User Search
+module.exports.findUser = async (req, res, next) => {
+    const { id } = req.params;
+    const user = await getDoc(doc(User, id));
+    res.send(user.data());
+};
+
+module.exports.getUserByUsername = async(req, res, next) => {
+    const { userName } = req.query;  
+>>>>>>> 08a4258eda2f9739a161cbe83d0278374f3465e0
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
-    if(user) res.send(user.data())
+    if(user) res.send({id:user.id,...user.data()})
     else next(new expressError("No such user exists", 404))
 }
 
-module.exports.getProfile = async(req, res, next) => {
+module.exports.getProfile = async (req, res, next) => {
     const userRef = auth.currentUser
     const userQuery = query(collection(db, 'User'), where('uid', '==', userRef.uid));
     const querySnapshot = await getDocs(userQuery);
