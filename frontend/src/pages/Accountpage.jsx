@@ -22,7 +22,6 @@ export default React.memo(function AccountPage() {
         setSearchResults(e.target.value);
     };
 
-
     useEffect(() => {
         const searchUserData = async () => {
             try {
@@ -79,8 +78,10 @@ export default React.memo(function AccountPage() {
     };
 
     return (
+      
         <>
-            {localStorage.getItem("uid")?
+            {localStorage.getItem("uid") ?
+              
               
                 <section className='bg-custom-30'>
                     <div className='bg-gray-900'  ><Navbar  /></div>
@@ -119,7 +120,7 @@ export default React.memo(function AccountPage() {
                                                     </button>
                                                 <Text>{formatDate(userData?.joinedOn)}</Text>
                                                 {userData?.requestList.map((request,index)=>(
-                                                   <div> <button>{request}</button>
+                                                   <div> <button>{request.userName}</button>
                                                     <button onClick={() => handleAccept({ id: request })}>accept</button>
                                                     <button onClick={() => handleDeny({ id: request })}>deny</button>
                                                     </div>
@@ -165,7 +166,7 @@ export default React.memo(function AccountPage() {
 
                                         </Flex>
                                     </div>
-                                    {/* map this area */}
+                                   
                                     
                                     {userData?.movies?.map((movie, index) => (
                                     <>

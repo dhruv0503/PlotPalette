@@ -19,7 +19,7 @@ export function MyContextProvider({ children }) {
       // e.preventDefault();
       try {
         const response = await axios.get('http://localhost:5000/api/users/myProfile');
-        console.log(response.data);
+    
         setUserData(response.data)
       } catch (error) {
         console.error('Error in getting myProfile:', error.message);
