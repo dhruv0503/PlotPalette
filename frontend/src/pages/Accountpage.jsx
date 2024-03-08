@@ -36,7 +36,10 @@ export default React.memo(function AccountPage() {
     }, [findUser])
 
 
-    const { userData } = useApi();
+
+    const {userData} = useApi();
+    
+    
     const navigate = useNavigate();
     console.log(userData)
   
