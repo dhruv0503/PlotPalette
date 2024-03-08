@@ -164,6 +164,7 @@ const CommentSection = ({ props,watched }) => {
                                       <div class="rounded w-1/3">
                                           <div class="opacity-95 border rounded-lg border-white px-4">
                                               <button   class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                                                {/* call the handleWached */}
                                                   <EyeOpenIcon height={24} width={24} />   Yes I have</button>
                                           </div>
                                       </div>

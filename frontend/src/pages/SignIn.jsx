@@ -39,8 +39,8 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName,password });
-      // setUserUid(response.data.data.uid);
-      // localStorage.setItem("uid" , response.data.data.uid)
+      setUserUid(response.data.data.uid);
+      localStorage.setItem("uid" , response.data.data.uid)
       console.log(response);
       navigate('/');
     } catch (error) {

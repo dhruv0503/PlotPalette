@@ -22,6 +22,7 @@ export default React.memo(function AccountPage() {
         setSearchResults(e.target.value);
     };
 
+
     useEffect(() => {
         const searchUserData = async () => {
             try {
