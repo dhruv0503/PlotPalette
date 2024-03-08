@@ -5,25 +5,28 @@ import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
 const CommentSection = ({ props,watched }) => {
-  const [moviedata, setmoviedata] = useState([]);
-  const [reviewText, setreviewText] = useState('');
+    const [moviedata, setmoviedata] = useState([]);
+    const [reviewText, setreviewText] = useState('');
   const [reviewid, setreviewid] = useState('');
-  const [updateReviewData, setUpdateReviewData] = useState(null); // State for review update data
-
-  useEffect(() => {
-
-    const MovieDetails = async () => {
-      try {
-        const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews/${props}`);
+    const [updateReviewData, setUpdateReviewData] = useState(null); // State for review update data
+    
+useEffect(() => {
+    
+        const MovieDetails = async () => {
+            try {
+                const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews/${props}`);
+                setmoviedata(MovDetails.data);
+                // console.log(MovDetails.data);
+                
+setmoviedata(MovDetails.data);
+            } catch (error) {
+                console.error('Error fetching movies:', error.message);
+            }
+        };
         
-        setmoviedata(MovDetails.data);
-      } catch (error) {
-        console.error('Error fetching movies:', error.message);
-      }
-    };
-
-    MovieDetails();
-  }, [props]);
+        useEffect(() => {
+            MovieDetails();
+}, [props]);
   console.log(props)
     
 
@@ -140,21 +143,21 @@ const CommentSection = ({ props,watched }) => {
     }
   };
 
-  return (
-    <div className="container p-1 mx-auto mt-8">
-          <div className="bg-custom-10 p-6 rounded-lg shadow-md">
-              {localStorage.getItem("uid") ? 
-                  <form method="get">
-                      {watched ? 
-                          <textarea
-                              value={reviewText}
-                              onChange={(e) => setreviewText(e.target.value)}
-                              name="reviewText"
-                              id="reviewText"
-                              rows="4"
-                              placeholder="Add a comment..."
-                              className="w-full p-2 border border-gray-300 rounded"
-                          /> :
+    return (
+        <div className="container p-1 mx-auto mt-8">
+            <div className="bg-custom-10 p-6 rounded-lg shadow-md">
+              {localStorage.getItem("uid") ?
+              <form method="get">
+{watched ? 
+            <textarea
+                        value={reviewText}
+                        onChange={(e) => setreviewText(e.target.value)}
+                        name="reviewText"
+                        id="reviewText"
+                        rows="4"
+                        placeholder="Add a comment..."
+                        className="w-full p-2 border border-gray-300 rounded"
+                    /> :
                           <div class=" ">
                               <div class="flex flex-row space-y-2 items-center justify-center h-full py-4 bg-gray-800 rounded-xl space-x-10">
                                   <div class="w-2/3">
@@ -175,9 +178,9 @@ const CommentSection = ({ props,watched }) => {
                       }
                       
                       <button onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
-                          Post Comment
-                      </button>
-                  </form> :
+                        Post Comment
+                    </button>
+                    </form> :
                   <div class=" ">
                       <div class="flex flex-row space-y-2 items-center justify-center h-full py-4 bg-gray-800 rounded-xl space-x-10">
                           <div class="w-2/3">
@@ -197,11 +200,14 @@ const CommentSection = ({ props,watched }) => {
                       </div>
                   </div>
         }
-      
-                    
-        <div className="space-y-4">
-          {moviedata.map((movie, index) => (
-            <div key={index}>
+
+                
+                <div className="space-y-4">
+                     <div className="flex">
+                       
+                        <div>
+                      {moviedata.map((movie, index) => (
+<div key={index}>
                   <div className='flex m-2 ' >
                       <div className=' m-3' >
                           <Avatar.Root className="bg-blackA1 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle border border-black ">
@@ -210,11 +216,11 @@ const CommentSection = ({ props,watched }) => {
                               </Avatar.Fallback>
                           </Avatar.Root>
                       </div>
-                      <div>
-                          
+                        <div>
+                            
               <button className='font-bold text-lg'  onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
-                          <p>{movie.text}</p>
-                          <div className='flex  items-center gap-3 ' >
+                           <p>{movie.text}</p>
+<div className='flex  items-center gap-3 ' >
                           <ThickArrowUpIcon height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
                           {movie.votes}
                           <ThickArrowDownIcon height={24} width={24} onClick={() => handleDownvote({ id: movie.reviewId })}/>
@@ -223,7 +229,7 @@ const CommentSection = ({ props,watched }) => {
                           <Cross2Icon height={24} width={24} onClick={() => handleDelete({ rid: movie.reviewId })} />
                               
                         </div>
-            </div>
+                         </div>
               {updateReviewData && updateReviewData.movieId === movie.movieId && (
                  <form method="get">
                  <textarea
@@ -244,13 +250,13 @@ const CommentSection = ({ props,watched }) => {
               
               
               
-                  </div>
-             </div>
-          ))}
+                        </div>
+                    </div>
+))}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default CommentSection;
