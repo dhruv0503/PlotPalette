@@ -5,20 +5,19 @@ const utilityFunctions = require("../util/utlityFunctions")
 
 //requestList
 module.exports.requestList = async(req, res, next) => {
-    const {userId} = req.params;
-    const user = await getDoc(doc(User, userId));
-    const userData = user.data();
+    const userRef = auth.currentUser;
+    const userData = await utilityFunctions.getUser(userRef);
     const requestList = userData.requestList;
     res.send(requestList);
 }
 
 //Send Request
 module.exports.addFriend = async(req, res, next) => {
-    const {userId} = req.params;
+    const {userId} = req.query;
     const currentUser = auth.currentUser;
     const reqSender = await utilityFunctions.getUser(currentUser);
     await updateDoc(doc(User, userId), {
-        requestList : arrayUnion(reqSender.id)
+        requestList : arrayUnion({id :reqSender.id, userName : reqSender.userName})
     })
     const userResult = await getDoc(doc(User, userId));
     res.send(userResult.data());
@@ -26,7 +25,7 @@ module.exports.addFriend = async(req, res, next) => {
 
 //Accept Request
 module.exports.acceptFriend = async(req,res, next) => {
-    const {userId} = req.params;
+    const {userId} = req.query;
     const user = auth.currentUser;
     const mainUser = await utilityFunctions.getUser(user);
     await updateDoc(doc(User, mainUser.id),{
@@ -36,7 +35,7 @@ module.exports.acceptFriend = async(req,res, next) => {
     })
     await updateDoc(doc(User,userId), {
         friendCount : increment(1),
-        friendList : arrayUnion(mainUser.id)
+        friendList : arrayUnion({id : mainUser.id, userName : mainUser.userName})
     })
 
     res.send({msg : "Request Accepted"});
@@ -44,7 +43,7 @@ module.exports.acceptFriend = async(req,res, next) => {
 
 //Deny Request
 module.exports.denyFriend = async(req, res, next) => {
-    const {userId} = req.params;
+    const {userId} = req.query;
     const user = auth.currentUser;
     const mainUser = await utilityFunctions.getUser(user);
     await updateDoc(doc(User, mainUser.id), {
@@ -54,3 +53,26 @@ module.exports.denyFriend = async(req, res, next) => {
     res.send({"msg" : "Request Denied", ...userResult.data()});
 }
 
+module.exports.removeFriend = async(req, res, next) => {
+    const {userId} = req.query;
+    const user = auth.currentUser
+    const mainUser = await utilityFunctions.getUser(user);
+    await updateDoc(doc(User, mainUser.id), {
+        friendCount : increment(-1),
+        friendList : arrayRemove(userId)
+    });
+    await updateDoc(doc(User, userId), {
+        friendCount : increment(-1),
+        friendList : arrayRemove(mainUser.id)
+    });
+    const userResult = await getDoc(doc(User, mainUser.id));
+    res.send(userResult.data());
+}
+
+module.exports.friendList = async(req, res, next) => {
+    const {userId} = req.query;
+    const user = await getDoc(doc(User, userId));
+    const userData = user.data();
+    const friendList = userData.friendList;
+    res.send(friendList);
+}
