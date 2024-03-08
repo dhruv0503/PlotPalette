@@ -18,7 +18,7 @@ module.exports.addFriend = async(req, res, next) => {
     const currentUser = auth.currentUser;
     const reqSender = await utilityFunctions.getUser(currentUser);
     await updateDoc(doc(User, userId), {
-        requestList : arrayUnion(reqSender.id)
+        requestList : arrayUnion({id :reqSender.id, userName : reqSender.userName})
     })
     const userResult = await getDoc(doc(User, userId));
     res.send(userResult.data());
@@ -36,7 +36,7 @@ module.exports.acceptFriend = async(req,res, next) => {
     })
     await updateDoc(doc(User,userId), {
         friendCount : increment(1),
-        friendList : arrayUnion(mainUser.id)
+        friendList : arrayUnion({id : mainUser.id, userName : mainUser.userName})
     })
 
     res.send({msg : "Request Accepted"});

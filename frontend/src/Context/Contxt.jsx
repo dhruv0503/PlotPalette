@@ -44,6 +44,7 @@ export function MyContextProvider({ children }) {
     const [all_movie, setAll_movie] = useState(new Set());
     const [searchResults, setSearchResults] = useState([]);
     const [userUid, setUserUid] = useState();
+    const [userDataId, setUserDataId] = useState();
     
     const [genre, setgenre] = useState();
     const [userData, setUserData] = useState();
@@ -84,7 +85,7 @@ export function MyContextProvider({ children }) {
     }, [upcomingMovies,now_playing, popular, top_rated]);
     
     return (
-        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin,setislogin, setUserUid ,userData}} >
+        <MyContext.Provider value={{upcomingMovies , startPage,setStartPage , now_playing, top_rated , popular ,all_movie ,searchResults ,setSearchResults ,genres , userUid , islogin,setislogin, setUserUid ,userData,userDataId,setUserDataId}} >
             {children}
         </MyContext.Provider>
     )    

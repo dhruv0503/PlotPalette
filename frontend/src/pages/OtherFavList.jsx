@@ -1,12 +1,24 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import axios from 'axios'
 import Navbar from './Navbar'
 import { useApi } from '../Context/Contxt'
 import { BookmarkIcon, StarIcon } from '@radix-ui/react-icons'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 function OtherFavList() {
-    const { userData, upcomingMovies } = useApi();
+    const { userData, upcomingMovies ,userDataId} = useApi();
     const { collectionid } = useParams();
     console.log(userData)
+
+
+    const handlefavlist = async ({userDataId}) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/users/options?parameter=favourite&userId=${userDataId}`)
+            console.log(response);
+        } catch (error) {
+            console.error('Error fetching movies:', error.message);
+        }
+    };
+    handlefavlist({userDataId});
 
 
 
