@@ -12,6 +12,10 @@ module.exports.getAllUsers = async (req, res, next) => {
     res.send(userArray);
 };
 
+<<<<<<< HEAD
+module.exports.findUser = async(req, res, next) => {
+    const { userName } = req.query;
+=======
 //User Search
 module.exports.findUser = async (req, res, next) => {
     const { id } = req.params;
@@ -21,6 +25,7 @@ module.exports.findUser = async (req, res, next) => {
 
 module.exports.getUserByUsername = async(req, res, next) => {
     const { userName } = req.query;  
+>>>>>>> 08a4258eda2f9739a161cbe83d0278374f3465e0
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
     if(user) res.send({id:user.id,...user.data()})
@@ -43,7 +48,7 @@ module.exports.getProfile = async (req, res, next) => {
 
 //Admin Route (Used to make admins)
 module.exports.makeAdmin = async (req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.query;
     await updateDoc(doc(User, id), { role: "Admin" });
     res.send(`User with id: ${id} is now an admin`);
 };
@@ -61,32 +66,6 @@ module.exports.optionsList = async (req, res, next) => {
     })
     const filteredList = list.filter((ele) => ele !== null);
     res.send(filteredList);
-}
-
-//friendList
-module.exports.friendList = async(req, res, next) => {
-    const {userId} = req.params;
-    const user = await getDoc(doc(User, userId));
-    const userData = user.data();
-    const friendList = userData.friendList;
-    res.send(friendList);
-}
-
-//removeFriend
-module.exports.removeFriend = async(req, res, next) => {
-    const {userId} = req.params;
-    const user = auth.currentUser
-    const mainUser = await utilityFunctions.getUser(user);
-    await updateDoc(doc(User, mainUser.id), {
-        friendCount : increment(-1),
-        friendList : arrayRemove(userId)
-    });
-    await updateDoc(doc(User, userId), {
-        friendCount : increment(-1),
-        friendList : arrayRemove(mainUser.id)
-    });
-    const userResult = await getDoc(doc(User, mainUser.id));
-    res.send(userResult.data());
 }
 
 module.exports.updateBio = async(req, res, next) => {

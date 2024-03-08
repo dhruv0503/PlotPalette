@@ -9,7 +9,7 @@ const utilityFunctions = require("../util/utlityFunctions");
 
 module.exports.makeReview = async (req, res, next) => {
     const user = auth.currentUser;
-    const { tmdbId } = req.params;
+    const { tmdbId } = req.query;
     const { reviewText } = req.body;
 
     const userObj = await utilityFunctions.getUser(user);
@@ -34,7 +34,7 @@ module.exports.makeReview = async (req, res, next) => {
 }
 
 module.exports.updateReview = async(req, res, next) => {
-    const { reviewId } = req.params
+    const { reviewId } = req.query
     const { reviewText } = req.body;
     const formattedTime = new Date(Date.now()).toLocaleString();
 
@@ -44,15 +44,14 @@ module.exports.updateReview = async(req, res, next) => {
 }
 
 module.exports.getReview = async(req, res, next) => {
-    const { reviewId } = req.params
-    const formattedTime = new Date(Date.now()).toLocaleString();
+    const { reviewId } = req.query;
     const reviewDoc = await getDoc(doc(Review, reviewId))
     res.send(reviewDoc.data());
 }
 
 module.exports.deleteReview = async(req, res, next) => {
     const userRef = auth.currentUser
-    const {tmdbId, reviewId} = req.params;
+    const {tmdbId, reviewId} = req.query;
     const movie = await utilityFunctions.getMovie(tmdbId)
     const user = await utilityFunctions.getUser(userRef);
     const result = await utilityFunctions.getSubCollectionMovies(userRef, tmdbId)
@@ -74,7 +73,7 @@ module.exports.deleteReview = async(req, res, next) => {
 
 module.exports.upVote = async(req, res, next) => {
     const userRef = auth.currentUser;
-    const { reviewId } = req.params;
+    const { reviewId } = req.query;
     const user = await utilityFunctions.getUser(userRef);
     
     const userReviews = await getDocs(collection(User, user.id, "reviews"));
@@ -90,7 +89,7 @@ module.exports.upVote = async(req, res, next) => {
 
 module.exports.downVote = async(req, res, next) => {
     const userRef = auth.currentUser;
-    const {reviewId} = req.params;
+    const {reviewId} = req.query;
     const user = await utilityFunctions.getUser(userRef);
 
     const userReviews = await getDocs(collection(User, user.id, "reviews"));

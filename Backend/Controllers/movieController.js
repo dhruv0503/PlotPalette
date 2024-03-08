@@ -87,7 +87,7 @@ module.exports.getMovieList = async (req, res, next) => {
 module.exports.watched = async (req, res, next) => {
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
-    const { tmdbId } = req.params;
+    const { tmdbId } = req.query;
     const movieData = await utilityFunctions.getMovie(tmdbId);
 
     const movies = await getDocs(collection(User, user.id, 'movies'));
@@ -102,8 +102,7 @@ module.exports.watched = async (req, res, next) => {
 
 module.exports.rating = async(req, res, next) => {
     const user = auth.currentUser;
-    const { tmdbId } = req.params;
-    const { rating } = req.query;
+    const { tmdbId, rating } = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -124,8 +123,7 @@ module.exports.rating = async(req, res, next) => {
 
 module.exports.favourite = async(req, res, next) => {
     const user = auth.currentUser;
-    const { tmdbId } = req.params;
-    const {favourite} = req.query;
+    const { tmdbId, favourite } = req.query;
 
     const userObj = await utilityFunctions.getUser(user)
     const movieObj = await utilityFunctions.getMovie(Number(tmdbId));
@@ -158,7 +156,7 @@ module.exports.watchLater = async(req, res, next) => {
 }
 
 module.exports.getReviews = async (req, res, next) => {
-    const { tmdbId } = req.params;
+    const { tmdbId } = req.query;
     const userRef = auth.currentUser
     
     const userQuery = query(collection(db, 'Review'), where('tmdbId', '==', String(tmdbId)));
@@ -197,7 +195,7 @@ module.exports.getMovieByGenre = async (req, res, next) => {
 }
 
 module.exports.getCastMember = async (req, res, next) => {
-    const { castId } = req.params;
+    const { castId } = req.query;
     const castInfo = await axios.get(`https://api.themoviedb.org/3/person/${castId}?api_key=${process.env.TMDB_API_KEY}`)
     const castMovies = await axios.get(`https://api.themoviedb.org/3/person/${castId}/movie_credits?api_key=${process.env.TMDB_API_KEY}`)
 
