@@ -44,7 +44,7 @@ export default React.memo(function OthersPage() {
     const handleAddfriend = async () => {
       console.log(userData);
         try {
-            const response = await axios.post(`http://localhost:5000/api/friend/${userData.id}/send`);
+            const response = await axios.post(`http://localhost:5000/api/friend/send?userId=${userData.id}`);
             console.log(response);
         } catch (error) {
             console.error('Error in getting all users:', error.message)

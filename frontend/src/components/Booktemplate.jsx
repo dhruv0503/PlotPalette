@@ -57,7 +57,7 @@ export default React.memo(function Booktemplate() {
 };
             const movieWatchedLater= async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/watchLater?watchLater=${true}`);
+                    const response = await axios.get(`http://localhost:5000/api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`);
                     console.log(response.data);
                 } catch (error) {
                     console.error('Error fetching movi:', error.message);
@@ -70,7 +70,7 @@ export default React.memo(function Booktemplate() {
     
     const handleRating= async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/rating?rating=${number}`);
+          const response = await axios.get(`http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${number}`);
            setrating(rating+1)
             // console.log(response.data);
         } catch (error) {
@@ -79,7 +79,7 @@ export default React.memo(function Booktemplate() {
     };
       const handlefav= async () => {
                     try {
-                        const response = await axios.get(`http://localhost:5000/api/movies/${movieId}/favourite?favourite=${true}`);
+                        const response = await axios.get(`http://localhost:5000/api/movies/favourite?tmdbId=${movieId}&favourite=${true}`);
                         console.log(response);
                     } catch (error) {
                         console.error('Error fetching movi:', error.message);
@@ -95,7 +95,7 @@ export default React.memo(function Booktemplate() {
     
 
    
-console.log(moviedata)
+
 
 
 

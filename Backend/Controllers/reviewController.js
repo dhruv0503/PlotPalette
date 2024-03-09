@@ -28,12 +28,12 @@ module.exports.makeReview = async (req, res, next) => {
         "reviewCount" : increment(1),
         "reviews" : arrayUnion(reviewId)
       });
-    const reviewDoc = await getDoc(doc(Review, reviewId));
-    res.send(reviewDoc.data())
+    const reviewDoc = await getDoc(doc(Review,reviewId ));
+    res.send({"reviewId": reviewId,...reviewDoc.data()})
 }
 
 module.exports.updateReview = async(req, res, next) => {
-    const { reviewId } = req.query
+    const { tmdbId,reviewId } = req.query
     const { reviewText } = req.body;
     const formattedTime = new Date(Date.now()).toLocaleString();
 
@@ -43,7 +43,7 @@ module.exports.updateReview = async(req, res, next) => {
 }
 
 module.exports.getReview = async(req, res, next) => {
-    const { reviewId } = req.query;
+    const { tmdbId,reviewId } = req.query;
     const reviewDoc = await getDoc(doc(Review, reviewId))
     res.send(reviewDoc.data());
 }
