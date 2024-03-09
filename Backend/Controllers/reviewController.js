@@ -101,10 +101,3 @@ module.exports.downVote = async(req, res, next) => {
     const review = await getDoc(doc(Review, reviewId))
     res.send(review.data());
 }
-
-module.exports.test = async(req, res, next) => {
-    const {tmdbId} = req.params;
-    console.log(tmdbId);
-    const movie = await utilityFunctions.getMovie(tmdbId);
-    res.send(movie);
-}
