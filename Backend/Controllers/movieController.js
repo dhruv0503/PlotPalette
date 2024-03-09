@@ -8,64 +8,129 @@ const expressError = require("../util/expressError");
 const utilityFunctions = require("../util/utlityFunctions");
 
 module.exports.getMovie = async (req, res, next) => {
-    const { tmdbId } = req.query;
-    const userRef = auth.currentUser;
-    const userQuery = query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
-    const querySnapshot = await getDocs(userQuery);
-    
-    if (querySnapshot.docs.length > 0) {
-        const movieData = querySnapshot.docs[0];
-        if (userRef !== null) {
-            const user = await utilityFunctions.getUser(userRef);
-            const movies = await getDocs(collection(User, user.id, 'movies'))
-            const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
+    try {
+        const { tmdbId } = req.query;
+        if(!tmdbId) throw new Error("tmdbId is required");
+        const userRef = auth.currentUser;
+        const userQuery = query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
+        const querySnapshot = await getDocs(userQuery);
 
-            if (!movies || !movieObj) {
-                const obj = { watchedByUser: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title,  rating : 0, favourite : false, watchLater : false, }
-                await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true,  ...movieData.data() })
-                return;
+        if (querySnapshot.docs.length > 0) {
+            const movieData = querySnapshot.docs[0];
+            if (userRef !== null) {
+                const user = await utilityFunctions.getUser(userRef);
+                const movies = await getDocs(collection(User, user.id, 'movies'))
+                const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
+
+                if (!movies || !movieObj) {
+                    const obj = { watchedByUser: false, tmdbId, movieId: movieData.id, "title": movieData.data().title, rating: 0, favourite: false, watchLater: false, }
+                    await addDoc(collection(doc(User, user.id), 'movies'), obj);
+                    res.send({ watchedByUser: false, favouriteByUser: user.favourite, loggedIn: true, ...movieData.data() })
+                    return;
+                }
+                if (movieObj.data().watched) {
+                    res.send({ watchedByUser: true, favouriteByUser: user.favourite, loggedIn: true, ...movieData.data() })
+                    return;
+                }
             }
-            if (movieObj.data().watched) {
-                res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, ...movieData.data() })
-                return;
+            res.send({ watchedByUser: false, loggedIn: false, ...movieData.data() });
+
+        } else {
+            const path = "https://image.tmdb.org/t/p/original"
+            const movie = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_API_KEY}`)
+            const credits = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/credits?api_key=${process.env.TMDB_API_KEY}`)
+            const providers = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/watch/providers?api_key=${process.env.TMDB_API_KEY}`)
+
+            const cast = credits.data.cast;
+            const data = movie.data;
+            const mid = providers.data.results.US;
+            const platforms = mid ? utilityFunctions.removeField(mid, 'link') : null;
+
+            const movieObj = { "tmdbId": data.id, "title": data.title, "language": data.original_language, "overview": data.overview, "poster_path": path + data.poster_path, "release_date": data.release_date, "reviewCount": 0, "rating": 0, "numRating": 0, "favourite": 0, "reviews": [], "genres": data.genres, "production_companies": data.production_companies, "runTime": data.runtime, cast, platforms };
+            const newMovie = await addDoc(Movie, movieObj);
+            const newMovieData = await getDoc(doc(Movie, newMovie.id));
+
+            if (userRef !== null) {
+                const user = await utilityFunctions.getUser(userRef);
+                const movies = await getDocs(collection(doc(User, user.id), 'movies'))
+                const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
+                if (!movies || !movieObj) {
+                    const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title": newMovieData.data().title, rating: 0, favourite: false, watchLater: false, }
+                    await addDoc(collection(doc(User, user.id), 'movies'), obj);
+                    res.send({ watchedByUser: false, favouriteByUser: user.favourite, loggedIn: true, id: newMovieData.id, ...newMovieData.data() })
+                    return;
+                }
+                if (movieObj.data().watched) {
+                    res.send({ watchedByUser: true, favouriteByUser: user.favourite, loggedIn: true, id: newMovieData.id, ...newMovieData.data() })
+                    return;
+                }
             }
+            res.send({ watchedByUser: false, loggedIn: false, id: newMovieData.id, ...newMovieData.data() });
         }
-        res.send({ watchedByUser: false, loggedIn : false, ...movieData.data()});
-
-    } else {
-        const path = "https://image.tmdb.org/t/p/original"
-        const movie = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_API_KEY}`)
-        const credits = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/credits?api_key=${process.env.TMDB_API_KEY}`)
-        const providers = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/watch/providers?api_key=${process.env.TMDB_API_KEY}`)
-
-        const cast = credits.data.cast;
-        const data = movie.data;
-        const mid = providers.data.results.US;
-        const platforms = mid ? utilityFunctions.removeField(mid, 'link') : null;
-
-        const movieObj = { "tmdbId": data.id, "title": data.title, "language": data.original_language, "overview": data.overview, "poster_path": path + data.poster_path, "release_date": data.release_date, "reviewCount": 0, "rating": 0, "numRating": 0, "favourite": 0, "reviews": [], "genres": data.genres, "production_companies": data.production_companies, "runTime": data.runtime, cast, platforms };
-        const newMovie = await addDoc(Movie, movieObj);
-        const newMovieData = await getDoc(doc(Movie, newMovie.id));
-
-        if (userRef !== null) {
-            const user = await utilityFunctions.getUser(userRef);
-            const movies = await getDocs(collection(doc(User, user.id), 'movies'))
-            const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
-            if (!movies || !movieObj) {
-                const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title,  rating : 0, favourite : false, watchLater : false, }
-                await addDoc(collection(doc(User, user.id), 'movies'), obj);
-                res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
-                return;
-            }
-            if (movieObj.data().watched) {
-                res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
-                return;
-            }
-        }
-        res.send({ watchedByUser: false, loggedIn : false, id: newMovieData.id, ...newMovieData.data() });
+    }catch(err){
+        next(new expressError(err.message, err.statuscode));
     }
 }
+
+// module.exports.getMovie = async (req, res, next) => {
+//     const { tmdbId } = req.query;
+//     const userRef = auth.currentUser;
+//     const userQuery = await query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
+//     const querySnapshot = await getDocs(userQuery);
+    
+//     if (querySnapshot.docs.length > 0) {
+//         const movieData = querySnapshot.docs[0];
+//         if (userRef !== null) {
+//             const user = await utilityFunctions.getUser(userRef);
+//             const movies = await getDocs(collection(User, user.id, 'movies'))
+//             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
+
+//             if (!movies || !movieObj) {
+//                 const obj = { watchedByUser: false, tmdbId, movieId: movieData.id, "title" : movieData.data().title,  rating : 0, favourite : false, watchLater : false, }
+//                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
+//                 res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true,  ...movieData.data() })
+//                 return;
+//             }
+//             if (movieObj.data().watched) {
+//                 res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, ...movieData.data() })
+//                 return;
+//             }
+//         }
+//         res.send({ watchedByUser: false, loggedIn : false, ...movieData.data()});
+
+//     } else {
+//         const path = "https://image.tmdb.org/t/p/original"
+//         const movie = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_API_KEY}`)
+//         const credits = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/credits?api_key=${process.env.TMDB_API_KEY}`)
+//         const providers = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/watch/providers?api_key=${process.env.TMDB_API_KEY}`)
+
+//         const cast = credits.data.cast;
+//         const data = movie.data;
+//         const mid = providers.data.results.US;
+//         const platforms = mid ? utilityFunctions.removeField(mid, 'link') : null;
+
+//         const movieObj = { "tmdbId": data.id, "title": data.title, "language": data.original_language, "overview": data.overview, "poster_path": path + data.poster_path, "release_date": data.release_date, "reviewCount": 0, "rating": 0, "numRating": 0, "favourite": 0, "reviews": [], "genres": data.genres, "production_companies": data.production_companies, "runTime": data.runtime, cast, platforms };
+//         const newMovie = await addDoc(Movie, movieObj);
+//         const newMovieData = await getDoc(doc(Movie, newMovie.id));
+
+//         if (userRef !== null) {
+//             const user = await utilityFunctions.getUser(userRef);
+//             const movies = await getDocs(collection(doc(User, user.id), 'movies'))
+//             const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
+//             if (!movies || !movieObj) {
+//                 const obj = { watched: false, tmdbId, movieId: newMovieData.id, "title" : newMovieData.data().title,  rating : 0, favourite : false, watchLater : false, }
+//                 await addDoc(collection(doc(User, user.id), 'movies'), obj);
+//                 res.send({ watchedByUser: false, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+//                 return;
+//             }
+//             if (movieObj.data().watched) {
+//                 res.send({ watchedByUser: true, favouriteByUser : user.favourite, loggedIn : true, id: newMovieData.id, ...newMovieData.data() })
+//                 return;
+//             }
+//         }
+//         res.send({ watchedByUser: false, loggedIn : false, id: newMovieData.id, ...newMovieData.data() });
+//     }
+// }
 
 //now_playing
 //popular
