@@ -9,20 +9,22 @@ function FavList() {
     const [favlist, setfavlist] = useState([]);
     const { collectionid } = useParams();
     const [userFav, setuserFav] = useState([]);
-    useEffect(() => {
-        const handlefavlist = async () => {
-            try {
-                //change userDATAID
-                const response = await axios.get(`http://localhost:5000/api/users/options?parameter=${collectionid}&userId=${userData.id}`)
-                setuserFav(response.data)
+    const handlefavlist = async () => {
+        try {
+            //change userDATAID
+            const response = await axios.get(`http://localhost:5000/api/users/options?parameter=favourited&userId=${userData.id}`)
+            setuserFav(response.data)
+            console.log(response)
 
-            } catch (error) {
-                console.error('Error fetching movies:', error.message);
-            }
-        };
+        } catch (error) {
+            console.error('Error fetching movies:', error.message);
+        }
+    };
+    useEffect(() => {
+      
         handlefavlist();
     }, [])
-    console.log(userFav)
+    
 
 
  

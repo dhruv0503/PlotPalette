@@ -64,7 +64,7 @@ export default React.memo(function AccountPage() {
 
     const handleAccept = async ({id}) => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/friend/${id}/accept`)
+            const response = await axios.post(`http://localhost:5000/api/friend/accept?userId=${id}`)
             console.log(response);
         } catch (error) {
             console.error('Error fetching movies:', error.message);
@@ -73,12 +73,15 @@ export default React.memo(function AccountPage() {
 
     const handleDeny = async ({id}) => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/friend/${id}/deny`)
+            const response = await axios.delete(`http://localhost:5000/api/friend/deny?userId=${id}`)
             console.log(response);
         } catch (error) {
             console.error('Error fetching movies:', error.message);
         }
     };
+
+
+   
 
     return (
       
