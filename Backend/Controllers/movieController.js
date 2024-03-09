@@ -8,7 +8,7 @@ const expressError = require("../util/expressError");
 const utilityFunctions = require("../util/utlityFunctions");
 
 module.exports.getMovie = async (req, res, next) => {
-    const { tmdbId } = req.params;
+    const { tmdbId } = req.query;
     const userRef = auth.currentUser;
     const userQuery = query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
     const querySnapshot = await getDocs(userQuery);
@@ -84,7 +84,7 @@ module.exports.getMovieList = async (req, res, next) => {
 }
 
 module.exports.watched = async (req, res, next) => {
-    const { tmdbId } = req.params;
+    const { tmdbId } = req.query;
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
     const movieData = await utilityFunctions.getMovie(tmdbId);

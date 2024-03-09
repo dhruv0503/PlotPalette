@@ -37,7 +37,7 @@ module.exports.isLoggedIn = () => {
 }
 module.exports.isWatched = (parameter) => {
     return async (req, res, next) => {
-        const tmdbId = req.params.tmdbId || req.query.tmdbId;
+        const tmdbId = req.query.tmdbId;
         const user = auth.currentUser;
         const userObj = await utilityFunctions.getUser(user);
         const movie = await utilityFunctions.getMovie(tmdbId);
