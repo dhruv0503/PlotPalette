@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
@@ -10,6 +10,7 @@ const CommentSection = ({ props,watched }) => {
   const [textArea, setTextArea] = useState(false);
   
   const [reviewid, setreviewid] = useState('');
+  const navigate = useNavigate();
 
 
   function textfield(id){
@@ -61,6 +62,7 @@ const CommentSection = ({ props,watched }) => {
       const response = await axios.post(`http://localhost:5000/api/reviews?tmdbId=${props}`, { reviewText });
       console.log('Comment posted:', response.data);
       setreviewText('');
+      window.location.reload();
 
       // Optionally, fetch updated movie data and update moviedata state
     } catch (error) {
@@ -93,6 +95,7 @@ const CommentSection = ({ props,watched }) => {
         { reviewText }
       );
       console.log('Review updated:', response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error updating review:', error.message);
     }
@@ -102,7 +105,8 @@ const CommentSection = ({ props,watched }) => {
   const handleDelete = async ({ rid }) => {
     try {
         const response = await axios.delete(`http://localhost:5000/api/reviews?tmdbId=${props}&reviewId=${rid}`);
-        console.log(response.data);
+      console.log(response.data);
+      window.location.reload();
         }
            catch (error) {
       console.error('Error deleting review:', error.message);
@@ -115,6 +119,7 @@ const CommentSection = ({ props,watched }) => {
       const response = await axios.put(`http://localhost:5000/api/reviews/upvote?reviewId=${id}`);
       // Handle user details (e.g., display username)
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.error('Error fetching user:', error.message);
     }
@@ -125,10 +130,12 @@ const CommentSection = ({ props,watched }) => {
       const response = await axios.put(`http://localhost:5000/api/reviews/downvote?reviewId=${id}`);
       console.log(response);
       // Handle user details (e.g., display username)
+      window.location.reload();
     } catch (error) {
       console.error('Error fetching user:', error.message);
     }
   };
+  console.log(moviedata)
 
  
   return (
@@ -154,9 +161,9 @@ const CommentSection = ({ props,watched }) => {
                     <p class="w-full pb-8 text-sm tracking-wide leading-tight text-white">You can only comment if you have watched the movie</p>
                     <div class="rounded w-1/3">
                       <div class="opacity-95 border rounded-lg border-white px-4">
-                        <button class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                        <button  class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
                           {/* call the handleWached */}
-                          <EyeOpenIcon height={24} width={24} />   Yes I have</button>
+                          <EyeOpenIcon height={24} width={24} />Yes I have</button>
                       </div>
                     </div>
                   </div>
@@ -203,16 +210,18 @@ const CommentSection = ({ props,watched }) => {
                 </div>
                 <div>
 
-                  <button className='font-bold text-lg' onClick={() => handleUser({ id: movie.userId })}>{movie.reviewer}</button>
-                  <p>{movie.text}</p>
+                  <button className='font-bold text-lg' onClick={() => handleUser(navigate(`/account/${movie?.reviewer}`)) }>{movie?.userName}</button>
+                  <p>{movie?.text}</p>
                   <div className='flex  items-center gap-3 ' >
                     <ThickArrowUpIcon height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
                     {movie.votes}
                     <ThickArrowDownIcon height={24} width={24} onClick={() => handleDownvote({ id: movie.reviewId })} />
+                    {movie?.owner &&
+                      (<>
                     <UpdateIcon height={24} width={24} onClick={() => textfield({ id: movie.reviewId })} />
-
                     <Cross2Icon height={24} width={24} onClick={() => handleDelete({ rid: movie.reviewId })} />
-
+                      </>
+                    )}
                   </div>
                 </div>
                 {textArea && (
