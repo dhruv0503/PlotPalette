@@ -27,7 +27,7 @@ function ResetPass() {
   };
 
   return (
-      <>
+    <div className='h-screen w-screen bg-custom-30'>
         <div className='bg-gray-900' ><Navbar/></div>
       <div class="p-6 container bg-custom-30 ">
                
@@ -49,7 +49,7 @@ function ResetPass() {
               
         
           </div>
-        </>
+        </div>
   )
   }
 export default ResetPass

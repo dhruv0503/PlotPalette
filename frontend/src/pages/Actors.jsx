@@ -25,7 +25,7 @@ function Actors() {
     useEffect(() => {
         const MovieDetails = async () => {
             try {
-                const ActDetails = await axios.get(`http://localhost:5000/api/movies/person/${ActorId}`);
+                const ActDetails = await axios.get(`http://localhost:5000/api/movies/person?castId=${ActorId}`);
                
                 setActorInfo(ActDetails.data);
             } catch (error) {
@@ -35,6 +35,7 @@ function Actors() {
         MovieDetails();
 
     }, [])
+    console.log(ActorInfo)
     
  
 
@@ -49,10 +50,10 @@ function Actors() {
             <hr className='m-5' />
             <div className='md:grid md:grid-cols-4' >
                 
-                <div className='items-center flex md:flex-col ' >
-                    <img className=' justify-center flex  max-h-[300px] m-3 rounded-lg border border-custom-40 ' src={`https://image.tmdb.org/t/p/original${ActorInfo.profile_path}`} alt="" />
+                <div className='items-center sm:flex sm:flex-row md:flex-col ' >
+                    <img className=' ml-5  flex  max-h-[300px] m-3 rounded-lg border border-custom-40 ' src={`https://image.tmdb.org/t/p/original${ActorInfo.profile_path}`} alt="" />
                     <div className='m-3 gap-2 flex'>
-                    <Text className=' text-custom-10 ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
+                    <Text className='  text-custom-10  ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
                             
                             {!showMore && (<Link onClick={toggleShowMore} >{showMore ? 'show Less' : 'read more...'}</Link>)}</Text>
                     

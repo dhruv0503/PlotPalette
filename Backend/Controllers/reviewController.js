@@ -16,7 +16,7 @@ module.exports.makeReview = async (req, res, next) => {
 
     const formattedTime = new Date(Date.now()).toLocaleString();
 
-    const obj = {"text": reviewText, "userId" : userObj.id, "reviewer" : userObj.name, "movieId" : movieObj.id, "movieName" : movieObj.title, tmdbId, "timeStamp" : formattedTime, "votes" : 0}
+    const obj = { "text": reviewText, "userId": userObj.id, "userName": userObj.userName,  "reviewer" : userObj.name, "movieId" : movieObj.id, "movieName" : movieObj.title, tmdbId, "timeStamp" : formattedTime, "votes" : 0 }
     
     const review = await addDoc(Review, obj);
     const reviewId = review.id;
