@@ -7,7 +7,7 @@ const utilityFunctions = require("../util/utlityFunctions")
 module.exports.requestList = async(req, res, next) => {
     const userRef = auth.currentUser;
     const userData = await utilityFunctions.getUser(userRef);
-    const data = { reqList: userData.requestList, frenList: userData.friendList };
+    const data = { reqList :userData.requestList, frenList : userData.friendList}
     res.send(data);
 }
 
@@ -26,12 +26,14 @@ module.exports.addFriend = async(req, res, next) => {
 //Accept Request
 module.exports.acceptFriend = async(req,res, next) => {
     const {userId} = req.query;
+    const reqSender = await getDoc(doc(User, userId));
+    const reqSenderData = reqSender.data();
     const user = auth.currentUser;
     const mainUser = await utilityFunctions.getUser(user);
     await updateDoc(doc(User, mainUser.id),{
         friendCount : increment(1),
-        friendList : arrayUnion(userId),
-        requestList : arrayRemove(userId)
+        friendList : arrayUnion({id : userId, userName : reqSenderData.userName}),
+        requestList : arrayRemove({id : userId, userName : reqSenderData.userName, sent : true})
     })
     await updateDoc(doc(User,userId), {
         friendCount : increment(1),
@@ -44,10 +46,12 @@ module.exports.acceptFriend = async(req,res, next) => {
 //Deny Request
 module.exports.denyFriend = async(req, res, next) => {
     const {userId} = req.query;
+    const reqSender = await getDoc(doc(User, userId));
+    const reqSenderData = reqSender.data();
     const user = auth.currentUser;
     const mainUser = await utilityFunctions.getUser(user);
     await updateDoc(doc(User, mainUser.id), {
-        requestList : arrayRemove(userId)
+        requestList : arrayRemove({id : userId, userName : reqSenderData.userName, sent : true})
     })
     const userResult = await getDoc(doc(User, mainUser.id));
     res.send({"msg" : "Request Denied", ...userResult.data()});
@@ -55,15 +59,17 @@ module.exports.denyFriend = async(req, res, next) => {
 
 module.exports.removeFriend = async(req, res, next) => {
     const {userId} = req.query;
+    const reqSender = await getDoc(doc(User, userId));
+    const reqSenderData = reqSender.data();
     const user = auth.currentUser
     const mainUser = await utilityFunctions.getUser(user);
     await updateDoc(doc(User, mainUser.id), {
         friendCount : increment(-1),
-        friendList : arrayRemove(userId)
+        friendList : arrayRemove({id : userId, userName : reqSenderData.userName})
     });
     await updateDoc(doc(User, userId), {
         friendCount : increment(-1),
-        friendList : arrayRemove(mainUser.id)
+        friendList : arrayRemove({id : mainUser.id, userName : mainUser.userName})
     });
     const userResult = await getDoc(doc(User, mainUser.id));
     res.send(userResult.data());

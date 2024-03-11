@@ -95,7 +95,6 @@ export default React.memo(function Booktemplate() {
       console.error("Error fetching movi:", error.message);
     }
   };
-
   return (
     <div className="relative">
     

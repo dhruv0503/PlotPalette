@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -46,19 +46,19 @@ const HomeSlider = ({ slides }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-        }, 3000); 
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [slides.length]);
 
     return (
         <div className='p-6 gap-3 '>
-          
+
             <div className='p-1'>
                 <Slider {...settings}>
                     {slides.map((movie) => (
                         <div className='focus:outline-none' >
-                           <img className='h-[600px] ' src={movie} alt="" />
+                            <img className='h-[600px] ' src={movie} alt="" />
                         </div>
                     ))}
 
