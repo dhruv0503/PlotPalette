@@ -39,12 +39,12 @@ module.exports.getMovie = async (req, res, next) => {
                 }
             }
             res.send({ watchedByUser: false, loggedIn: false, id : querySnapshot.docs[0].id, ...movieData.data() });
-
         } else {
             const path = "https://image.tmdb.org/t/p/original"
             const movie = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_API_KEY}`)
             const credits = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/credits?api_key=${process.env.TMDB_API_KEY}`)
             const providers = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}/watch/providers?api_key=${process.env.TMDB_API_KEY}`)
+            
             const cast = credits.data.cast;
             const data = movie.data;
             const mid = providers.data.results.US;

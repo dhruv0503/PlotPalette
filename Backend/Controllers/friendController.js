@@ -8,7 +8,7 @@ module.exports.requestList = async(req, res, next) => {
     const userRef = auth.currentUser;
     const userData = await utilityFunctions.getUser(userRef);
     const data = { reqList :userData.requestList, frenList : userData.friendList}
-    res.send(requestList);
+    res.send(data);
 }
 
 //Send Request
