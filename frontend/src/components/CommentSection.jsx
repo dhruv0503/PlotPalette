@@ -7,6 +7,7 @@ import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPl
 const CommentSection = ({ props, watched }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
+  const [commentText, setCommentText] = useState('');
   const [textArea, setTextArea] = useState(false);
 
   const [reviewid, setreviewid] = useState('');
@@ -83,20 +84,21 @@ const CommentSection = ({ props, watched }) => {
 
   const handleUpdateReview = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log(reviewid);
+    console.log(commentText);
 
-    if (!reviewText) {
+    if (!commentText) {
       console.error('Review text is empty.');
       return;
     }
-
+    
     try {
       const response = await axios.put(`http://localhost:5000/api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
-        { reviewText }
+        { commentText }
       );
       console.log('Review updated:', response.data);
       window.location.reload();
     } catch (error) {
+      console.log("gun")
       console.error('Error updating review:', error.message);
     }
   };
@@ -135,7 +137,7 @@ const CommentSection = ({ props, watched }) => {
       console.error('Error fetching user:', error.message);
     }
   };
-  console.log(moviedata)
+ 
 
  
   return (
@@ -203,7 +205,7 @@ const CommentSection = ({ props, watched }) => {
               <div className='flex m-2 ' >
                 <div className=' m-3' >
                   <Avatar.Root className="bg-blackA1 inline-flex h-[50px] w-[50px] select-none items-center justify-center overflow-hidden rounded-full align-middle border border-black ">
-                    <Avatar.Fallback className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium">
+                    <Avatar.Fallback className="text-custom-20 bg-custom-30 leading-1 flex h-full w-full items-center justify-center text-[15px] font-bold ">
                       {getInitials(movie.reviewer)}
                     </Avatar.Fallback>
                   </Avatar.Root>
@@ -212,8 +214,9 @@ const CommentSection = ({ props, watched }) => {
 
                   <button className='font-bold text-lg' onClick={() => handleUser(navigate(`/account/${movie?.reviewer}`)) }>{movie?.userName}</button>
                   <p>{movie?.text}</p>
-                  <div className='flex  items-center gap-3 ' >
-                    <ThickArrowUpIcon height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
+                  <div className='flex   items-center gap-3 ' >
+
+                    <ThickArrowUpIcon  className='text-custom-30  '  height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
                     {movie.votes}
                     <ThickArrowDownIcon height={24} width={24} onClick={() => handleDownvote({ id: movie.reviewId })} />
                     {movie?.owner &&
@@ -224,21 +227,23 @@ const CommentSection = ({ props, watched }) => {
                     )}
                   </div>
                 </div>
-                {textArea && (
+                {movie?.owner && textArea && (
                   <form method="get">
                     <textarea
-                      value={reviewText}
-                      onChange={(e) => setreviewText(e.target.value)}
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
                       name="updateText"
                       id="updateText"
                       rows="2"
-                      placeholder="Add a comment..."
+                      placeholder="Update review"
                       className="w-full p-2 border border-gray-300 rounded"
                     />
                     <button onClick={handleUpdateReview} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
                       Update
                     </button>
+                  
                   </form>
+                  
 
                 )}
               </div>

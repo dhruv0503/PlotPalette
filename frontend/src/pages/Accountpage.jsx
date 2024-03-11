@@ -173,16 +173,17 @@ export default React.memo(function AccountPage() {
                     <EyeOpenIcon height={24} width={24} />
                   </div> Watched
                 </ div>
-                <div role="button" onClick={() => setisopen(true)} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-                  <div   class="grid place-items-center mr-4">
-                    <PlusIcon height={24} width={24} />
-                  </div> Edit bio
-                </div>
                 {isopen && <div className="flex" >
 
                   <TextArea className="bg-custom-20 h-[40px] rounded-lg border border-custom-20" placeholder="Type new Bio…" onChange={(e) => setUserBio(e.target.value)} value={bio} />
                   <button className="bg-gray-900 m-2 border border-custom-20 flex justify-center p-2 rounded-lg text-custom-20" onClick={handleBio} >submit</button>
-                </div>  }
+                </div>}
+                <div role="button" onClick={() => setisopen(!isopen)} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                  <div   class="grid place-items-center mr-4">
+                    <PlusIcon height={24} width={24} />
+                  </div> Edit bio
+                </div>
+                
                 <div onClick={() => navigate('/signin/reset')} role="button" tabindex="0" class="flex items-center w-full p-3 text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
                 <div class="grid place-items-center mr-4">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-5 w-5">
