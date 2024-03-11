@@ -7,6 +7,7 @@ import {
   InfoCircledIcon,
   StarIcon,
   StarFilledIcon,
+  HeartFilledIcon,
 } from "@radix-ui/react-icons";
 import { Callout } from "@radix-ui/themes";
 import CommentSection from "./CommentSection";
@@ -22,6 +23,7 @@ export default React.memo(function Booktemplate() {
   const { movieId } = useParams();
   const [number, setNumber] = useState();
   const [rating, setrating] = useState(1);
+  const [ratingn, setRating] = useState(0);
   const handleChange = (event) => {
     const value = parseInt(event.target.value);
     if (value >= 1 && value <= 5) {
@@ -77,7 +79,7 @@ export default React.memo(function Booktemplate() {
     
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${number}`
+        `http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${ratingn}`
       );
       setrating(rating + 1);
       window.location.reload();
@@ -96,6 +98,25 @@ export default React.memo(function Booktemplate() {
       console.error("Error fetching movi:", error.message);
     }
   };
+  
+
+
+
+
+
+  
+  
+    const handleHover = (newRating) => {
+      setRating(newRating);
+    };
+  
+    const handleClick = (newRating) => {
+      setRating(newRating);
+      // Add logic to send the rating data to your backend (optional)
+    };
+    console.log(ratingn)
+
+
   return (
     <div className="relative">
     
@@ -129,22 +150,45 @@ export default React.memo(function Booktemplate() {
               alt="Bold typography"
               className="py-10 px-1 h-[500px] w-full rounded-md object-cover"
             />
+
+
+
+
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata?.watchedByUser ? (
                 <>
-                  <button onClick={handlefav}>
+                 {moviedata.favouriteByUser ?
+                  <HeartFilledIcon  height={32} width={32} />
+                 : <button onClick={handlefav}>
                     <HeartIcon height={32} width={32} />
                   </button>
-                  {moviedata.rating ?
+                  }
+                  {moviedata.ratingByUser ?
                     <StarFilledIcon height={32} width={32} /> :
                     <button >
 
-                      <div className="flex" onChange={handleChange}>
+<div className="flex items-center space-x-1">
+      {[1, 2, 3, 4, 5].map((starValue) => (
+        <span
+          key={starValue}
+          className={`star cursor-pointer hover:text-yellow-500 ${
+            ratingn >= starValue ? 'active' : ''
+          }`}
+          data-rating={starValue}
+          onMouseOver={() => handleHover(starValue)}
+          onClick={handleRating}
+        >
+          <StarIcon height={32} width={32} />
+        </span>
+      ))}
+    </div>
+
+                      {/* <div className="flex" onChange={handleChange}>
                         <StarIcon onClick={
                           handleRating
                         } height={32} width={32} />
                         <input type="number" min="1" max="5" value={number} />
-                      </div>
+                      </div> */}
                     </button>
                   }
                 </>

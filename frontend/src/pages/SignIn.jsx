@@ -108,10 +108,10 @@ export default function SignIn() {
                 id="name" />
             </fieldset>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-              <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
+              <label  className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="username">
                   Password
               </label>
-                <input value={password} onChange={(e) => setpassword(e.target.value)}
+                <input type='password' value={password} onChange={(e) => setpassword(e.target.value)}
                 className="grow required shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
               />
@@ -177,7 +177,7 @@ export default function SignIn() {
               >
               Password
               </label>
-                <input
+                <input type='password'
                   value={password} onChange={(e) => setpassword(e.target.value)}
                 className="grow shrink-0 rounded px-2.5 text-[15px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[35px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="confirmPassword"
