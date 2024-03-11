@@ -52,7 +52,7 @@ function Actors() {
                 
                 <div className='items-center sm:flex sm:flex-row md:flex-col ' >
                     <img className=' ml-5  flex  max-h-[300px] m-3 rounded-lg border border-custom-40 ' src={`https://image.tmdb.org/t/p/original${ActorInfo.profile_path}`} alt="" />
-                    <div className='m-3 gap-2 flex'>
+                    <div className='m-3 ml-10 gap-2 flex'>
                     <Text className='  text-custom-10  ' >{words?.slice(0, showMore ? words.length : 100).join(' ')}
                             
                             {!showMore && (<Link onClick={toggleShowMore} >{showMore ? 'show Less' : 'read more...'}</Link>)}</Text>
@@ -67,7 +67,7 @@ function Actors() {
                             ))
                         ) : (
                                 ActorInfo.cast.filter(movie=>movie.poster_path).
-                                    slice(0, showAll ? ActorInfo.cast.length : 20).map((movie, index) => (
+                                    slice(0, showAll ? ActorInfo.cast.length : 12).map((movie, index) => (
                                 <MovieCard key={index} {...movie} />
                             ))
                         )
