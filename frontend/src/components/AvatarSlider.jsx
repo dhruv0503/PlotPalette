@@ -52,7 +52,7 @@ function AvatarSlider({ props }) {
             <div className='p-1'>
             <Slider {...settings}>
                     {props?.map((movie, index) => (
-                        <div >
+                        <div onClick={() => navigate(`/actor/${movie.id}`)} >
                             <Avatar.Root  className="bg-blackA1 inline-flex h-[100px] w-[100px] select-none items-center justify-center overflow-hidden rounded-full align-middle"  >
                                 <Avatar.Image height={64} width={64}
                                     className="h-full w-full rounded-[inherit] object-cover border border-custom-10  "
@@ -65,7 +65,7 @@ function AvatarSlider({ props }) {
                                 > 
                                 </Avatar.Fallback>
                             </Avatar.Root>
-                            <button onClick = {()=>navigate(`/actor/${movie.id }`)}  className='p-2 font-bold'> {movie.original_name}</button>
+                            <button   className='p-2 font-bold'> {movie.original_name}</button>
                         </div>
                     ))}    
                 </Slider>

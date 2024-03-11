@@ -50,7 +50,7 @@ export default React.memo(function Upcoming() {
     return (
         <div className='bg-custom-30 h-full   '>
             <Navbar />
-            <div className='mt-20 p-2 '>
+            <div className=' p-2 '>
                 <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
 
                     {

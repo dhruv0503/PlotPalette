@@ -7,7 +7,7 @@ import { Text } from '@radix-ui/themes';
 function OtherFriend() {
     const { UserID } = useParams();
     const { otheruserData } = useApi();
-    
+    console.log(otheruserData)
   return (
       <div className='bg-custom-30' >
           <div className='bg-gray-900' ><Navbar /></div>

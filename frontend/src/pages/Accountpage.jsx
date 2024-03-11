@@ -10,7 +10,7 @@ import { IoBookSharp } from "react-icons/io5";
 import { useApi } from "../Context/Contxt";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as Popover from '@radix-ui/react-popover';
-import { MixerHorizontalIcon  } from '@radix-ui/react-icons';
+import { CardStackPlusIcon, EyeOpenIcon, MixerHorizontalIcon, PlusIcon  } from '@radix-ui/react-icons';
 
 
 import {
@@ -43,6 +43,7 @@ export default React.memo(function AccountPage() {
         const response = await axios.post(
           `http://localhost:5000/api/users/bio`, {bio}
         );
+        window.location.reload();
         console.log(response);
       } catch (error) {
         console.error("Error fetching movies:", error.message);
@@ -81,51 +82,41 @@ export default React.memo(function AccountPage() {
     }
   }, [userData, navigate]);
 
-  function formatDate(inputDate) {
-    const date = new Date(inputDate);
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const year = date.getFullYear();
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const monthName = months[monthIndex];
-    return `${day} ${monthName} ${year}`;
+  function formatDate(dateString) {
+    try {
+      // Split the date string into components with validation
+      const parts = dateString.split(", ");
+      if (parts.length !== 2) {
+        throw new Error("Invalid date format. Missing components.");
+      }
+      const date = parts[0].split("/");
+      if (date.length !== 3) {
+        throw new Error("Invalid date format. Missing date components.");
+      }
+
+      // Extract day, month, and year as integers
+      const day = parseInt(date[0], 10);
+      const month = parseInt(date[1], 10);
+      const year = parseInt(date[2], 10);
+
+      // Validate date components
+      if (day < 1 || day > 31 || month < 1 || month > 12) {
+        throw new Error("Invalid date components. Day or month out of range.");
+      }
+
+      // Month names array (adjust for desired language)
+      const monthNames = ["January ", "February ", "March ", "April ", "May ", "June ",
+        "July ", "August ", "September ", "October ", "November ", "December "];
+
+      // Validate month and get month name in proper case
+      const monthName = monthNames[month - 1].charAt(0).toUpperCase() + monthNames[month - 1].slice(1).toLowerCase();
+
+      return [monthName, year];
+    } catch (error) {
+      console.error("Error: Invalid date format. Please provide a string in the format 'DD/MM/YYYY, HH:MM:SS pm'.", error);
+      return null;
+    }
   }
-
-  const handleAccept = async ({ id }) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5000/api/friend/accept?userId=${id}`
-      );
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching movies:", error.message);
-    }
-  };
-
-  const handleDeny = async ({ id }) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/friend/deny?userId=${id}`
-      );
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching movies:", error.message);
-    }
-  };
-  console.log(bio)
 
   return (
     <>
@@ -135,81 +126,78 @@ export default React.memo(function AccountPage() {
             <Navbar />
           </div>
 
-          <div class="p-2 relative mx-auto text-gray-600 items-center ml-10 mr-10 flex justify-between ">
-            <div className="flex items-center">
-              <input
-                className="border-2 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
-                value={searchResults}
-                onChange={(e) => setSearchResults(e.target.value)}
-                type="search"
-                name="search"
-                placeholder="Search User"
-              />
-              <button
-                type="button"
-                className=" m-3 "
-                onClick={() => navigate(`/account/${searchResults}`)}
-              >
-                <MagnifyingGlassIcon
-                  height={24}
-                  width={24}
-                  className="text-white"
-                />
-              </button>
+          <div className="col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 " >
+          <div class="relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+            <div class="mb-2 p-4">
+              <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug ">User Profile</h5>
             </div>
-            <div>
-              {!isopen ?
-                <Popover.Root>
-                  <Popover.Trigger asChild>
-                    <button
-                      className="rounded-full w-[35px] h-[35px] inline-flex items-center justify-center text-violet11 bg-white shadow-[0_2px_10px] shadow-blackA4 hover:bg-violet3 focus:shadow-[0_0_0_2px] focus:shadow-black cursor-default outline-none"
-                      aria-label="Update dimensions"
-                    >
-                      <MixerHorizontalIcon />
-                    </button>
-                  </Popover.Trigger>
-                  <Popover.Portal>
-                    <Popover.Content
-                      className="rounded p-5 w-[150px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
-                      sideOffset={5}
-                    >
-                      <div className="flex flex-col ">
+            <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+                <div className="flex items-center">
+                  <input
+                    className="border-2 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
+                    value={searchResults}
+                    onChange={(e) => setSearchResults(e.target.value)}
+                    type="search"
+                    name="search"
+                    placeholder="Search User"
+                  />
+                  <button
+                    type="button"
+                    className=" m-3 "
+                    onClick={() => navigate(`/account/${searchResults}`)}
+                  >
+                    <MagnifyingGlassIcon
+                      height={24}
+                      width={24}
+                      className="text-white"
+                    />
+                  </button>
+                </div>
+                <div role="button" onClick={() => navigate("/collections/favourite")} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                <div class="grid place-items-center mr-4">
+                  <HeartFilledIcon height={24} width={24} />
+                </div> Favourite
+                </div>
+                <div onClick={() => navigate("/collections/rating")} role="button" tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                  <div class="grid place-items-center mr-4">
+                   <StarFilledIcon height={24} width={24} />
+                  </div> Rated
+                </div>
+                <div onClick={() => navigate("/collections/watchLater")} role="button" tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                  <div class="grid place-items-center mr-4">
+                    <CardStackPlusIcon height={24} width={24} />
+                  </div> WatchLater
+                </div>
+                <div onClick={() => navigate("/collections/watched")}  className="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                  <div class="grid place-items-center mr-4" onClick={() => navigate("/collections/watched")} >
+                    <EyeOpenIcon height={24} width={24} />
+                  </div> Watched
+                </ div>
+                <div role="button" onClick={() => setisopen(true)} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                  <div   class="grid place-items-center mr-4">
+                    <PlusIcon height={24} width={24} />
+                  </div> Edit bio
+                </div>
+                {isopen && <div className="flex" >
+
+                  <TextArea className="bg-custom-20 h-[40px] rounded-lg border border-custom-20" placeholder="Type new Bio…" onChange={(e) => setUserBio(e.target.value)} value={bio} />
+                  <button className="bg-gray-900 m-2 border border-custom-20 flex justify-center p-2 rounded-lg text-custom-20" onClick={handleBio} >submit</button>
+                </div>  }
+                <div onClick={() => navigate('/signin/reset')} role="button" tabindex="0" class="flex items-center w-full p-3 text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                <div class="grid place-items-center mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-5 w-5">
+                    <path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 00-2.282.819l-.922 1.597a1.875 1.875 0 00.432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 000 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 00-.432 2.385l.922 1.597a1.875 1.875 0 002.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 002.28-.819l.923-1.597a1.875 1.875 0 00-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 000-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 00-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 00-1.85-1.567h-1.843zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clip-rule="evenodd"></path>
+                  </svg>
+                </div> Reset Password
+              </div>
             
-                  
-                        <button onClick={()=>navigate('/signin/reset')} className="text-[13px] flex justify-center border-custom-30 " htmlFor="width">
-                          Rest Password
-                        </button>
-                        <hr className="text-black" />
-                        <button className="text-[13px] flex justify-center text-custom-30  m-1 " htmlFor="height" onClick={() => setisopen(true)}>
-                          Edit Bio
-                        </button>
-                        <hr />
-                      
-                  
-                      
-                      </div>
-                      <Popover.Close
-                        className="rounded-full h-[25px] w-[25px] inline-flex items-center justify-center text-violet11 absolute top-[5px] right-[5px] hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 outline-none cursor-default"
-                        aria-label="Close"
-                      >
-                        <Cross2Icon />
-                      </Popover.Close>
-                      <Popover.Arrow className="fill-white" />
-                    </Popover.Content>
-                  </Popover.Portal>
-                </Popover.Root>
-                :<>
-           
-              <TextArea className="bg-custom-20 rounded-lg border border-custom-20" placeholder="Type new Bio…" onChange={(e) => setUserBio(e.target.value)} value={bio}  />
-              <button className="bg-gray-900 m-2 border border-custom-20 flex justify-center p-2 rounded-lg text-custom-20" onClick={handleBio} >submit</button>
-              </> }
-            </div>
-          </div>
-          <div class="py-16">
+            </nav>
+          </div>         
+          <div class="py-15">
             <div class="mx-auto px-6 max-w-6xl text-gray-500">
               <div class="relative">
                 <div class="relative z-10 grid gap-3 grid-cols-6">
-                  <div class="col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900">
+                  <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900 ">
                     <div class="size-fit m-auto relative">
                       <div class="relative h-24 w-56 flex flex-col items-center">
                         <Text size={"7"} className="text-custom-20">
@@ -224,23 +212,11 @@ export default React.memo(function AccountPage() {
                           <Text>FriendCount: {userData?.friendCount}</Text>
                         </Button>
                         <Text className="text-custom-20" >{formatDate(userData?.joinedOn)}</Text>
-                        {userData?.requestList.map((request, index) => (
-                          <div className="flex text-custom-20" >
-                            {" "}
-                            <button>{request.userName}</button>
-                            <CheckIcon height={24} width={24}
-                              onClick={() => handleAccept({ id: request.id })}
-                            />
-                            <Cross2Icon height={24} width={24}
-                              onClick={() => handleDeny({ id: request.id })} />
-                              deny
-                           
-                          </div>
-                        ))} 
+                        
                       </div>
                     </div>
                   </div>
-                  <div class="col-span-full sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-xl  border  border-gray-800 bg-gray-900">
+                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center ">
                     <div className="relative">
                       <div class=" items-center justify-center relative aspect-square rounded-full size-32 flex border mx-auto bg-white bg-white/5 border-white/10 before:absolute before:-inset-2 before:border before:border-white/5 before:bg-white/5 before:rounded-full">
                         <PersonIcon
@@ -259,58 +235,7 @@ export default React.memo(function AccountPage() {
                       </div>
                     </div>
                   </div>
-                  <div class="col-span-full sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-xl  border  border-gray-800 bg-gray-900">
-                    <Text
-                      size={"6"}
-                      className="justify-center text-custom-10 font-bold m-3 flex"
-                    >
-                      COLLECTION
-                    </Text>
-                    <Flex gap="3" className=" grid grid-cols-2">
-                      <Button
-                        onClick={() => navigate("/collections/watched")}
-                        className="bg-custom-30 p-7 "
-                        variant="classic"
-                      >
-                        <FileTextIcon height={32} width={32} />
-                        <Text>
-                          <Strong>Watched</Strong>
-                        </Text>
-                      </Button>
-                      <Button
-                        onClick={() => navigate("/collections/rating")}
-                        className="bg-custom-30 p-7 "
-                        variant="classic"
-                      >
-                        <HeartFilledIcon width={24} height={24} />
-                        <Text>
-                          <Strong>Rated</Strong>
-                        </Text>
-                      </Button>
-
-                      <Button
-                        onClick={() => navigate("/collections/watchLater")}
-                        className="bg-custom-30 p-7 "
-                        variant="classic"
-                      >
-                        <EyeClosedIcon width={24} height={24} />
-
-                        <Text>
-                          <Strong>Yet To Watch</Strong>
-                        </Text>
-                      </Button>
-                      <Button
-                        onClick={() => navigate("/collections/favourite")}
-                        className="bg-custom-30 p-7"
-                        variant="classic"
-                      >
-                        <StarFilledIcon width={24} height={24} />
-                        <Text>
-                          <Strong>Fav</Strong>
-                        </Text>
-                      </Button>
-                    </Flex>
-                  </div>
+                  
                   <div className="text-custom-20  col-span-6  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
                   {userData?.movies?.map((movie, index) => (
                     <>
@@ -328,6 +253,7 @@ export default React.memo(function AccountPage() {
               </div>
             </div>
           </div>
+        </div>
           <Footer />
         </section>
       ) : (
