@@ -6,6 +6,7 @@ import {
   PaperPlaneIcon,
   InfoCircledIcon,
   StarIcon,
+  StarFilledIcon,
 } from "@radix-ui/react-icons";
 import { Callout } from "@radix-ui/themes";
 import CommentSection from "./CommentSection";
@@ -98,7 +99,17 @@ export default React.memo(function Booktemplate() {
   return (
     <div className="relative">
     
-      { !moviedata.watchedByUser &&
+      {!localStorage.getItem("uid") ?
+        <div className="p-7" > <Callout.Root>
+          <Callout.Icon>
+            <InfoCircledIcon />
+          </Callout.Icon>
+          <Callout.Text>
+            You have to login first
+          </Callout.Text>
+        </Callout.Root></div>
+
+        : (!moviedata.watchedByUser &&
         <div className="p-7" > <Callout.Root>
           <Callout.Icon>
             <InfoCircledIcon />
@@ -106,7 +117,7 @@ export default React.memo(function Booktemplate() {
           <Callout.Text>
             Click on the Eyebutton then you can comment
           </Callout.Text>
-        </Callout.Root></div>
+        </Callout.Root></div>)
          }
 
       <div className="bg-cover bg-center p-10 gap-3 md:grid sm:grid-cols-3">
@@ -124,14 +135,18 @@ export default React.memo(function Booktemplate() {
                   <button onClick={handlefav}>
                     <HeartIcon height={32} width={32} />
                   </button>
-                  <button >
-                    <div className="flex" onChange={handleChange}>
-                      <StarIcon onClick={
-                        handleRating
-                      } height={32} width={32} />
-                      <input type="number" min="1" max="5" value={number} />
-                    </div>
-                  </button>
+                  {moviedata.rating ?
+                    <StarFilledIcon height={32} width={32} /> :
+                    <button >
+
+                      <div className="flex" onChange={handleChange}>
+                        <StarIcon onClick={
+                          handleRating
+                        } height={32} width={32} />
+                        <input type="number" min="1" max="5" value={number} />
+                      </div>
+                    </button>
+                  }
                 </>
               ) : (
                 <>

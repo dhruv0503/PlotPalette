@@ -10,6 +10,7 @@ import { IoBookSharp } from "react-icons/io5";
 import { useApi } from '../Context/Contxt';
 import * as Avatar from '@radix-ui/react-avatar';
 import { MagicWandIcon, PersonIcon, BookmarkIcon, FileTextIcon, HeartFilledIcon, EyeClosedIcon, StarIcon, StarFilledIcon, PlusIcon } from '@radix-ui/react-icons'
+import { CardStackPlusIcon, EyeOpenIcon, MixerHorizontalIcon,  } from '@radix-ui/react-icons';
 
 export default React.memo(function OthersPage() {
 
@@ -56,26 +57,81 @@ export default React.memo(function OthersPage() {
     const navigate = useNavigate();
 
 
-    function formatDate(inputDate) {
-        const date = new Date(inputDate);
-        const day = date.getDate();
-        const monthIndex = date.getMonth();
-        const year = date.getFullYear();
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthName = months[monthIndex];
-        return `${day} ${monthName} ${year}`;
+    function formatDate(dateString) {
+        try {
+            // Split the date string into components with validation
+            const parts = dateString.split(", ");
+            if (parts.length !== 2) {
+                throw new Error("Invalid date format. Missing components.");
+            }
+            const date = parts[0].split("/");
+            if (date.length !== 3) {
+                throw new Error("Invalid date format. Missing date components.");
+            }
+
+            // Extract day, month, and year as integers
+            const day = parseInt(date[0], 10);
+            const month = parseInt(date[1], 10);
+            const year = parseInt(date[2], 10);
+
+            // Validate date components
+            if (day < 1 || day > 31 || month < 1 || month > 12) {
+                throw new Error("Invalid date components. Day or month out of range.");
+            }
+
+            // Month names array (adjust for desired language)
+            const monthNames = ["January ", "February ", "March ", "April ", "May ", "June ",
+                "July ", "August ", "September ", "October ", "November ", "December "];
+
+            // Validate month and get month name in proper case
+            const monthName = monthNames[month - 1].charAt(0).toUpperCase() + monthNames[month - 1].slice(1).toLowerCase();
+
+            return [monthName, year];
+        } catch (error) {
+            console.error("Error: Invalid date format. Please provide a string in the format 'DD/MM/YYYY, HH:MM:SS pm'.", error);
+            return null;
+        }
     }
 
     return (
         <>
                 <section className='bg-custom-30'>
-                    <div className='bg-gray-900'  ><Navbar className /></div>
-                    <div class="py-16">
+                <div className='bg-gray-900'  ><Navbar className /></div>
+                <div className='col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800' >
+                <div class="relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+                    <div class="mb-2 p-4">
+                        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug ">User Profile</h5>
+                    </div>
+                    <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+                       
+                            <div role="button" onClick={() => navigate(`/account/${UserID}/favourite`)} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                            <div class="grid place-items-center mr-4">
+                                <HeartFilledIcon height={24} width={24} />
+                            </div> Favourite
+                        </div>
+                            <div onClick={() => navigate(`/account/${UserID}/rating`)} role="button" tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                            <div class="grid place-items-center mr-4">
+                                <StarFilledIcon height={24} width={24} />
+                            </div> Rated
+                        </div>
+                            <div onClick={() => navigate(`/account/${UserID}/watchLater`)} role="button" tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                            <div class="grid place-items-center mr-4">
+                                <CardStackPlusIcon height={24} width={24} />
+                            </div> WatchLater
+                        </div>
+                            <div onClick={() => navigate(`/account/${UserID}/watched`)} className="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+                            <div class="grid place-items-center mr-4" onClick={() => navigate("/collections/watched")} >
+                                <EyeOpenIcon height={24} width={24} />
+                            </div> Watched
+                        </ div>
+                    </nav>
+                </div>
+                    <div class="py-15">
 
                         <div class="mx-auto px-6 max-w-6xl text-gray-500">
                             <div class="relative">
                                 <div class="relative z-10 grid gap-3 grid-cols-6">
-                                    <div class="col-span-full lg:col-span-2 overflow-hidden flex relative p-10 rounded-xl  border bord border-gray-800 bg-gray-900">
+                                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center  ">
                                         <div class="size-fit m-auto relative">
                                             <div class="relative h-28 w-56 flex flex-col items-center">
                                             <Text size={"7"} className='text-custom-20' >{otheruserData?.name}</Text>                                                   <Button
@@ -89,7 +145,7 @@ export default React.memo(function OthersPage() {
 
                                         </div>
                                     </div>
-                                    <div class="col-span-full sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-xl  border  border-gray-800 bg-gray-900">
+                                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center  ">
                                         <div className='relative' >
                                             <div class=" items-center justify-center relative aspect-square rounded-full size-32 flex border mx-auto bg-white bg-white/5 border-white/10 before:absolute before:-inset-2 before:border before:border-white/5 before:bg-white/5 before:rounded-full">
                                                 <PersonIcon className='text-custom-10' height={96} width={96} />
@@ -102,34 +158,6 @@ export default React.memo(function OthersPage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-span-full sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-xl border-gray-800 bg-gray-900">
-                                        <Text size={"6"} className='justify-center text-custom-10 font-bold m-3 flex' >COLLECTION</Text>
-                                        <Flex gap="3" className=' grid grid-cols-2'>
-                                        <Button onClick={() => navigate(`/account/${UserID}/watched`)} className='bg-custom-30 p-7 ' variant="classic">
-                                                <FileTextIcon height={32} width={32} />
-                                               <Text><Strong>Watched</Strong></Text>
-                                            </Button>
-                                        <Button onClick={() => navigate(`/account/${UserID}/rating`)} className='bg-custom-30 p-7 ' variant='classic'  >
-                                                <HeartFilledIcon width={24} height={24} />
-                                                <Text><Strong>Rated</Strong></Text>
-                                            </Button>
-
-                                        <Button onClick={() => navigate(`/account/${UserID}/watchLater`)} className='bg-custom-30 p-7 ' variant="classic">
-                                            <EyeClosedIcon width={24} height={24} />
-
-                                            <Text><Strong>Yet To Watch</Strong></Text>
-                                            </Button>
-                                        <Button onClick={() => navigate(`/account/${UserID}/favourite`)} className='bg-custom-30 p-7' variant="classic">
-                                            <StarFilledIcon width={24} height={24} />
-                                            <Text><Strong>Fav</Strong></Text>
-
-                                            </Button>
-
-                                        </Flex>
-                                    </div>
-                                 
-                                
-
                                 {/* map this area */}
                                 <div class=" md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border  border-gray-800 bg-gray-900 ">
 
@@ -138,6 +166,7 @@ export default React.memo(function OthersPage() {
                             </div>
                         </div>
                     </div>
+                </div>
                     <Footer />
                 </section>
               

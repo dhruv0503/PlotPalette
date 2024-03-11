@@ -15,7 +15,9 @@ export default React.memo(function TopRated() {
     const [startPage, setStartPage] = useState(1)
     const { searchResults } = useApi();
 
+
     const data = searchResults
+
         ? top_rated.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
@@ -49,12 +51,10 @@ export default React.memo(function TopRated() {
 
     return (
         <div className='bg-custom-30 h-full   '>
-            <div className='bg-gray-900' ><Navbar /></div>
-            <div className='mt-20 p-2 '>
 
-
+            <div className='bg-gray-900' ><Navbar/></div>
+            <div className=' p-2 '>
                 <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
-
 
                     {
                         data.length > 0 ?
