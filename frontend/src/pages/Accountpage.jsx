@@ -156,7 +156,7 @@ export default React.memo(function AccountPage() {
                 <div role="button" onClick={() => navigate("/collections/favourite")} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
                 <div class="grid place-items-center mr-4">
                   <HeartFilledIcon height={24} width={24} />
-                </div> Favourite
+                </div> Favourites
                 </div>
                 <div onClick={() => navigate("/collections/rating")} role="button" tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
                   <div class="grid place-items-center mr-4">
