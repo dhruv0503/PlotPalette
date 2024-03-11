@@ -27,7 +27,6 @@ module.exports.authorizeRoles = (role) => {
     }
 };
 
-
 module.exports.isLoggedIn = () => {
     return async (req, res, next) => {
         const userRef = auth.currentUser;
@@ -35,22 +34,23 @@ module.exports.isLoggedIn = () => {
         next();
     }
 }
+
 module.exports.isWatched = (parameter) => {
     return async (req, res, next) => {
-        const tmdbId = req.query.tmdbId;
+        const {tmdbId} = req.query;
         const user = auth.currentUser;
         const userObj = await utilityFunctions.getUser(user);
         const movie = await utilityFunctions.getMovie(tmdbId);
         const movies = await getDocs(collection(User, userObj.id, 'movies'))
         const movieObj = movies.docs.find(ele => ele.data().movieId == movie.id);
-        if (!movieObj.data().watched){
-            if(parameter == "fav"){
+        if (!movieObj.data().watched) {
+            if (parameter == "fav") {
                 return next(new expressError("You need to watch the movie before assigning it favourite", 400))
             }
-            else if( parameter == "rate"){
+            else if (parameter == "rate") {
                 return next(new expressError("You need to watch the movie before rating it", 400))
             }
-            else if( parameter == "review"){
+            else if (parameter == "review") {
                 return next(new expressError("You need to watch the movie before reviewing it", 400))
             }
         }
@@ -59,17 +59,17 @@ module.exports.isWatched = (parameter) => {
 }
 
 module.exports.singleReview = () => {
-    return async(req, res, next) => {
-        const {tmdbId} = req.query;
+    return async (req, res, next) => {
+        const { tmdbId } = req.query;
         const userRef = auth.currentUser;
         const user = await utilityFunctions.getUser(userRef);
         const moviesRef = await getDocs(collection(doc(User, user.id), "movies"));
         const movie = moviesRef.docs.find((ele) => ele.data().tmdbId == tmdbId);
-        if(movie){
-            if (movie.data().reviewId){
+        if (movie) {
+            if (movie.data().reviewId) {
                 next(new expressError("You can't leave two reviews on the same movie", 400))
             }
-        next()
+            next()
         }
     }
 }

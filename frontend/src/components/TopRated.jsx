@@ -14,15 +14,15 @@ export default React.memo(function TopRated() {
     const [top_rated, setTopRatedMovies] = useState([]);
     const [startPage, setStartPage] = useState(1)
     const { searchResults } = useApi();
-    
-   const data =searchResults
+
+    const data = searchResults
         ? top_rated.filter(article =>
             article.overview &&
             (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
         : top_rated;
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,33 +35,33 @@ export default React.memo(function TopRated() {
         };
         fetchData();
     }, [startPage]);
-    
+
 
     const nextPage = () => {
 
-        setStartPage(startPage +1);
+        setStartPage(startPage + 1);
     }
     const prevPage = () => {
-        if (startPage >2) {
+        if (startPage > 2) {
             setStartPage(startPage - 1);
         }
     }
 
     return (
         <div className='bg-custom-30 h-full   '>
-            <div className='bg-gray-900' ><Navbar/></div>
+            <div className='bg-gray-900' ><Navbar /></div>
             <div className='mt-20 p-2 '>
-             
+
 
                 <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
-                
+
 
                     {
                         data.length > 0 ?
-                        (data.map((movie, index) => (
-                            <MovieCard key={index} {...movie} />
-                        ))) :
-                        <LoadingPage />
+                            (data.map((movie, index) => (
+                                <MovieCard key={index} {...movie} />
+                            ))) :
+                            <LoadingPage />
                     }
                 </div>
             </div>
