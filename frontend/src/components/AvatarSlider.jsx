@@ -42,18 +42,21 @@ function AvatarSlider({ props }) {
         ]
     };
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     return (
-      
+
         <div className='p-6 gap-3  items-center '>
             <Text size={"8"} ><Strong className='p-3 font-bold '>Cast </Strong></Text>
             <hr className='m-3' />
             <div className='p-1'>
-            <Slider {...settings}>
+                <Slider {...settings}>
                     {props?.map((movie, index) => (
+
                         <div onClick={() => navigate(`/actor/${movie.id}`)} >
                             <Avatar.Root  className="bg-blackA1 inline-flex h-[100px] w-[100px] select-none items-center justify-center overflow-hidden rounded-full align-middle"  >
+
+                       
                                 <Avatar.Image height={64} width={64}
                                     className="h-full w-full rounded-[inherit] object-cover border border-custom-10  "
                                     src={`https://image.tmdb.org/t/p/original${movie.profile_path}`}
@@ -62,19 +65,21 @@ function AvatarSlider({ props }) {
                                 <Avatar.Fallback
                                     className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
                                     delayMs={600}
-                                > 
+                                >
                                 </Avatar.Fallback>
                             </Avatar.Root>
+
                             <button   className='p-2 font-bold'> {movie.original_name}</button>
+
                         </div>
-                    ))}    
+                    ))}
                 </Slider>
             </div>
         </div>
 
 
-    
-  )
+
+    )
 }
 
 export default AvatarSlider

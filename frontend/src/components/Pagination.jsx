@@ -8,7 +8,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         console.log(page)
         onPageChange(page);
     };
-    
+
     const renderPagination = () => {
         const pagination = [];
         for (let i = startPage; i <= totalPages && pagination.length < pagesToShow; i++) {
@@ -17,8 +17,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     key={i}
                     onClick={() => handleClick(i)}
                     className={`px-3 py-1 mx-1 rounded ${i === currentPage
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-200 hover:bg-gray-300'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-200 hover:bg-gray-300'
                         }`}
                 >
                     {i}

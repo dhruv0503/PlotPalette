@@ -4,16 +4,16 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
 
-const CommentSection = ({ props,watched }) => {
+const CommentSection = ({ props, watched }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
   const [textArea, setTextArea] = useState(false);
-  
+
   const [reviewid, setreviewid] = useState('');
   const navigate = useNavigate();
 
 
-  function textfield(id){
+  function textfield(id) {
     setTextArea(true);
     setreviewid(id);
   }
@@ -23,7 +23,7 @@ const CommentSection = ({ props,watched }) => {
     const MovieDetails = async () => {
       try {
         const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews?tmdbId=${props}`);
-        
+
         setmoviedata(MovDetails.data);
       } catch (error) {
         console.error('Error fetching movies:', error.message);
@@ -32,19 +32,19 @@ const CommentSection = ({ props,watched }) => {
 
     MovieDetails();
   }, [props]);
- 
-    
+
+
 
   function getInitials(name) {
     const words = name?.split(/\s+/);
     let initials = "";
     words?.forEach(word => {
-        if (word.length > 0) {
-            initials += word[0].toUpperCase();
-        }
+      if (word.length > 0) {
+        initials += word[0].toUpperCase();
+      }
     });
     return initials;
-}
+  }
 
 
 

@@ -13,7 +13,7 @@ import Pagination from './Pagination.jsx';
 import { useParams } from 'react-router-dom';
 
 export default React.memo(function Category() {
-    const { genres , searchResults } = useApi();
+    const { genres, searchResults } = useApi();
     const [startPage, setStartPage] = useState(1);
     // const [genre, setgenre] = useState("Action");
     const [Genres, setGenres] = useState([]);
@@ -31,7 +31,7 @@ export default React.memo(function Category() {
             setStartPage(startPage - 1);
         }
     }
-    
+
     const data = searchResults
         ? Genres.filter(article =>
             article.overview &&
@@ -39,7 +39,7 @@ export default React.memo(function Category() {
             article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
         )
         : Genres;
-    
+
     console.log(Genres)
 
     useEffect(() => {
@@ -52,21 +52,21 @@ export default React.memo(function Category() {
             }
         };
         fetchGenres();
-    }, [ Genres,startPage]);
+    }, [Genres, startPage]);
 
     return (
         <div className='bg-custom-30 h-full   '>
-        <div className='bg-gray-900' ><Navbar/></div>
+            <div className='bg-gray-900' ><Navbar /></div>
             <div className='p-2 '>
-                 
+
                 <div className=" flex flex-col justify-center items-center  sm:grid sm:grid-cols-3 md:grid-cols-5 sm:justify-around ">
-                     {data.length > 0 ?
+                    {data.length > 0 ?
                         (data.map((movie, index) => (
-                    <MovieCard key={index} {...movie} />
+                            <MovieCard key={index} {...movie} />
                         ))) :
                         <>
                             <NoPage />
-                            </>
+                        </>
                     }
                 </div>
                 <div className='p-2'>

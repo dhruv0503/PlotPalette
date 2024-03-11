@@ -15,7 +15,16 @@ module.exports.findUser = async(req, res, next) => {
     const { userName } = req.query;
     const usersRef = await getDocs(User);
     const user = usersRef.docs.find((ele) => ele.data().userName == userName);
-    if(user) res.send({id:user.id,...user.data()})
+
+    const subCollectionMovies = await getDocs(collection(doc(User, user.id), 'movies'));
+    const moviesWithNull = subCollectionMovies.docs.map((ele) => ele.data().favourite ? ele.data() : null)
+    const movies = moviesWithNull.filter(ele => ele !== null);
+
+    const data = user.data();
+    data.movies = movies;
+    data.id = user.id;
+
+    if(user) res.send(data)
     else next(new expressError("No such user exists", 404))
 }
 

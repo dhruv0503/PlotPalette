@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import data from '../assets/Data'
 import { MovieCard } from './CustomCard';
-import { Text ,Strong } from '@radix-ui/themes';
+import { Text, Strong } from '@radix-ui/themes';
 import { useNavigate } from 'react-router-dom';
 
 function SliderComp(props) {
@@ -44,7 +44,7 @@ function SliderComp(props) {
         ]
     };
     const navigate = useNavigate();
-   
+
     return (
         <div className='p-6 gap-3 '>
             <div className='flex justify-between item-center' >
@@ -52,20 +52,20 @@ function SliderComp(props) {
                     <Strong>{props.topic}</Strong>
 
                 </Text>
-                <button onClick={()=>navigate('/movies')}  className='text-custom-20' >View ALL</button>
+                <button onClick={() => navigate('/movies')} className='text-custom-20' >View ALL</button>
             </div>
-            
+
             <hr className='m-3' />
             <div className='p-1'>
-            <Slider {...settings}>
+                <Slider {...settings}>
                     {config.map((movie, index) => (
-                    
+
                         <div className='focus:outline-none' key={index}>
                             <MovieCard  {...movie} />
                         </div>
                     ))}
-                   
-                    
+
+
                 </Slider>
             </div>
         </div>
