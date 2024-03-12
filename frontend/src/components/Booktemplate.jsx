@@ -16,6 +16,7 @@ import { Blockquote, Em, Quote, Tabs, Text } from "@radix-ui/themes";
 import axios from "axios";
 import { useApi } from "../Context/Contxt.jsx";
 import AvatarSlider from "./AvatarSlider.jsx";
+import { MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck } from "react-icons/md";
 
 export default React.memo(function Booktemplate() {
   const { all_movie, userData } = useApi();
@@ -24,6 +25,7 @@ export default React.memo(function Booktemplate() {
   const [number, setNumber] = useState();
   const [rating, setrating] = useState(1);
   const [ratingn, setRating] = useState(0);
+  const [renderwatch, setrenderwatch] = useState(1);
   const handleChange = (event) => {
     const value = parseInt(event.target.value);
     if (value >= 1 && value <= 5) {
@@ -47,9 +49,7 @@ export default React.memo(function Booktemplate() {
   }, []);
   
 
-  // useEffect(() => {
-  //   handleRating();
-  // }, [rating]);
+
 
   const handleWatched = async () => {
     try {
@@ -58,11 +58,12 @@ export default React.memo(function Booktemplate() {
       );
       window.location.reload();
       moviedata.watchedByUser("true");
-      
+
     } catch (error) {
       console.error("Error fetching movi:", error.message);
     }
   };
+  
   const movieWatchedLater = async () => {
     try {
       const response = await axios.get(
@@ -114,7 +115,7 @@ export default React.memo(function Booktemplate() {
       setRating(newRating);
       // Add logic to send the rating data to your backend (optional)
     };
-    console.log(ratingn)
+
 
 
   return (
@@ -142,13 +143,13 @@ export default React.memo(function Booktemplate() {
          }
 
       <div className="bg-cover bg-center p-10 gap-3 md:grid sm:grid-cols-3">
-       
+      
         <div className="bg-custom-20">
           <div className="shadow-md rounded-lg  overflow-hidden relative border border-white">
-            <img
+            <img 
               src={`https://image.tmdb.org/t/p/original/${moviedata.poster_path}`}
               alt="Bold typography"
-              className="py-10 px-1 h-[500px] w-full rounded-md object-cover"
+              className="py-10 px-1 h-full w-full rounded-md object-cover"
             />
 
 
@@ -183,12 +184,7 @@ export default React.memo(function Booktemplate() {
       ))}
     </div>
 
-                      {/* <div className="flex" onChange={handleChange}>
-                        <StarIcon onClick={
-                          handleRating
-                        } height={32} width={32} />
-                        <input type="number" min="1" max="5" value={number} />
-                      </div> */}
+                      
                     </button>
                   }
                 </>
@@ -200,10 +196,18 @@ export default React.memo(function Booktemplate() {
                       height={32}
                       width={32}
                     />
-                  </button>
-                  <button onClick={movieWatchedLater}>
-                    <CardStackIcon height={32} width={32} />
-                  </button>
+                    </button>
+                    {!moviedata.watchLaterByUser ?
+                      
+                      <button onClick={movieWatchedLater}>
+                        <MdOutlinePlaylistAdd size={32} />
+                      </button>
+                      :
+
+                      <MdOutlinePlaylistAddCheck size={32} />
+
+
+                    }
                 </>
               )}
             </div>
@@ -231,16 +235,19 @@ export default React.memo(function Booktemplate() {
             </Em>
             <Blockquote size={"5"}>{moviedata.overview}</Blockquote>
           </div>
-          <div className="flex m-2">
+          {
+            moviedata.platforms?.buy &&
+          (<div className="flex m-2">
             <Em className="text-custom-10">Watch on : </Em>
             {moviedata.platforms?.buy?.slice(0, 3).map((comp) => {
               return (
                 <>
-                  <h1 className="text-custom-20 ml-3">{comp.provider_name}</h1>
+                  <h1 className="text-custom-20 ml-3">{comp.provider_name} ,</h1>
                 </>
               );
             })}
-          </div>
+          </div>)
+          }
         </div>
       </div>
 
@@ -250,7 +257,7 @@ export default React.memo(function Booktemplate() {
 
       <div className="p-4 bg-custom-50 gap-3 items-center relative flex shadow-lg">
         {/* // pass the function handleWatched */}
-        <CommentSection props={movieId} watched={moviedata.watchedByUser} />
+        <CommentSection props={movieId} watched={moviedata.watchedByUser}  />
       </div>
     </div>
   );

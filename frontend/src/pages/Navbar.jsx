@@ -7,7 +7,9 @@ import Searchbar from '../components/Searchbar';
 import * as Avatar from '@radix-ui/react-avatar';
 import axios from 'axios'
 import { useApi } from '../Context/Contxt';
-import  im  from "../assets/plot_palette.png"
+import im from "../assets/plot_palette.png"
+import { AiOutlineLogout } from "react-icons/ai";
+import { Text } from '@radix-ui/themes';
 
 
 
@@ -47,14 +49,17 @@ function Navbar() {
     
     return (
 
-        <nav class=" text-custom-10 w-full flex relative justify-between items-center mx-auto px-8 h-20 z-10 ">
+        <nav class=" text-custom-10 w-full flex relative justify-between  items-center mx-auto px-8 h-20 z-10 ">
          
-           
-    
-                <div className='flex justify-start' onClick={() => navigate('/')} >
-                        <img src={im} className=' h-[132px] w-[132px] ' alt="Logo" />
-                    
-            </div>
+             
+            <div className='flex' >
+                <div className='flex  justify-start text-white' onClick={() => navigate('/')} >
+                    <img src={im} className=' h-[132px] w-[132px] ' alt="Logo" />
+
+                </div>
+                <Text  size={"7"} className='font-logo mt-11'>PLOT PALETTE</Text>
+            </div>  
+            
          
             
         
@@ -84,13 +89,13 @@ function Navbar() {
                     <div class="block">
                         
                         <div class="inline relative">
-                            <div type="button" class="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg">
-                                <button class="pl-1">
-                                    <HomeIcon onClick={()=>navigate('/account')}  height={24} width={24} />
+                            <div type="button" class="inline-flex items-center   ">
+                                <button class="p-2 border rounded-full ">
+                                    <PersonIcon onClick={()=>navigate('/account')}  height={24} width={24} />
                                 </button>
 
-                                <button onClick={handleLogout} class="block flex-grow-0 flex-shrink-0 h-10 w-12 pl-5">
-                                {localStorage.getItem("uid") ? <PersonIcon height={24} width={24} /> : <EnterIcon height={24} width={24} />}
+                                <button onClick={handleLogout} class="p-2 border rounded-full block m-2 ">
+                                    {localStorage.getItem("uid") ? <AiOutlineLogout size={22} /> : <EnterIcon height={24} width={24} />}
                                
                                 </button>
                             </div>
