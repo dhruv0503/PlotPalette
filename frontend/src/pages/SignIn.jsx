@@ -69,7 +69,7 @@ export default function SignIn() {
             <div></div>
         }
 
-      <Text className='font-bold font-mono text-lg  text-custom-10 ' >PLOT PALETTE.</Text>
+      <Text className=' font-logo text-lg  text-custom-10  ' >PLOT PALETTE.</Text>
           <div className=" md:grid md:grid-cols-2 p-3 flex flex-col justify-center items-center gap-3 sm:grid sm:grid-cols-2 sm:justify-around m-2 ">
       <div className='z-10 h-full   hidden md:block '>
         <img className='h-[410px] w-[500px] border border-custom-10 rounded-lg sm:rounded-none ' src={Bookim} alt="" />
@@ -117,7 +117,7 @@ export default function SignIn() {
               />
             </fieldset>
                   <div className="flex justify-between mt-5">
-                <button onClick={()=>navigate('/signin/reset')} className='text-blue-500' >forget password ? </button>
+                <button onClick={()=>navigate('/signin/reset')} className='text-blue-500' >FORGET PASSWORD ? </button>
               <button onClick={handleLogin} className="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-black text-white hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default">
                 LOGIN
               </button>

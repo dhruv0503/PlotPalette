@@ -27,6 +27,9 @@ module.exports = {
       animation: {
         spin: 'spin 1.2s linear infinite',
       },
+      fontFamily: {
+        logo: ["Satisfy"]
+      }
     },
   },
   plugins: [

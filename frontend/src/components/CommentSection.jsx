@@ -3,8 +3,9 @@ import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import * as Avatar from '@radix-ui/react-avatar';
 import { ArrowDownIcon, ArrowUpIcon, Cross2Icon, EyeOpenIcon, HeartIcon, PaperPlaneIcon, ThickArrowDownIcon, ThickArrowUpIcon, UpdateIcon } from '@radix-ui/react-icons';
+import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
-const CommentSection = ({ props, watched }) => {
+const CommentSection = ({ props, watched , watch }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
   const [commentText, setCommentText] = useState('');
@@ -137,6 +138,8 @@ const CommentSection = ({ props, watched }) => {
       console.error('Error fetching user:', error.message);
     }
   };
+
+
  
 
  
@@ -165,7 +168,7 @@ const CommentSection = ({ props, watched }) => {
                       <div class="opacity-95 border rounded-lg border-white px-4">
                         <button  class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
                           {/* call the handleWached */}
-                          <EyeOpenIcon height={24} width={24} />Yes I have</button>
+                          <EyeOpenIcon height={24} width={24} onClick={watch} />Yes I have</button>
                       </div>
                     </div>
                   </div>
@@ -186,7 +189,7 @@ const CommentSection = ({ props, watched }) => {
                 <p class="w-full pb-8 text-sm tracking-wide leading-tight text-white">You can only comment if you are logged in</p>
                 <div class="rounded w-1/3">
                   <div class="opacity-95 border rounded-lg border-white px-4">
-                    <button onClick={navigate('/signin')} class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                    <button onClick={()=>navigate('/signin')} class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
                       <EyeOpenIcon height={24} width={24} />
                       SIGN IN
                     </button>
@@ -215,10 +218,18 @@ const CommentSection = ({ props, watched }) => {
                   <button className='font-bold text-lg' onClick={() => handleUser(navigate(`/account/${movie?.reviewer}`)) }>{movie?.userName}</button>
                   <p>{movie?.text}</p>
                   <div className='flex   items-center gap-3 ' >
-
-                    <ThickArrowUpIcon  className='text-custom-30  '  height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
-                    {movie.votes}
+                    {movie?.vote == "upvote" ?
+                      <ImArrowUp size={22} />
+                     :
+                      <ThickArrowUpIcon className='text-custom-30  ' height={24} width={24} onClick={() => handleUpvote({ id: movie.reviewId })} />
+                    }
+                    
+                    {movie.vote == "downvote" ? 
+                      <ImArrowDown size={22} />:
                     <ThickArrowDownIcon height={24} width={24} onClick={() => handleDownvote({ id: movie.reviewId })} />
+                    
+                  }
+                    
                     {movie?.owner &&
                       (<>
                     <UpdateIcon height={24} width={24} onClick={() => textfield({ id: movie.reviewId })} />
@@ -241,10 +252,7 @@ const CommentSection = ({ props, watched }) => {
                     <button onClick={handleUpdateReview} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
                       Update
                     </button>
-                  
                   </form>
-                  
-
                 )}
               </div>
             </div>

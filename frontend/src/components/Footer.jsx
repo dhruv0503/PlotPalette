@@ -14,7 +14,7 @@ function Footer() {
         </div>
       </div>
       <hr className='h-px my-8 border-0 dark:bg-custom-10 m-7 border-dashed ' />
-      <div className='h-[35px] ml-20 mr-20 text-custom-10 font-serif text-center'>Copyright © 2024 PLOT_PALETTE </div>
+      <div className='h-[35px] ml-20 mr-20 text-custom-10  text-center'>Copyright © 2024 <span className=' font-logo  ' >PLOT_PALETTE </span> </div>
     </div>
   )
 }

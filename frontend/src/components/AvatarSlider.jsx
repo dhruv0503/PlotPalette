@@ -11,7 +11,7 @@ function AvatarSlider({ props }) {
     var settings = {
         dots: false,
         speed: 500,
-        slidesToShow: 8,
+        slidesToShow: 6,
         slidesToScroll: 2,
         initialSlide: 0,
         responsive: [
@@ -42,6 +42,7 @@ function AvatarSlider({ props }) {
         ]
     };
 
+
     const navigate = useNavigate();
 
     return (
@@ -52,26 +53,27 @@ function AvatarSlider({ props }) {
             <div className='p-1'>
                 <Slider {...settings}>
                     {props?.map((movie, index) => (
-
-                        <div onClick={() => navigate(`/actor/${movie.id}`)} >
-                            <Avatar.Root  className="bg-blackA1 inline-flex h-[100px] w-[100px] select-none items-center justify-center overflow-hidden rounded-full align-middle"  >
-
                        
-                                <Avatar.Image height={64} width={64}
-                                    className="h-full w-full rounded-[inherit] object-cover border border-custom-10  "
+                        <div className="m-3 flex gap-3 items-center justify-center">
+                            <div
+                                className="bg-blackA1 flex-shrink-0 flex items-center justify-center w-24 h-24 rounded-full overflow-hidden"
+                                onClick={() => navigate(`/actor/${movie.id}`)}
+                            >
+                                <img
+                                    className="h-full w-full rounded-full object-cover border border-custom-10"
                                     src={`https://image.tmdb.org/t/p/original${movie.profile_path}`}
-                                    alt="Colm Tuite"
+                                    alt="Actor Profile"
                                 />
-                                <Avatar.Fallback
-                                    className="text-violet11 leading-1 flex h-full w-full items-center justify-center bg-white text-[15px] font-medium"
-                                    delayMs={600}
-                                >
-                                </Avatar.Fallback>
-                            </Avatar.Root>
-
-                            <button   className='p-2 font-bold'> {movie.original_name}</button>
-
+                            </div>
+                            <div className="flex flex-col items-center justify-center">
+                                <p className="text-center">{movie.character}</p>
+                                <button className="font-bold m-2">{movie.original_name}</button>
+                            </div>
                         </div>
+
+                 
+                       
+
                     ))}
                 </Slider>
             </div>
