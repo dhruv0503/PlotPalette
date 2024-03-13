@@ -47,39 +47,30 @@ function AvatarSlider({ props }) {
 
     return (
 
-        <div className='p-6 gap-3  items-center '>
-            <Text size={"8"} ><Strong className='p-3 font-bold '>Cast </Strong></Text>
+        <div className='p-6 gap-3 items-center'>
+            <Text size={"8"}><Strong className='p-3 font-bold'>Cast</Strong></Text>
             <hr className='m-3' />
             <div className='p-1'>
                 <Slider {...settings}>
                     {props?.map((movie, index) => (
-                       
-                        <div className="m-3 flex gap-3 items-center justify-center">
+                        <div key={index} className="flex flex-col items-center justify-center  w-full">
                             <div
-                                className="bg-blackA1 flex-shrink-0 flex items-center justify-center w-24 h-24 rounded-full overflow-hidden"
-                                onClick={() => navigate(`/actor/${movie.id}`)}
+                                className="w-24 h-24 rounded-full overflow-hidden mx-auto "
+                                onClick={() => navigate(`/actor/${ movie.id}`)}
                             >
                                 <img
                                     className="h-full w-full rounded-full object-cover border border-custom-10"
                                     src={`https://image.tmdb.org/t/p/original${movie.profile_path}`}
-                                    alt="Actor Profile"
+                                alt="Actor Profile"
                                 />
                             </div>
-                            <div className="flex flex-col items-center justify-center">
-                                <p className="text-center">{movie.character}</p>
-                                <button className="font-bold m-2">{movie.original_name}</button>
-                            </div>
+                            <p onClick={() => navigate(`/actor/${movie.id}`)} className="text-center mt-2 w-full">{movie.character}</p>
+                            <button onClick={() => navigate(`/actor/${movie.id}`)} className="font-bold mt-1 w-full text-center">{movie.original_name}</button>
                         </div>
-
-                 
-                       
-
                     ))}
                 </Slider>
             </div>
         </div>
-
-
 
     )
 }

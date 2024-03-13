@@ -20,6 +20,7 @@ import { MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck } from "react-icons/md"
 
 export default React.memo(function Booktemplate() {
   const { all_movie, userData } = useApi();
+  const [favor, setFavor] = useState(false);
   const [moviedata, setmoviedata] = useState({}); // Initial state
   const { movieId } = useParams();
   const [number, setNumber] = useState();
@@ -65,6 +66,7 @@ export default React.memo(function Booktemplate() {
   };
   
   const movieWatchedLater = async () => {
+
     try {
       const response = await axios.get(
         `http://localhost:5000/api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
@@ -75,48 +77,74 @@ export default React.memo(function Booktemplate() {
       console.error("Error fetching movi:", error.message);
     }
   };
+  const removeWatchedLater = async () => {
 
-  const handleRating = async () => {
-    
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${ratingn}`
+        `http://localhost:5000/api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
       );
-      setrating(rating + 1);
+
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching movi:", error.message);
+    }
+  };
+
+  const handleRating = async (starValue) => {
+          setRating(starValue)
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
+      );
+      setRating(parseInt(moviedata.ratingByUser))
+  
       window.location.reload();
     } catch (error) {
       console.error("Error fetching movi:", error.message);
     }
   };
   const handlefav = async () => {
+
+
     try {
       const response = await axios.get(
         `http://localhost:5000/api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
       );
-      console.log(response);
+    
       window.location.reload();
     } catch (error) {
-      console.error("Error fetching movi:", error.message);
+      console.error("Error fetching movie:", error.message);
     }
   };
+  const handleUnfav = async () => {
   
 
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
+      );
 
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching movie:", error.message);
+    }
+  };
+
+  const [handlestart, sethandlestart] = useState();
 
 
 
   
-  
-    const handleHover = (newRating) => {
-      setRating(newRating);
-    };
   
     const handleClick = (newRating) => {
       setRating(newRating);
-      // Add logic to send the rating data to your backend (optional)
-    };
-
-
+     
+  };
+  const handleFavor = () => {
+    setFavor(!favor);
+    handlefav();
+  }
+ 
 
   return (
     <div className="relative">
@@ -129,8 +157,8 @@ export default React.memo(function Booktemplate() {
           <Callout.Text>
             You have to login first
           </Callout.Text>
-        </Callout.Root></div>
-
+        </Callout.Root>
+        </div>
         : (!moviedata.watchedByUser &&
         <div className="p-7" > <Callout.Root>
           <Callout.Icon>
@@ -144,28 +172,38 @@ export default React.memo(function Booktemplate() {
 
       <div className="bg-cover bg-center p-10 gap-3 md:grid sm:grid-cols-3">
       
-        <div className="bg-custom-20">
-          <div className="shadow-md rounded-lg  overflow-hidden relative border border-white">
+        <div className="shadow-md bg-custom-20   ">
+          <div className=" rounded-lg overflow-hidden h-[550px] relative border border-white">
             <img 
               src={`https://image.tmdb.org/t/p/original/${moviedata.poster_path}`}
-              alt="Bold typography"
+              alt="movie image"
               className="py-10 px-1 h-full w-full rounded-md object-cover"
             />
-
-
-
-
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata?.watchedByUser ? (
                 <>
-                 {moviedata.favouriteByUser ?
-                  <HeartFilledIcon  height={32} width={32} />
-                 : <button onClick={handlefav}>
+                  {moviedata.favouriteByUser == "true" ?         
+                  <HeartFilledIcon onClick={handleUnfav} height={32} width={32} />
+                 : <button onClick={handleFavor}>
                     <HeartIcon height={32} width={32} />
                   </button>
                   }
                   {moviedata.ratingByUser ?
-                    <StarFilledIcon height={32} width={32} /> :
+                    
+                    <div className="flex items-center space-x-1">
+                      {[1, 2, 3, 4, 5].map((starValue) => (
+                        (moviedata.rating >= starValue) && (
+                          <span
+                            key={starValue}
+                            className="star cursor-pointer hover:text-yellow-500 active"
+                            data-rating={starValue}
+                          >
+                            <StarFilledIcon height={32} width={32} />
+                          </span>
+                        )
+                      ))}
+                    </div>
+ :
                     <button >
 
 <div className="flex items-center space-x-1">
@@ -176,15 +214,13 @@ export default React.memo(function Booktemplate() {
             ratingn >= starValue ? 'active' : ''
           }`}
           data-rating={starValue}
-          onMouseOver={() => handleHover(starValue)}
-          onClick={handleRating}
+         
+          onClick={()=>handleRating(starValue)}
         >
           <StarIcon height={32} width={32} />
         </span>
       ))}
-    </div>
-
-                      
+    </div>             
                     </button>
                   }
                 </>
@@ -197,14 +233,12 @@ export default React.memo(function Booktemplate() {
                       width={32}
                     />
                     </button>
-                    {!moviedata.watchLaterByUser ?
-                      
+                    {moviedata.watchLaterByUser=='false' ?
                       <button onClick={movieWatchedLater}>
                         <MdOutlinePlaylistAdd size={32} />
                       </button>
                       :
-
-                      <MdOutlinePlaylistAddCheck size={32} />
+                      <MdOutlinePlaylistAddCheck onClick={removeWatchedLater} size={32} />
 
 
                     }
@@ -257,7 +291,7 @@ export default React.memo(function Booktemplate() {
 
       <div className="p-4 bg-custom-50 gap-3 items-center relative flex shadow-lg">
         {/* // pass the function handleWatched */}
-        <CommentSection props={movieId} watched={moviedata.watchedByUser}  />
+        <CommentSection props={movieId} watched={moviedata.watchedByUser} watch={handleWatched}  />
       </div>
     </div>
   );
