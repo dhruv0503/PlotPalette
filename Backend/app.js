@@ -18,6 +18,10 @@ app.use((req, res, next) => {
     next();
 })
 
+app.get("/", (req, res, next) => {
+    console.log("App running on Vercel")
+})
+
 app.use("/api", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/movies", movieRouter);
@@ -39,8 +43,8 @@ app.use((err, req, res, next) => {
     });
 })
 
-// app.listen(port, () => {
-//     console.log(`Example app listening on port ${port}`)
-// })
+app.listen(3000, () => {
+    console.log(`App listening on port 3000`)
+})
 
 module.exports = app;
