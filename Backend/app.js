@@ -7,6 +7,7 @@ const movieRouter = require("./Routes/movieRoutes")
 const reviewRouter = require("./Routes/reviewRoutes")
 const friendRouter = require("./Routes/friendRoutes")
 const expressError = require("./util/expressError")
+const port = process.env.PORT;
 
 app.use(express.json())
 app.use(cors());
@@ -38,6 +39,8 @@ app.use((err, req, res, next) => {
     });
 })
 
-app.listen(5000, () => {
-    console.log("App Listening on port 5000");
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })
+
+module.exports = app;
