@@ -8,7 +8,7 @@ import { ImArrowUp, ImArrowDown } from "react-icons/im";
 const CommentSection = ({ props, watched , watch }) => {
   const [moviedata, setmoviedata] = useState([]);
   const [reviewText, setreviewText] = useState('');
-  const [commentText, setCommentText] = useState('');
+
   const [textArea, setTextArea] = useState(false);
 
   const [reviewid, setreviewid] = useState('');
@@ -53,7 +53,6 @@ const CommentSection = ({ props, watched , watch }) => {
   const handlePost = async (e) => {
     e.preventDefault();
 
-
     if (!reviewText) {
       console.error('Review text is empty.');
       return;
@@ -85,24 +84,26 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleUpdateReview = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log(commentText);
+    console.log(props);
 
-    if (!commentText) {
+    if (!reviewText) {
       console.error('Review text is empty.');
       return;
     }
     
     try {
       const response = await axios.put(`http://localhost:5000/api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
-        { commentText }
+        { reviewText }
       );
       console.log('Review updated:', response.data);
+      setreviewText('');
       window.location.reload();
     } catch (error) {
-      console.log("gun")
+     
       console.error('Error updating review:', error.message);
     }
   };
+
 
 
   const handleDelete = async ({ rid }) => {
@@ -139,6 +140,8 @@ const CommentSection = ({ props, watched , watch }) => {
     }
   };
 
+ 
+
 
  
 
@@ -166,9 +169,9 @@ const CommentSection = ({ props, watched , watch }) => {
                     <p class="w-full pb-8 text-sm tracking-wide leading-tight text-white">You can only comment if you have watched the movie</p>
                     <div class="rounded w-1/3">
                       <div class="opacity-95 border rounded-lg border-white px-4">
-                        <button  class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
-                          {/* call the handleWached */}
-                          <EyeOpenIcon height={24} width={24} onClick={watch} />Yes I have</button>
+                        <button onClick={watch}  class=" flex  m-auto gap-3 items-center text-sm font-medium leading-normal  text-white py-2" >
+                          <EyeOpenIcon height={24} width={24} />Yes I have
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -176,10 +179,10 @@ const CommentSection = ({ props, watched , watch }) => {
                 </div>
               </div>
             }
-
-            <button onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
+          { watched &&
+            (<button onClick={handlePost} className="mt-2 px-4 py-2 bg-custom-50 text-white rounded hover:bg-black">
               Post Comment
-            </button>
+            </button>) }
           </form> :
           <div class=" ">
             <div class="flex flex-row space-y-2 items-center justify-center h-full py-4 bg-gray-800 rounded-xl space-x-10">
@@ -241,8 +244,8 @@ const CommentSection = ({ props, watched , watch }) => {
                 {movie?.owner && textArea && (
                   <form method="get">
                     <textarea
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
+                      value={reviewText}
+                      onChange={(e) => setreviewText(e.target.value)}
                       name="updateText"
                       id="updateText"
                       rows="2"

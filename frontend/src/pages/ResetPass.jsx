@@ -1,34 +1,45 @@
 import React,{useState,useEffect} from 'react'
 import Navbar from './Navbar'
 import axios from 'axios';
-
-
-
-
-
-
+import { InfoCircledIcon } from '@radix-ui/react-icons';
+import { Callout } from '@radix-ui/themes';
+import { useNavigate } from 'react-router-dom';
 function ResetPass() {
   const [email, setEmail] = useState('');
+  const [error, seterror] = useState(false);
+  const [conmessage, setconmessage] = useState('');
 
   // const handleInputChange = (event) => {
   //   setEmail(event.target.value);
   // };
     
-
+  const navigate = useNavigate();
   const handleInputChange = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/forgetPassword', { email });
-     console.log(response); 
+      navigate('/')
+    
     } catch (error) {
       console.error('Error signing in:', error.message);
-      
+      seterror(true);
+      // alert(error.response.data.error.message)
     }
   };
 
+
   return (
     <div className='h-screen w-screen bg-custom-30'>
-        <div className='bg-gray-900' ><Navbar/></div>
+      <div className='bg-gray-900' ><Navbar /></div>
+      {error && (<div className="p-7" > <Callout.Root>
+        <Callout.Icon>
+          <InfoCircledIcon />
+        </Callout.Icon>
+        <Callout.Text>
+          No User with this email address exists
+        </Callout.Text>
+      </Callout.Root></div>)}
+    
       <div class="p-6 container bg-custom-30 ">
                
               <div class="flex justify-center mt-12">

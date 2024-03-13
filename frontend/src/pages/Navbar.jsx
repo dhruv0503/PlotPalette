@@ -49,27 +49,17 @@ function Navbar() {
     
     return (
 
-        <nav class=" text-custom-10 w-full flex relative justify-between  items-center mx-auto px-8 h-20 z-10 ">
-         
-             
+        <nav class=" text-custom-10 w-full flex relative justify-between  items-center mx-auto px-8 h-20 z-10 ">    
             <div className='flex' >
                 <div className='flex  justify-start text-white' onClick={() => navigate('/')} >
                     <img src={im} className=' h-[132px] w-[132px] ' alt="Logo" />
 
                 </div>
-                <Text  size={"7"} className='font-logo mt-11'>PLOT PALETTE</Text>
+                <Text onClick={() => navigate('/')}  size={"7"} className='font-logo mt-11 cursor-pointer'>PLOT PALETTE</Text>
             </div>  
-            
-         
-            
-        
-          
-              
-            
+
             <div class="hidden sm:block flex-shrink flex-grow-0 justify-start px-2  ">
-                        <a class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="#">
-                            {/* <div class="flex items-center relative cursor-pointer whitespace-nowrap">Become a host</div> */}
-                        </a>
+                       
                         
                     </div>
             <div class="flex-initial">

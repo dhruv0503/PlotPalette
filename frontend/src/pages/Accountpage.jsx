@@ -241,7 +241,7 @@ export default React.memo(function AccountPage() {
                   {userData?.movies?.map((movie, index) => (
                     <>
                       {movie.favourite ? (
-                        <div class=" text-custom-20 md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 ">
+                        <div onClick={() => navigate(`/movies/${movie.tmdbId}`)} class=" text-custom-20 md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 ">
                           <img className="border border-custom-20" src={`https://image.tmdb.org/t/p/original/${movie.poster}`} />
                          
                         </div>
