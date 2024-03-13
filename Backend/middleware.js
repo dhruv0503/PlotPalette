@@ -1,7 +1,6 @@
 const { db, auth } = require("./firebaseConfig");
 const expressError = require("./util/expressError");
 const { collection, getDocs, query, where, doc } = require("firebase/firestore/lite");
-const Review = collection(db, "Review")
 const utilityFunctions = require("./util/utlityFunctions")
 const User = collection(db, "User")
 
