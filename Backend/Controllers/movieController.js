@@ -1,4 +1,3 @@
-require("dotenv").config();
 const axios = require("axios");
 const { db, auth } = require("../firebaseConfig");
 const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore/lite");

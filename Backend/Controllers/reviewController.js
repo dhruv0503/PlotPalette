@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { db, auth } = require("../firebaseConfig");
 const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore/lite");
 const User = collection(db, "User");
