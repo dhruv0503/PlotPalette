@@ -25,7 +25,7 @@ export default function SignIn() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signin', { email, password });
+      const response = await axios.post('https://plot-palette-server.vercel.app/api/signin', { email, password });
       setUserUid(response.data.data.uid);
       localStorage.setItem("uid", response.data.data.uid)
       setislogin(true)
@@ -38,7 +38,7 @@ export default function SignIn() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName,password });
+      const response = await axios.post('https://plot-palette-server.vercel.app/api/signup',{ email,name,userName,password });
       setUserUid(response.data.uid);
       localStorage.setItem("uid" , response.data.uid)
       console.log(response);

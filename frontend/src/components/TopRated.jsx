@@ -29,7 +29,7 @@ export default React.memo(function TopRated() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const topRatedResponse = await axios.get(`http://localhost:5000/api/movies/type/top_rated?pageNo=${startPage}`);
+                const topRatedResponse = await axios.get(`https://plot-palette-server.vercel.app/api/movies/type/top_rated?pageNo=${startPage}`);
                 setTopRatedMovies(topRatedResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

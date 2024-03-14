@@ -24,7 +24,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
     const MovieDetails = async () => {
       try {
-        const MovDetails = await axios.get(`http://localhost:5000/api/movies/reviews?tmdbId=${props}`);
+        const MovDetails = await axios.get(`https://plot-palette-server.vercel.app/api/movies/reviews?tmdbId=${props}`);
 
         setmoviedata(MovDetails.data);
       } catch (error) {
@@ -60,7 +60,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
     try {
      
-      const response = await axios.post(`http://localhost:5000/api/reviews?tmdbId=${props}`, { reviewText });
+      const response = await axios.post(`https://plot-palette-server.vercel.app/api/reviews?tmdbId=${props}`, { reviewText });
       console.log('Comment posted:', response.data);
       setreviewText('');
       window.location.reload();
@@ -73,7 +73,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleUser = async ({ id }) => {
     try {
-      const userDetails = await axios.get(`http://localhost:5000/api/users/${id}`);
+      const userDetails = await axios.get(`https://plot-palette-server.vercel.app/api/users/${id}`);
       // Handle user details (e.g., display username)
     } catch (error) {
       console.error('Error fetching user:', error.message);
@@ -92,7 +92,7 @@ const CommentSection = ({ props, watched , watch }) => {
     }
     
     try {
-      const response = await axios.put(`http://localhost:5000/api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
+      const response = await axios.put(`https://plot-palette-server.vercel.app/api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
         { reviewText }
       );
       console.log('Review updated:', response.data);
@@ -108,7 +108,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleDelete = async ({ rid }) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/reviews?tmdbId=${props}&reviewId=${rid}`);
+        const response = await axios.delete(`https://plot-palette-server.vercel.app/api/reviews?tmdbId=${props}&reviewId=${rid}`);
       console.log(response.data);
       window.location.reload();
         }
@@ -120,7 +120,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleUpvote = async ({ id }) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/reviews/upvote?reviewId=${id}`);
+      const response = await axios.put(`https://plot-palette-server.vercel.app/api/reviews/upvote?reviewId=${id}`);
       // Handle user details (e.g., display username)
       console.log(response);
       window.location.reload();
@@ -131,7 +131,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleDownvote = async ({ id }) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/reviews/downvote?reviewId=${id}`);
+      const response = await axios.put(`https://plot-palette-server.vercel.app/api/reviews/downvote?reviewId=${id}`);
       console.log(response);
       // Handle user details (e.g., display username)
       window.location.reload();

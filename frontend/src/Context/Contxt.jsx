@@ -18,7 +18,7 @@ export function MyContextProvider({ children }) {
     const myProfile = async (e) => {
       // e.preventDefault();
       try {
-        const response = await axios.get('http://localhost:5000/api/users/myProfile');
+        const response = await axios.get('https://plot-palette-server.vercel.app/api/users/myProfile');
     
         setUserData(response.data)
       } catch (error) {
@@ -53,17 +53,16 @@ export function MyContextProvider({ children }) {
         const fetchMovies = async () => {
             try {
                 // Fetch upcoming movies
-               const upcomingResponse = await axios.get('http://localhost:5000/api/movies/type/upcoming');
+               const upcomingResponse = await axios.get('https://plot-palette-server.vercel.app/api/movies/type/upcoming');
                 setUpcomingMovies(upcomingResponse.data.movies.results);
                 // Fetch now playing movies
-                const nowPlayingResponse = await axios.get('http://localhost:5000/api/movies/type/now_playing');
+                const nowPlayingResponse = await axios.get('https://plot-palette-server.vercel.app/api/movies/type/now_playing');
                 setNowPlayingMovies(nowPlayingResponse.data.movies.results);
                 // Fetch popular movies
-                const popularResponse = await axios.get('http://localhost:5000/api/movies/type/popular');
+                const popularResponse = await axios.get('https://plot-palette-server.vercel.app/api/movies/type/popular');
                 setPopularMovies(popularResponse.data.movies.results);
-
                 // Fetch top rated movies
-                const topRatedResponse = await axios.get('http://localhost:5000/api/movies/type/top_rated');
+                const topRatedResponse = await axios.get('https://plot-palette-server.vercel.app/api/movies/type/top_rated');
                 setTopRatedMovies(topRatedResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

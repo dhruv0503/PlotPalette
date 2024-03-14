@@ -45,7 +45,7 @@ export default React.memo(function Category() {
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-                const upcomingResponse = await axios.get(`http://localhost:5000/api/movies/genres/${categoryID}?pageNo=${startPage}`);
+                const upcomingResponse = await axios.get(`https://plot-palette-server.vercel.app/api/movies/genres/${categoryID}?pageNo=${startPage}`);
                 setGenres(upcomingResponse.data.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

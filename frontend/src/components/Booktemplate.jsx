@@ -38,7 +38,7 @@ export default React.memo(function Booktemplate() {
     const MovieDetails = async () => {
       try {
         const MovDetails = await axios.get(
-          `http://localhost:5000/api/movies?tmdbId=${movieId}`
+          `https://plot-palette-server.vercel.app/api/movies?tmdbId=${movieId}`
         );
         console.log(MovDetails.data);
         setmoviedata(MovDetails.data);
@@ -55,7 +55,7 @@ export default React.memo(function Booktemplate() {
   const handleWatched = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/movies?tmdbId=${movieId}`
+        `https://plot-palette-server.vercel.app/api/movies?tmdbId=${movieId}`
       );
       window.location.reload();
       moviedata.watchedByUser("true");
@@ -69,7 +69,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
+        `https://plot-palette-server.vercel.app/api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
       );
     
       window.location.reload();
@@ -81,7 +81,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
+        `https://plot-palette-server.vercel.app/api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
       );
 
       window.location.reload();
@@ -94,7 +94,7 @@ export default React.memo(function Booktemplate() {
           setRating(starValue)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
+        `https://plot-palette-server.vercel.app/api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
       );
       setRating(parseInt(moviedata.ratingByUser))
   
@@ -108,7 +108,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
+        `https://plot-palette-server.vercel.app/api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
       );
     
       window.location.reload();
@@ -121,7 +121,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
+        `https://plot-palette-server.vercel.app/api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
       );
 
       window.location.reload();

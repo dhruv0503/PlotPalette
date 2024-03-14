@@ -41,7 +41,7 @@ export default React.memo(function AccountPage() {
     const handleBio = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:5000/api/users/bio`, {bio}
+          `https://plot-palette-server.vercel.app/api/users/bio`, {bio}
         );
         window.location.reload();
         console.log(response);
@@ -58,7 +58,7 @@ export default React.memo(function AccountPage() {
     const searchUserData = async () => {
       try {
         const UserSearch = await axios.get(
-          `http://localhost:5000/api/users/search?userName=${findUser}`
+          `https://plot-palette-server.vercel.app/api/users/search?userName=${findUser}`
         );
 
         setFinduserData(UserSearch.data);

@@ -26,7 +26,7 @@ export default React.memo(function Upcoming() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const UpcomingResponse = await axios.get(`http://localhost:5000/api/movies/type/upcoming?pageNo=${startPage}`);
+                const UpcomingResponse = await axios.get(`https://plot-palette-server.vercel.app/api/movies/type/upcoming?pageNo=${startPage}`);
                 setUpcomingMovies(UpcomingResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
