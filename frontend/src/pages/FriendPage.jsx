@@ -11,7 +11,7 @@ function FriendPage() {
   const handleAccept = async ({ id }) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/friend/accept?userId=${id}`
+        `https://plot-palette-server.vercel.app/api/friend/accept?userId=${id}`
       );
       window.location.reload();
       console.log(response);
@@ -23,7 +23,7 @@ function FriendPage() {
   const handleDeny = async ({ id }) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/friend/deny?userId=${id}`
+        `https://plot-palette-server.vercel.app/api/friend/deny?userId=${id}`
       );
    
       window.location.reload();
@@ -36,7 +36,7 @@ function FriendPage() {
   // useEffect(() => {
   //   const handleFriendRequest = async () => {
   //     try {
-  //       const response = await axios.get(`http://localhost:5000/api/friend/requestList`)
+  //       const response = await axios.get(`https://plot-palette-server.vercel.app/api/friend/requestList`)
   //       console.log(response.data);
   //       setFriendData(response.data)
   //     } catch (error) {

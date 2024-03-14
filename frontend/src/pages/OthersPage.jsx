@@ -29,7 +29,7 @@ export default React.memo(function OthersPage() {
         const allUsers = async (e) => {
 
             try {
-                const response = await axios.get(`http://localhost:5000/api/users/search?userName=${UserID}`);
+                const response = await axios.get(`https://plot-palette-server.vercel.app/api/users/search?userName=${UserID}`);
                 setotheruserData(response.data);
             } catch (error) {
                 console.error('Error in getting all users:', error.message)
@@ -46,7 +46,7 @@ export default React.memo(function OthersPage() {
     const handleAddfriend = async () => {
      
         try {
-            const response = await axios.post(`http://localhost:5000/api/friend/send?userId=${otheruserData.id}`);
+            const response = await axios.post(`https://plot-palette-server.vercel.app/api/friend/send?userId=${otheruserData.id}`);
            
         } catch (error) {
             console.error('Error in getting all users:', error.message)

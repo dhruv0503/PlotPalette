@@ -24,7 +24,7 @@ function Navbar() {
         }
         try {
         localStorage.removeItem("uid");
-            const response = await axios.get('http://localhost:5000/api/signout');  
+            const response = await axios.get('https://plot-palette-server.vercel.app/api/signout');  
             navigate('/signin');  
         
         } catch (error) {

@@ -17,7 +17,7 @@ function ResetPass() {
   const handleInputChange = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/forgetPassword', { email });
+      const response = await axios.post('https://plot-palette-server.vercel.app/api/forgetPassword', { email });
       navigate('/')
     
     } catch (error) {

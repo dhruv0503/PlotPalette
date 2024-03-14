@@ -18,7 +18,7 @@ function SearchResults() {
   useEffect(() => {
     const SearchBarResults = async () => {
       try {
-        const SearchBarRes = await axios.get(`http://localhost:5000/api/movies/search/person?name=${searchID}&pageNo=${startPage}`)
+        const SearchBarRes = await axios.get(`https://plot-palette-server.vercel.app/api/movies/search/person?name=${searchID}&pageNo=${startPage}`)
         setsearchperson(SearchBarRes.data);
       } catch (error) {
         console.error('Error fetching movies:', error.message);
@@ -31,7 +31,7 @@ function SearchResults() {
     useEffect(() => { 
         const SearchBarResults = async () => {
             try {
-              const SearchBarRes = await axios.get(`http://localhost:5000/api/movies/search/movie?name=${searchID}&pageNo=${startPage}`)
+              const SearchBarRes = await axios.get(`https://plot-palette-server.vercel.app/api/movies/search/movie?name=${searchID}&pageNo=${startPage}`)
                 console.log(SearchBarRes.data)
                 setSearch(SearchBarRes.data);
             } catch (error) {
