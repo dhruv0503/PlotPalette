@@ -1,5 +1,5 @@
 const { db } = require("../firebaseConfig");
-const { query, where, collection, getDocs, getDoc} = require("firebase/firestore/lite");
+const { query, where, collection, getDocs, getDoc} = require("firebase/firestore");
 const User = collection(db,"User");
 
 module.exports.getUser = async (user) => {

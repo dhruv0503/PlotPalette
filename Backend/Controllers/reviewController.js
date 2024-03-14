@@ -1,5 +1,5 @@
 const { db, auth } = require("../firebaseConfig");
-const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore/lite");
+const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const Review = collection(db, "Review");

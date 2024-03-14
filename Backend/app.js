@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV !== 'PRODUCTION'){
+    require('dotenv').config();
+}
 const express = require("express")
 const app = express();
 const cors = require('cors');
@@ -7,7 +10,7 @@ const movieRouter = require("./Routes/movieRoutes")
 const reviewRouter = require("./Routes/reviewRoutes")
 const friendRouter = require("./Routes/friendRoutes")
 const expressError = require("./util/expressError")
-const port = process.env.PORT;
+
 
 app.use(express.json())
 app.use(cors());
@@ -19,7 +22,7 @@ app.use((req, res, next) => {
 })
 
 app.get("/", (req, res, next) => {
-    console.log("App running on Vercel")
+    res.send("Plot Palette Online")
 })
 
 app.use("/api", authRouter);

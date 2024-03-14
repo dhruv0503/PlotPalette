@@ -1,6 +1,6 @@
 const { db ,auth } = require("../firebaseConfig");
 const {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} = require("firebase/auth");
-const {addDoc, collection, getDocs } = require("firebase/firestore/lite");
+const {addDoc, collection, getDocs } = require("firebase/firestore");
 const expressError = require("../util/expressError");
 const User = collection(db, "User");
 
