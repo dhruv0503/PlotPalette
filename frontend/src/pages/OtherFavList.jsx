@@ -12,7 +12,7 @@ function OtherFavList() {
         const handlefavlist = async ({userDataId}) => {
             try {
                 //change userDATAID
-                const response = await axios.get(`https://plot-palette-server.vercel.app/api/users/options?parameter=${collectionID}&userId=${userDataId}`)
+                const response = await axios.get(`${process.env.BACKEND_URL}api/users/options?parameter=${collectionID}&userId=${userDataId}`)
                 setuserFav(response.data)
               
             } catch (error) {

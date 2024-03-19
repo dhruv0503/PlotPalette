@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../pages/Navbar'
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { MovieCard, BookCard } from "../components/CustomCard.jsx"
+import { MovieCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
 import NoPage from '../pages/NoPage.jsx';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
-import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { BorderDottedIcon, CheckIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
-import LoadingPage from './LoadingPage.jsx';
-import Pagination from './Pagination.jsx';
 import { useParams } from 'react-router-dom';
 
 export default React.memo(function Category() {
     const { genres, searchResults } = useApi();
     const [startPage, setStartPage] = useState(1);
-    // const [genre, setgenre] = useState("Action");
     const [Genres, setGenres] = useState([]);
     const { categoryID } = useParams();
     console.log(categoryID)
-    // const handleSelectChange = (newValue) => {
-    //     setgenre(newValue.name);
-    //     setStartPage(1)
-    // };
     const nextPage = () => {
         setStartPage(startPage + 1);
     }
@@ -45,7 +37,7 @@ export default React.memo(function Category() {
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-                const upcomingResponse = await axios.get(`https://plot-palette-server.vercel.app/api/movies/genres/${categoryID}?pageNo=${startPage}`);
+                const upcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/genres/${categoryID}?pageNo=${startPage}`);
                 setGenres(upcomingResponse.data.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

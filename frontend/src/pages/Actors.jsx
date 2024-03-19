@@ -25,7 +25,7 @@ function Actors() {
     useEffect(() => {
         const MovieDetails = async () => {
             try {
-                const ActDetails = await axios.get(`https://plot-palette-server.vercel.app/api/movies/person?castId=${ActorId}`);
+                const ActDetails = await axios.get(`${process.env.BACKEND_URL}api/movies/person?castId=${ActorId}`);
 
                 setActorInfo(ActDetails.data);
             } catch (error) {

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../pages/Navbar'
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { MovieCard, BookCard } from "../components/CustomCard.jsx"
+import { MovieCard } from "../components/CustomCard.jsx"
 import axios from 'axios'
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
-import { BorderDottedIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { BorderDottedIcon, CheckIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
-import Pagination from './Pagination.jsx';
 
 export default React.memo(function Popular() {
     const [UpcomingMovies, setUpcomingMovies] = useState([]);
@@ -26,7 +24,7 @@ export default React.memo(function Popular() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const UpcomingResponse = await axios.get(`https://plot-palette-server.vercel.app/api/movies/type/popular?pageNo=${startPage}`);
+                const UpcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/popular?pageNo=${startPage}`);
                 setUpcomingMovies(UpcomingResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

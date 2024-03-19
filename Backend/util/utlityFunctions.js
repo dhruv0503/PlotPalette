@@ -28,7 +28,7 @@ module.exports.getSubCollectionMovies = async(user, tmdbId) => {
 }
 
 module.exports.hasSubcollection = async(userId, subcollectionName) => {
-    const subcollectionSnapshot = await getDocs(collection(User, userId, subcollectionName));
+    const subcollectionSnapshot = await getDocs(collection(doc(User, userId), subcollectionName));
     const subcollectionData = subcollectionSnapshot.docs.map(doc => ({ "id" : doc.id, ...doc.data() }));
     return  subcollectionData ;
 }

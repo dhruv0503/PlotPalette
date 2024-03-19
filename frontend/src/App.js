@@ -1,4 +1,3 @@
-import { Flex, Button } from '@radix-ui/themes';
 import Homepage from './pages/Homepage';
 import OtherFriend from './pages/OtherFriend';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
@@ -6,8 +5,6 @@ import AccountPage from './pages/Accountpage';
 import SignIn from './pages/SignIn';
 import Template from './pages/Template';
 import Movies from './pages/Movies';
-import Books from './pages/Books';
-import Aboutsus from './pages/Aboutsus';
 import Upcoming from './components/Upcoming';
 import TopRated from './components/TopRated';
 import Popular from './components/Popular';
@@ -38,7 +35,6 @@ function App() {
           <Route element={<NowPlaying />} path='/movies/nowplaying' />
           <Route element={<Popular/>} path='/movies/popular' />
           <Route element={<NoPage />} path='*' />
-          {/* <Route element={<Aboutsus />} path='/about' /> */}
           <Route element={<Category />} path='/movies/Category/:categoryID' />
           <Route element={<Movies />} path='/movies' />
           <Route element={<SearchResults />} path='/search/:searchID' />

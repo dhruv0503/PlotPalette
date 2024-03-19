@@ -18,7 +18,7 @@ module.exports.getMovie = async (req, res, next) => {
             const movieData = querySnapshot.docs[0];
             if (userRef !== null) {
                 const user = await utilityFunctions.getUser(userRef);
-                const movies = await getDocs(collection(User, user.id, 'movies'))
+                const movies = await getDocs(collection(doc(User, user.id), 'movies'))
                 const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
                 if (!movies || !movieObj) {
 
@@ -90,7 +90,7 @@ module.exports.watched = async (req, res, next) => {
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
     const movieData = await utilityFunctions.getMovie(tmdbId);
-
+    
     const movies = await getDocs(collection(doc(User, user.id), 'movies'));
     const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 

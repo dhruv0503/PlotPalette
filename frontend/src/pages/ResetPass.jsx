@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 import axios from 'axios';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
@@ -7,27 +7,18 @@ import { useNavigate } from 'react-router-dom';
 function ResetPass() {
   const [email, setEmail] = useState('');
   const [error, seterror] = useState(false);
-  const [conmessage, setconmessage] = useState('');
-
-  // const handleInputChange = (event) => {
-  //   setEmail(event.target.value);
-  // };
-    
   const navigate = useNavigate();
   const handleInputChange = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://plot-palette-server.vercel.app/api/forgetPassword', { email });
+      await axios.post(`${process.env.BACKEND_URL}api/forgetPassword`, { email });
       navigate('/')
-    
+
     } catch (error) {
       console.error('Error signing in:', error.message);
       seterror(true);
-      // alert(error.response.data.error.message)
     }
   };
-
-
   return (
     <div className='h-screen w-screen bg-custom-30'>
       <div className='bg-gray-900' ><Navbar /></div>
@@ -39,28 +30,24 @@ function ResetPass() {
           No User with this email address exists
         </Callout.Text>
       </Callout.Root></div>)}
-    
+
       <div class="p-6 container bg-custom-30 ">
-               
-              <div class="flex justify-center mt-12">
+
+        <div class="flex justify-center mt-12">
           <input
             className="bg-gray-100 rounded-lg text-base leading-none text-gray-800 p-5 w-4/5 border border-transparent focus:outline-none focus:border-gray-500"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            
           />
-                  
-              </div>
-              
-              <div className='justify-center flex m-7' >
-          <button onClick={handleInputChange} className='bg-gray-900 p-5 text-custom-20 rounded-lg border border-custom-20 ' >Reset Password</button>
-              </div>
-              
-        
-          </div>
         </div>
+
+        <div className='justify-center flex m-7' >
+          <button onClick={handleInputChange} className='bg-gray-900 p-5 text-custom-20 rounded-lg border border-custom-20 ' >Reset Password</button>
+        </div>
+      </div>
+    </div>
   )
-  }
+}
 export default ResetPass

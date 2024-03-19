@@ -40,7 +40,7 @@ module.exports.isWatched = (parameter) => {
         const user = auth.currentUser;
         const userObj = await utilityFunctions.getUser(user);
         const movie = await utilityFunctions.getMovie(tmdbId);
-        const movies = await getDocs(collection(User, userObj.id, 'movies'))
+        const movies = await getDocs(collection(db(User, userObj.id), 'movies'))
         const movieObj = movies.docs.find(ele => ele.data().movieId == movie.id);
         if (!movieObj.data().watched) {
             if (parameter == "fav") {

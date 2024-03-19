@@ -1,7 +1,6 @@
 import React from 'react'
 import { useApi } from '../Context/Contxt';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 function Searchbar() {
   const { searchResults, setSearchResults } = useApi();
   const navigate = useNavigate();
