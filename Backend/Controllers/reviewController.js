@@ -54,7 +54,7 @@ module.exports.deleteReview = async(req, res, next) => {
     const user = await utilityFunctions.getUser(userRef);
     const result = await utilityFunctions.getSubCollectionMovies(userRef, tmdbId)
 
-    await updateDoc(doc(collection(User, user.id, 'movies'), result.id),{
+    await updateDoc(doc(collection(doc(User, user.id), 'movies'), result.id),{
         reviewId : deleteField()
     });
 
@@ -74,7 +74,7 @@ module.exports.upVote = async(req, res, next) => {
     const { reviewId } = req.query;
     const user = await utilityFunctions.getUser(userRef);
     
-    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    const userReviews = await getDocs(collection(doc(User, user.id), "reviews"));
     if(userReviews) {
         const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
         if (upvotedReview) next(new expressError("You can't upvote the same review multiple times", 400));
@@ -90,7 +90,7 @@ module.exports.downVote = async(req, res, next) => {
     const {reviewId} = req.query;
     const user = await utilityFunctions.getUser(userRef);
 
-    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    const userReviews = await getDocs(collection(doc(User, user.id), "reviews"));
     if(userReviews){
         const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
         if(upvotedReview) next(new expressError("You can't downvote the same review multiple times", 400));

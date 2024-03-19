@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Navbar from './Navbar'
 import axios from 'axios';
 import { Text } from '@radix-ui/themes';
@@ -7,11 +7,10 @@ import { useApi } from '../Context/Contxt';
 
 function FriendPage() {
   const { userData } = useApi();
-  const [friendData, setFriendData] = useState();
   const handleAccept = async ({ id }) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/friend/accept?userId=${id}`
+        `${process.env.BACKEND_URL}api/friend/accept?userId=${id}`
       );
       window.location.reload();
       console.log(response);
@@ -22,9 +21,7 @@ function FriendPage() {
 
   const handleDeny = async ({ id }) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/friend/deny?userId=${id}`
-      );
+      await axios.delete( `${process.env.BACKEND_URL}api/friend/deny?userId=${id}` );
    
       window.location.reload();
     } catch (error) {
@@ -32,21 +29,6 @@ function FriendPage() {
     }
   };
   console.log(userData)
-  
-  // useEffect(() => {
-  //   const handleFriendRequest = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:5000/api/friend/requestList`)
-  //       console.log(response.data);
-  //       setFriendData(response.data)
-  //     } catch (error) {
-  //       console.error('Error fetching movies:', error.message);
-  //     }
-  //   };
-  //   handleFriendRequest();
-  // }, [])
-  // console.log(friendData)
-
 
   return (
       <div className='bg-custom-30' >

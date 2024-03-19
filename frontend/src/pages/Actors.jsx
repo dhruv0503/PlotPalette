@@ -25,8 +25,8 @@ function Actors() {
     useEffect(() => {
         const MovieDetails = async () => {
             try {
-                const ActDetails = await axios.get(`http://localhost:5000/api/movies/person?castId=${ActorId}`);
-               
+                const ActDetails = await axios.get(`${process.env.BACKEND_URL}api/movies/person?castId=${ActorId}`);
+
                 setActorInfo(ActDetails.data);
             } catch (error) {
                 console.error('Error fetching movi:', error.message);

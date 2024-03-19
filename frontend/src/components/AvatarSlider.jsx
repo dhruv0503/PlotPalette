@@ -2,10 +2,8 @@ import React from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import * as Avatar from '@radix-ui/react-avatar';
 import { useNavigate } from 'react-router-dom';
 import { Strong, Text } from '@radix-ui/themes';
-import Navbar from '../pages/Navbar';
 
 function AvatarSlider({ props }) {
     var settings = {

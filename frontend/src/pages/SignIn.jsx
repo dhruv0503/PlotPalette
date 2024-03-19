@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import {useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useApi } from '../Context/Contxt';
 import { Text } from  '@radix-ui/themes'
@@ -8,7 +8,6 @@ import { Text } from  '@radix-ui/themes'
 import Footer from "../components/Footer"
 import * as Tabs from '@radix-ui/react-tabs';
 import Bookim from "../assets/Bookim.jpg"
-import Lookim from "../assets/ImIM.svg"
 import Navbar from "../pages/Navbar"
  
 
@@ -25,7 +24,7 @@ export default function SignIn() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signin', { email, password });
+      const response = await axios.post(`${process.env.BACKEND_URL}api/signin`, { email, password });
       setUserUid(response.data.data.uid);
       localStorage.setItem("uid", response.data.data.uid)
       setislogin(true)
@@ -38,7 +37,7 @@ export default function SignIn() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/signup',{ email,name,userName,password });
+      const response = await axios.post(`${process.env.BACKEND_URL}api/signup`,{ email,name,userName,password });
       setUserUid(response.data.uid);
       localStorage.setItem("uid" , response.data.uid)
       console.log(response);

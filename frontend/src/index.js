@@ -13,4 +13,3 @@ root.render(
     </Theme>
   </React.StrictMode>
 );
-
