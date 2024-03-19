@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { db, auth } = require("../firebaseConfig");
-const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore/lite");
+const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const expressError = require("../util/expressError");

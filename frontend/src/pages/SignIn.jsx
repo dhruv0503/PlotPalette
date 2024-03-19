@@ -3,8 +3,6 @@ import {useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useApi } from '../Context/Contxt';
 import { Text } from  '@radix-ui/themes'
-// import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
-// import {auth} from '../firebaseconfig/firebaseConfig.js'
 import Footer from "../components/Footer"
 import * as Tabs from '@radix-ui/react-tabs';
 import Bookim from "../assets/Bookim.jpg"

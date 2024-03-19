@@ -53,7 +53,6 @@ export function MyContextProvider({ children }) {
                 // Fetch popular movies
                 const popularResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/popular`);
                 setPopularMovies(popularResponse.data.movies.results);
-
                 // Fetch top rated movies
                 const topRatedResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/top_rated`);
                 setTopRatedMovies(topRatedResponse.data.movies.results);

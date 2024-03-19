@@ -1,5 +1,5 @@
 const { db, auth } = require("../firebaseConfig")
-const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, query, where } = require("firebase/firestore/lite")
+const { collection, getDocs, getDoc, doc, updateDoc, increment, arrayRemove, query, where } = require("firebase/firestore")
 const User = collection(db, "User");
 const utilityFunctions = require("../util/utlityFunctions");
 const expressError = require("../util/expressError");

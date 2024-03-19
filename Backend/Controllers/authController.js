@@ -5,23 +5,31 @@ const expressError = require("../util/expressError");
 const User = collection(db, "User");
 
 module.exports.signUp = async (req, res, next) => {
-        const data = req.body;
+    const data = req.body;
+    const usersRef = await getDocs(User);
+    const user = usersRef.docs.find((ele) => ele.data().userName === data.userName);
+    if (user) return next(new expressError("Username already exists", 400));
+  
+    try {
+      const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      delete data.password; 
+      const formattedTime = new Date(Date.now()).toLocaleString();
+      
+      const docRef = await addDoc(User, {
+        ...data, uid: newUser.user.uid, role: "User", joinedOn: formattedTime, friendCount: 0, friendList: [], requestList: [],
+      });
 
-        const usersRef = await getDocs(User);
-        const user = usersRef.docs.find((ele) => ele.data().userName === data.userName);
-        if (user) return next(new expressError("Username already exists", 400));
-
-        try {
-            const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
-            delete data.password;
-            const formattedTime = new Date(Date.now()).toLocaleString();
-            const docRef = await addDoc(User,{...data, "uid" : newUser.user.uid, "role" : "User", "joinedOn" : formattedTime, "friendCount" : 0, "friendList" : [], "requestList" : [] });
-            res.send({"msg" : `User Added with id ${docRef.id}`, ...newUser.user});
-        } catch (error) {
-            console.error(error);
-            return next(new expressError("Error creating user", 500));
-        }
-    };
+      const userForResponse = {
+        id: docRef.id, username: data.userName, email: data.email, role: "User", joinedOn: formattedTime, friendCount: 0, friendList: [], requestList: [],
+      };
+  
+      res.send({ "msg": `User Added with id ${userForResponse.id}`, ...userForResponse });
+    } catch (error) {
+      console.error(error);
+      return next(new expressError("Error creating user", 500));
+    }
+  };
+  
 
 module.exports.signIn = async (req, res, next) => {
     try {
