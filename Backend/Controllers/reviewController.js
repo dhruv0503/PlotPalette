@@ -44,6 +44,7 @@ module.exports.updateReview = async(req, res, next) => {
 module.exports.getReview = async(req, res, next) => {
     const { tmdbId,reviewId } = req.query;
     const reviewDoc = await getDoc(doc(Review, reviewId))
+    if(!reviewDoc) return next(new expressError("No review with given reviewId found"), 404)
     res.send(reviewDoc.data());
 }
 
@@ -60,7 +61,7 @@ module.exports.deleteReview = async(req, res, next) => {
 
     await updateDoc(doc(Movie, movie.id), {
         "reviewCount" : increment(-1),
-        "reviews" : arrayRemove(reviewId)
+        "reviews" : arrayRemove(reviewId)   
     })
 
     await deleteDoc(doc(Review, reviewId));
@@ -92,8 +93,8 @@ module.exports.downVote = async(req, res, next) => {
 
     const userReviews = await getDocs(collection(doc(User, user.id), "reviews"));
     if(userReviews){
-        const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
-        if(upvotedReview) next(new expressError("You can't downvote the same review multiple times", 400));
+        const downvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().downvote );
+        if(downvotedReview) return next(new expressError("You can't downvote the same review multiple times", 400));
     }    
     await updateDoc(doc(Review, reviewId), {votes : increment(-1)})
     await addDoc(collection(doc(User, user.id) , "reviews"), {reviewId, upvote : false, downvote : true})

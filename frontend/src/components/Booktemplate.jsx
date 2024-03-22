@@ -25,7 +25,7 @@ export default React.memo(function Booktemplate() {
     const MovieDetails = async () => {
       try {
         const MovDetails = await axios.get(
-          `${process.env.BACKEND_URL}api/movies?tmdbId=${movieId}`
+          `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
         );
         console.log(MovDetails.data);
         setmoviedata(MovDetails.data);
@@ -42,7 +42,7 @@ export default React.memo(function Booktemplate() {
   const handleWatched = async () => {
     try {
       await axios.patch(
-        `${process.env.BACKEND_URL}api/movies?tmdbId=${movieId}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
       );
       window.location.reload();
       moviedata.watchedByUser("true");
@@ -56,7 +56,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       await axios.get(
-        `${process.env.BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
       );
 
       window.location.reload();
@@ -68,7 +68,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       await axios.get(
-        `${process.env.BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
       );
 
       window.location.reload();
@@ -81,7 +81,7 @@ export default React.memo(function Booktemplate() {
     setRating(starValue)
     try {
       await axios.get(
-        `${process.env.BACKEND_URL}api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
       );
       setRating(parseInt(moviedata.ratingByUser))
 
@@ -95,7 +95,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `${process.env.BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
       );
 
       window.location.reload();
@@ -108,7 +108,7 @@ export default React.memo(function Booktemplate() {
 
     try {
       const response = await axios.get(
-        `${process.env.BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
+        `${process.env.REACT_APP_BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
       );
 
       window.location.reload();

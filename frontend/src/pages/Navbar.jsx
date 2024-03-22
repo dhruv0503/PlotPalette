@@ -21,7 +21,7 @@ function Navbar() {
         }
         try {
         localStorage.removeItem("uid");
-            await axios.get(`${process.env.BACKEND_URL}.app/api/signout`);  
+            await axios.get(`${process.env.REACT_APP_BACKEND_URL}.app/api/signout`);  
             navigate('/signin');  
         
         } catch (error) {

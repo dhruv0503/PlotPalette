@@ -95,7 +95,7 @@ module.exports.watched = async (req, res, next) => {
     const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
     await updateDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id), { watched: true, watchLater: false });
-    await updateDoc(doc(Movie, movieData.id), { watched: increment(1), watchLater: movieObj.data().watchLater ? increment(-1) : increment(0) })
+    await updateDoc(doc(Movie, movieData.id), { watched: increment(1), watchLater: movieObj.data().watchLater ? increment(-1) : increment(0)})
 
     const updatedDoc = await getDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id));
     res.send(updatedDoc.data());
@@ -132,7 +132,7 @@ module.exports.favourite = async (req, res, next) => {
     await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), { favourite });
     const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
-        "favourite": increment(favourite === true ? 1 : 0)
+        "favourite": increment(favourite === "true" ? 1 : -1)
     }
     await updateDoc(doc(Movie, movieObj.id), movieUpdates);
     res.send(updatedDoc.data());
@@ -149,7 +149,7 @@ module.exports.watchLater = async (req, res, next) => {
     await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), { watchLater });
     const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
-        "watchLater": increment(watchLater === true ? 1 : 0)
+        "watchLater": increment(watchLater === "true" ? 1 : -1)
     }
     await updateDoc(doc(Movie, movieObj.id), movieUpdates);
     res.send(updatedDoc.data());

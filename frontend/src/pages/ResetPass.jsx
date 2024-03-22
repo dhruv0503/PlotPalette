@@ -11,7 +11,7 @@ function ResetPass() {
   const handleInputChange = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.BACKEND_URL}api/forgetPassword`, { email });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/forgetPassword`, { email });
       navigate('/')
 
     } catch (error) {

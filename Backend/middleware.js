@@ -16,7 +16,7 @@ module.exports.authorizeRoles = (role) => {
             const currentRole = userDoc.data().role;
 
             if (role !== currentRole) {
-                return next(new expressError(`Role: ${currentRole} is not allowed to access this resource`, 403));
+                return next(new expressError(`Role: ${currentRole} is not allowed to access this resource`, 401));
             }
 
             next();
@@ -29,7 +29,7 @@ module.exports.authorizeRoles = (role) => {
 module.exports.isLoggedIn = () => {
     return async (req, res, next) => {
         const userRef = auth.currentUser;
-        if (userRef === null) return next(new expressError("You need to be logged in", 401));
+        if (userRef === null) return next(new expressError("You need to be logged in", 403));
         next();
     }
 }
@@ -40,7 +40,7 @@ module.exports.isWatched = (parameter) => {
         const user = auth.currentUser;
         const userObj = await utilityFunctions.getUser(user);
         const movie = await utilityFunctions.getMovie(tmdbId);
-        const movies = await getDocs(collection(db(User, userObj.id), 'movies'))
+        const movies = await getDocs(collection(doc(User, userObj.id), 'movies'))
         const movieObj = movies.docs.find(ele => ele.data().movieId == movie.id);
         if (!movieObj.data().watched) {
             if (parameter == "fav") {

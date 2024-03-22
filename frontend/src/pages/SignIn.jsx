@@ -22,7 +22,7 @@ export default function SignIn() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}api/signin`, { email, password });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/signin`, { email, password });
       setUserUid(response.data.data.uid);
       localStorage.setItem("uid", response.data.data.uid)
       setislogin(true)
@@ -35,7 +35,7 @@ export default function SignIn() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}api/signup`,{ email,name,userName,password });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/signup`,{ email,name,userName,password });
       setUserUid(response.data.uid);
       localStorage.setItem("uid" , response.data.uid)
       console.log(response);

@@ -11,7 +11,7 @@ export function MyContextProvider({ children }) {
     const myProfile = async (e) => {
       // e.preventDefault();
       try {
-        const response = await axios.get(`${process.env.BACKEND_URL}api/users/myProfile`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/users/myProfile`);
     
         setUserData(response.data)
       } catch (error) {
@@ -45,16 +45,16 @@ export function MyContextProvider({ children }) {
         const fetchMovies = async () => {
             try {
                 // Fetch upcoming movies
-               const upcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/upcoming`);
+               const upcomingResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/upcoming`);
                 setUpcomingMovies(upcomingResponse.data.movies.results);
                 // Fetch now playing movies
-                const nowPlayingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/now_playing`);
+                const nowPlayingResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/now_playing`);
                 setNowPlayingMovies(nowPlayingResponse.data.movies.results);
                 // Fetch popular movies
-                const popularResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/popular`);
+                const popularResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/popular`);
                 setPopularMovies(popularResponse.data.movies.results);
                 // Fetch top rated movies
-                const topRatedResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/top_rated`);
+                const topRatedResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/top_rated`);
                 setTopRatedMovies(topRatedResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
