@@ -52,9 +52,9 @@ module.exports.signOut = async (req, res, next) => {
 }
 
 module.exports.resetPassword = async (req, res, next) => {
-    const { email } = req.body;
+    const user = auth.currentUser;
     try {
-        await sendPasswordResetEmail(auth, email);
+        await sendPasswordResetEmail(auth, user.email);
         res.status(200).json({ message: 'Password reset email sent successfully.' })
     }
     catch (error) {

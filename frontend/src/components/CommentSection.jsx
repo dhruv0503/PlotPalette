@@ -129,7 +129,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleDownvote = async ({ id }) => {
     try {
-      const response = await axios.put(`${process.env.BACKEND_URL}api/reviews/downvote?reviewId=${id}`);
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}api/reviews/downvote?reviewId=${id}`);
       console.log(response);
       // Handle user details (e.g., display username)
       window.location.reload();

@@ -15,16 +15,13 @@ export default React.memo(function Upcoming() {
 
     const data = searchResults
         ? UpcomingMovies.filter(article =>
-            article.overview &&
-            (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase())) ||
-            article.title.toLowerCase().includes(searchResults.toString().toLowerCase())
-        )
-        : UpcomingMovies;
+            (article.overview && (article.overview.toLowerCase().includes(searchResults.toString().toLowerCase()))) ||
+            article.title.toLowerCase().includes(searchResults.toString().toLowerCase())) : UpcomingMovies;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const UpcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/upcoming?pageNo=${startPage}`);
+                const UpcomingResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/upcoming?pageNo=${startPage}`);
                 setUpcomingMovies(UpcomingResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

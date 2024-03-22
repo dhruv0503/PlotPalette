@@ -18,7 +18,7 @@ export default React.memo(function OthersPage() {
         const allUsers = async (e) => {
 
             try {
-                const response = await axios.get(`${process.env.BACKEND_URL}api/users/search?userName=${UserID}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/users/search?userName=${UserID}`);
                 setotheruserData(response.data);
             } catch (error) {
                 console.error('Error in getting all users:', error.message)
@@ -35,7 +35,7 @@ export default React.memo(function OthersPage() {
     const handleAddfriend = async () => {
 
         try {
-            await axios.post(`${process.env.BACKEND_URL}api/friend/send?userId=${otheruserData.id}`);
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/friend/send?userId=${otheruserData.id}`);
 
         } catch (error) {
             console.error('Error in getting all users:', error.message)

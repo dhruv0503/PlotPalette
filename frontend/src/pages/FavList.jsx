@@ -10,7 +10,7 @@ function FavList() {
     const handlefavlist = async () => {
         try {
             //change userDATAID
-            const response = await axios.get(`${process.env.BACKEND_URL}api/users/options?parameter=${collectionid}&userId=${userData.id}`)
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/users/options?parameter=${collectionid}&userId=${userData.id}`)
             setuserFav(response.data)
            
         } catch (error) {

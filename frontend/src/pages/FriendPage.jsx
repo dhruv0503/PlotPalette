@@ -10,7 +10,7 @@ function FriendPage() {
   const handleAccept = async ({ id }) => {
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URL}api/friend/accept?userId=${id}`
+        `${process.env.REACT_APP_BACKEND_URL}api/friend/accept?userId=${id}`
       );
       window.location.reload();
       console.log(response);
@@ -21,7 +21,7 @@ function FriendPage() {
 
   const handleDeny = async ({ id }) => {
     try {
-      await axios.delete( `${process.env.BACKEND_URL}api/friend/deny?userId=${id}` );
+      await axios.delete( `${process.env.REACT_APP_BACKEND_URL}api/friend/deny?userId=${id}` );
    
       window.location.reload();
     } catch (error) {

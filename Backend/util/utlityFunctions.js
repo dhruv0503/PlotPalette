@@ -1,5 +1,6 @@
 const { db } = require("../firebaseConfig");
-const { query, where, collection, getDocs, getDoc} = require("firebase/firestore");
+const { query, where, collection, getDocs, doc} = require("firebase/firestore");
+const expressError = require("./expressError");
 const User = collection(db,"User");
 
 module.exports.getUser = async (user) => {
@@ -13,6 +14,7 @@ module.exports.getUser = async (user) => {
 
 module.exports.getMovie = async (tmdbId) => {
     const querySol = query(collection(db, 'Movie'), where('tmdbId', '==', Number(tmdbId)));
+    if(!querySol) next(new expressError("No movie with this tmdbId ever visited"));
     const movie = await getDocs(querySol);
     const movieId = movie.docs[0].id;
     const data = movie.docs[0].data();

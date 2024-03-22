@@ -24,7 +24,7 @@ export default React.memo(function AccountPage() {
   const handleBio = async () => {
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URL}api/users/bio`, { bio }
+        `${process.env.REACT_APP_BACKEND_URL}api/users/bio`, { bio }
       );
       window.location.reload();
       console.log(response);
@@ -41,7 +41,7 @@ export default React.memo(function AccountPage() {
     const searchUserData = async () => {
       try {
         const UserSearch = await axios.get(
-          `${process.env.BACKEND_URL}api/users/search?userName=${findUser}`
+          `${process.env.REACT_APP_BACKEND_URL}api/users/search?userName=${findUser}`
         );
 
         setFinduserData(UserSearch.data);

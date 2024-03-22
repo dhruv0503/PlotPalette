@@ -24,7 +24,7 @@ export default React.memo(function Popular() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const UpcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/popular?pageNo=${startPage}`);
+                const UpcomingResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/popular?pageNo=${startPage}`);
                 setUpcomingMovies(UpcomingResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

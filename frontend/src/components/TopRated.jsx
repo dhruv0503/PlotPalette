@@ -27,7 +27,7 @@ export default React.memo(function TopRated() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const topRatedResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/type/top_rated?pageNo=${startPage}`);
+                const topRatedResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/type/top_rated?pageNo=${startPage}`);
                 setTopRatedMovies(topRatedResponse.data.movies.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);

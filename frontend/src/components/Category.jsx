@@ -37,7 +37,7 @@ export default React.memo(function Category() {
     useEffect(() => {
         const fetchGenres = async () => {
             try {
-                const upcomingResponse = await axios.get(`${process.env.BACKEND_URL}api/movies/genres/${categoryID}?pageNo=${startPage}`);
+                const upcomingResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/genres/${categoryID}?pageNo=${startPage}`);
                 setGenres(upcomingResponse.data.results);
             } catch (error) {
                 console.error('Error fetching movies:', error.message);
