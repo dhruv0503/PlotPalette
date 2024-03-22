@@ -8,9 +8,6 @@ import { BorderDottedIcon, CheckIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon 
 import { useApi } from '../Context/Contxt.jsx';
 import LoadingPage from './LoadingPage.jsx';
 
-alert(process.env.REACT_APP_BACKEND_URL)
-
-
 export default React.memo(function NowPlaying() {
     const [UpcomingMovies, setUpcomingMovies] = useState([]);
     const [startPage, setStartPage] = useState(1)
