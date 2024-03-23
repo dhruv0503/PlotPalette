@@ -25,9 +25,8 @@ const CommentSection = ({ props, watched , watch }) => {
     const MovieDetails = async () => {
       try {
         const MovDetails = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/reviews?tmdbId=${props}`);
-        console.log(typeof MovDetails.data)
-        const movieDataArray =Object.values(MovieDetails.data)
-        setmoviedata(movieDataArray);
+        console.log(typeof MovDetails)
+        setmoviedata(MovDetails.data);
 
       } catch (error) {
         console.error('Error fetching movies:', error.message);
