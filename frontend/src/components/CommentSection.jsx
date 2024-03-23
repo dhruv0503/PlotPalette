@@ -24,9 +24,11 @@ const CommentSection = ({ props, watched , watch }) => {
 
     const MovieDetails = async () => {
       try {
-        const MovDetails = await axios.get(`${process.env.BACKEND_URL}api/movies/reviews?tmdbId=${props}`);
+        const MovDetails = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/movies/reviews?tmdbId=${props}`);
+        console.log(typeof MovDetails.data)
+        const movieDataArray =Object.values(MovieDetails.data)
+        setmoviedata(movieDataArray);
 
-        setmoviedata(MovDetails.data);
       } catch (error) {
         console.error('Error fetching movies:', error.message);
       }
@@ -34,8 +36,6 @@ const CommentSection = ({ props, watched , watch }) => {
 
     MovieDetails();
   }, [props]);
-
-
 
   function getInitials(name) {
     const words = name?.split(/\s+/);
@@ -60,7 +60,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
     try {
      
-      const response = await axios.post(`${process.env.BACKEND_URL}api/reviews?tmdbId=${props}`, { reviewText });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/reviews?tmdbId=${props}`, { reviewText });
       console.log('Comment posted:', response.data);
       setreviewText('');
       window.location.reload();
@@ -72,7 +72,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleUser = async ({ id }) => {
     try {
-      await axios.get(`${process.env.BACKEND_URL}api/users/${id}`);
+      await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/users/${id}`);
     } catch (error) {
       console.error('Error fetching user:', error.message);
     }
@@ -90,7 +90,7 @@ const CommentSection = ({ props, watched , watch }) => {
     }
     
     try {
-      const response = await axios.put(`${process.env.BACKEND_URL}api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}api/reviews?tmdbId=${props}&reviewId=${reviewid.id}`,
         { reviewText }
       );
       console.log('Review updated:', response.data);
@@ -106,7 +106,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleDelete = async ({ rid }) => {
     try {
-        const response = await axios.delete(`${process.env.BACKEND_URL}api/reviews?tmdbId=${props}&reviewId=${rid}`);
+        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}api/reviews?tmdbId=${props}&reviewId=${rid}`);
       console.log(response.data);
       window.location.reload();
         }
@@ -118,7 +118,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleUpvote = async ({ id }) => {
     try {
-      const response = await axios.put(`${process.env.BACKEND_URL}api/reviews/upvote?reviewId=${id}`);
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}api/reviews/upvote?reviewId=${id}`);
       // Handle user details (e.g., display username)
       console.log(response);
       window.location.reload();
@@ -129,7 +129,7 @@ const CommentSection = ({ props, watched , watch }) => {
 
   const handleDownvote = async ({ id }) => {
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}api/reviews/downvote?reviewId=${id}`);
+      const response = await axios.put(`${process.env.REACT_APP_REACT_APP_BACKEND_URL}api/reviews/downvote?reviewId=${id}`);
       console.log(response);
       // Handle user details (e.g., display username)
       window.location.reload();
@@ -138,12 +138,7 @@ const CommentSection = ({ props, watched , watch }) => {
     }
   };
 
- 
-
-
- 
-
- 
+  console.log(moviedata)
   return (
     <div className="container p-1 mx-auto mt-8">
       <div className="bg-custom-10 p-6 rounded-lg shadow-md">

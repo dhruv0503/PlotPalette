@@ -156,7 +156,7 @@ export default React.memo(function Booktemplate() {
         <div className="shadow-md bg-custom-20   ">
           <div className=" rounded-lg overflow-hidden h-[550px] relative border border-white">
             <img
-              src={`https://image.tmdb.org/t/p/original/${moviedata.poster_path}`}
+              src={`${moviedata.poster_path}`}
               alt="movie image"
               className="py-10 px-1 h-full w-full rounded-md object-cover"
             />
@@ -170,7 +170,6 @@ export default React.memo(function Booktemplate() {
                     </button>
                   }
                   {moviedata.ratingByUser ?
-
                     <div className="flex items-center space-x-1">
                       {[1, 2, 3, 4, 5].map((starValue) => (
                         (moviedata.rating >= starValue) && (
@@ -212,14 +211,13 @@ export default React.memo(function Booktemplate() {
                       height={32}
                       width={32}
                     />
-                  </button>
-                  {moviedata.watchLaterByUser == 'true' ?
-                    <button onClick={removeWatchedLater}>
-                       <MdOutlinePlaylistAddCheck size={32} />
-                      
                     </button>
-                    :
-                    <MdOutlinePlaylistAdd onClick={movieWatchedLater} size={32} />
+                    {moviedata.watchLaterByUser=='true' ?
+                      <button onClick={removeWatchedLater}>
+                        <MdOutlinePlaylistAddCheck  size={32} />
+                      </button>
+                      :
+                      <MdOutlinePlaylistAdd  onClick={movieWatchedLater} size={32} />
 
 
                   }

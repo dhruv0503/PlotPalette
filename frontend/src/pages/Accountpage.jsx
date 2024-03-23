@@ -109,15 +109,16 @@ export default React.memo(function AccountPage() {
             <Navbar />
           </div>
 
-          <div className="col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 " >
-            <div class="relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+          <div className=" grid grid-cols-4   overflow-hidden  relative p-8 rounded-xl  border  border-gray-800 " >
+            <div class=" col-span-1 relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
               <div class="mb-2 p-4">
                 <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug ">User Profile</h5>
               </div>
               <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
                 <div className="flex items-center">
+             
                   <input
-                    className="border-2 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
+                    className="border-2 border-gray-300 bg-white w-[100px] md:w-[300px] h-10 px-5  rounded-lg text-sm focus:outline-none"
                     value={searchResults}
                     onChange={(e) => setSearchResults(e.target.value)}
                     type="search"
@@ -134,7 +135,8 @@ export default React.memo(function AccountPage() {
                       width={24}
                       className="text-white"
                     />
-                  </button>
+                    </button>
+              
                 </div>
                 <div role="button" onClick={() => navigate("/collections/favourite")} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
                   <div class="grid place-items-center mr-4">
@@ -177,7 +179,7 @@ export default React.memo(function AccountPage() {
 
               </nav>
             </div>
-            <div class="py-15">
+            <div class=" col-span-3 py-15">
               <div class="mx-auto px-6 max-w-6xl text-gray-500">
                 <div class="relative">
                   <div class="relative z-10 grid gap-3 grid-cols-6">
@@ -220,7 +222,7 @@ export default React.memo(function AccountPage() {
                       </div>
                     </div>
 
-                    <div className="text-custom-20  col-span-6  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
+                    <div className="text-custom-20  col-span-full  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
                     {userData?.movies?.map((movie, index) => (
                       <>
                         {movie.favourite ? (

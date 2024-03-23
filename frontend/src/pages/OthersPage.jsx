@@ -90,8 +90,8 @@ export default React.memo(function OthersPage() {
                     <>
                         < section className='bg-custom-30' >
                             <div className='bg-gray-900'  ><Navbar className /></div>
-                            <div className='col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800' >
-                                <div class="relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+                            <div className=' overflow-hidden grid grid-cols-4  relative p-8 rounded-xl  border  border-gray-800' >
+                                <div class=" col-span-1 relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
                                     <div class="mb-2 p-4">
                                         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug ">User Profile</h5>
                                     </div>
@@ -119,9 +119,9 @@ export default React.memo(function OthersPage() {
                                         </ div>
                                     </nav>
                                 </div>
-                                <div class="py-15">
+                                <div class="py-15 col-span-3 ">
 
-                                    <div class="mx-auto px-6 max-w-6xl text-gray-500">
+                                    <div class=" px-6 max-w-6xl text-gray-500">
                                         <div class="relative">
                                             <div class="relative z-10 grid gap-3 grid-cols-6">
                                                 <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center  ">
@@ -152,7 +152,9 @@ export default React.memo(function OthersPage() {
                                                     </div>
                                                 </div>
                                                 {/* map this area */}
-                                                <div className="text-custom-20  col-span-6  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
+                                                <div className="text-custom-20  col-span-full   overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
+
+                                                
                                                 {otheruserData?.movies?.map((movie, index) => (
                                                     <>
                                                         {movie.favourite ? (
@@ -165,6 +167,7 @@ export default React.memo(function OthersPage() {
                                                         )}
                                                     </>
                                                 ))}
+                                                
 
                                             </div>
                                         </div>
