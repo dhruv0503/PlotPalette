@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Navbar from './Navbar'
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { MovieCard, BookCard } from "../components/CustomCard.jsx"
-import LoadingPage from '../components/LoadingPage.jsx'
-import axios from 'axios'
-import data from '../assets/Data.jsx';
-import * as Select from '@radix-ui/react-select';
-import classnames from 'classnames';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { useApi } from '../Context/Contxt.jsx';
 import { Text ,Strong } from '@radix-ui/themes';
 import { useNavigate } from 'react-router-dom';

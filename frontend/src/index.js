@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import "./firebaseconfig/firebaseConfig"
 import App from './App';
 import { Theme } from '@radix-ui/themes';
 
@@ -13,4 +12,3 @@ root.render(
     </Theme>
   </React.StrictMode>
 );
-

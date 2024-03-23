@@ -1,8 +1,6 @@
 import React from 'react'
-import Navbar from './Navbar';
 import Footer from '../components/Footer';
 import {PiBooksBold} from "react-icons/pi"
-import { ButtonIcon } from '@radix-ui/react-icons';
 
 const im = "https://i.ibb.co/ncrXc2V/1.png";
 

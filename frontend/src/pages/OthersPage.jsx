@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from './Navbar'
 import Footer from '../components/Footer'
-import { Flex, Button, Grid, Box, Text, Strong } from '@radix-ui/themes'
-import { MdOutlineSportsScore, MdLocalMovies } from "react-icons/md";
-import { FaInstagramSquare, FaGithub, FaLinkedin } from "react-icons/fa";
+import { Button, Text } from '@radix-ui/themes'
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoBookSharp } from "react-icons/io5";
 import { useApi } from '../Context/Contxt';
-import * as Avatar from '@radix-ui/react-avatar';
-import { MagicWandIcon, PersonIcon, BookmarkIcon, FileTextIcon, HeartFilledIcon, EyeClosedIcon, StarIcon, StarFilledIcon, PlusIcon } from '@radix-ui/react-icons'
-import { CardStackPlusIcon, EyeOpenIcon, MixerHorizontalIcon,  } from '@radix-ui/react-icons';
+import { PersonIcon, HeartFilledIcon, StarFilledIcon, PlusIcon } from '@radix-ui/react-icons'
+import { CardStackPlusIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import NoPage from './NoPage'
 
 export default React.memo(function OthersPage() {
@@ -18,18 +14,11 @@ export default React.memo(function OthersPage() {
     const { setUserDataId, otheruserData, setotheruserData } = useApi();
 
     const { UserID } = useParams()
-    const [searchResults, setSearchResults] = useState()
-  
-
-   
-    const handleSearchChange = (e) => {
-        setSearchResults(e.target.value);
-    };
     useEffect(() => {
         const allUsers = async (e) => {
 
             try {
-                const response = await axios.get(`http://localhost:5000/api/users/search?userName=${UserID}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/users/search?userName=${UserID}`);
                 setotheruserData(response.data);
             } catch (error) {
                 console.error('Error in getting all users:', error.message)
@@ -39,22 +28,22 @@ export default React.memo(function OthersPage() {
     }, []);
 
     setUserDataId(otheruserData?.id);
-            
-            
+
+
 
 
     const handleAddfriend = async () => {
-     
+
         try {
-            const response = await axios.post(`http://localhost:5000/api/friend/send?userId=${otheruserData.id}`);
-           
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/friend/send?userId=${otheruserData.id}`);
+
         } catch (error) {
             console.error('Error in getting all users:', error.message)
         }
     };
 
 
- 
+
     const navigate = useNavigate();
     console.log(otheruserData)
 
@@ -95,19 +84,19 @@ export default React.memo(function OthersPage() {
     }
 
     return (
-    <>
+        <>
             {
                 otheruserData ?
                     <>
                         < section className='bg-custom-30' >
                             <div className='bg-gray-900'  ><Navbar className /></div>
-                            <div className='col-span-full lg:col-span-2  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800' >
-                                <div class="relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+                            <div className=' overflow-hidden grid grid-cols-4  relative p-8 rounded-xl  border  border-gray-800' >
+                                <div class=" col-span-1 relative flex flex-col bg-clip-border rounded-xl bg-gray-900 text-custom-20 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
                                     <div class="mb-2 p-4">
                                         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug ">User Profile</h5>
                                     </div>
                                     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-                       
+
                                         <div role="button" onClick={() => navigate(`/account/${UserID}/favourite`)} tabindex="0" class="flex items-center w-full p-3  text-custom-20 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
                                             <div class="grid place-items-center mr-4">
                                                 <HeartFilledIcon height={24} width={24} />
@@ -130,9 +119,9 @@ export default React.memo(function OthersPage() {
                                         </ div>
                                     </nav>
                                 </div>
-                                <div class="py-15">
+                                <div class="py-15 col-span-3 ">
 
-                                    <div class="mx-auto px-6 max-w-6xl text-gray-500">
+                                    <div class=" px-6 max-w-6xl text-gray-500">
                                         <div class="relative">
                                             <div class="relative z-10 grid gap-3 grid-cols-6">
                                                 <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center  ">
@@ -156,19 +145,21 @@ export default React.memo(function OthersPage() {
                                                         </div>
                                                         <div class="mt-6 text-center relative z-10 space-y-2">
                                                             <h2 class="text-lg font-medium  transition group-hover:text-purple-950 text-white">{otheruserData?.name} BIO</h2>
-                                          
+
                                                             <p className=" text-custom-20">{otheruserData?.bio}</p>
-                                         
+
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {/* map this area */}
-                                                <div className="text-custom-20  col-span-6  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
+                                                <div className="text-custom-20  col-span-full   overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
+
+                                                
                                                 {otheruserData?.movies?.map((movie, index) => (
                                                     <>
                                                         {movie.favourite ? (
-                                                            <div onClick={()=>navigate(`/movies/${movie.tmdbId}`)} class=" text-custom-20 md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 ">
-                                                                <img className="border border-custom-20" src={`https://image.tmdb.org/t/p/original/${movie.poster}`} />
+                                                            <div onClick={() => navigate(`/movies/${movie.tmdbId}`)} class=" text-custom-20 md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 ">
+                                                                <img alt="Poster Pic" className="border border-custom-20" src={`https://image.tmdb.org/t/p/original/${movie.poster}`} />
 
                                                             </div>
                                                         ) : (
@@ -176,7 +167,8 @@ export default React.memo(function OthersPage() {
                                                         )}
                                                     </>
                                                 ))}
-                                            
+                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -184,14 +176,13 @@ export default React.memo(function OthersPage() {
                             </div>
                             <Footer />
                         </section >
-              
+
                     </> :
-    
                     <>
                         <NoPage />
                     </>
             }
-    </>
+        </>
 
     )
 });

@@ -1,16 +1,20 @@
 {
     "version": 2,
-    "name": "plotpalette-api",
     "builds": [
-        {
-            "src": "app.js",
-            "use": "@vercel/node"
-        }
+      {
+        "src": "app.js",
+        "use": "@vercel/node"
+      }
     ],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/app.js"
-        }
+      {
+        "src": "/api/(.*)",
+        "dest": "/app.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/app.js"
+      }
     ]
-}
+  }
+  

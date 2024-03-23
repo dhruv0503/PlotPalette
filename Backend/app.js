@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV !== 'PRODUCTION'){
+    require('dotenv').config();
+}
 const express = require("express")
 const app = express();
 const cors = require('cors');
@@ -15,6 +18,10 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
+})
+
+app.get("/", (req, res, next) => {
+    res.send("Plot Palette Online")
 })
 
 app.use("/api", authRouter);
@@ -38,6 +45,8 @@ app.use((err, req, res, next) => {
     });
 })
 
-app.listen(5000, () => {
-    console.log("App Listening on port 5000");
+app.listen(3000, () => {
+    console.log(`App listening on port 3000`)
 })
+
+module.exports = app;

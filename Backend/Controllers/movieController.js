@@ -1,7 +1,6 @@
-require("dotenv").config();
 const axios = require("axios");
 const { db, auth } = require("../firebaseConfig");
-const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore/lite");
+const { query, where, collection, doc, addDoc, updateDoc, getDocs, increment, getDoc } = require("firebase/firestore");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const expressError = require("../util/expressError");
@@ -19,7 +18,7 @@ module.exports.getMovie = async (req, res, next) => {
             const movieData = querySnapshot.docs[0];
             if (userRef !== null) {
                 const user = await utilityFunctions.getUser(userRef);
-                const movies = await getDocs(collection(User, user.id, 'movies'))
+                const movies = await getDocs(collection(doc(User, user.id), 'movies'))
                 const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
                 if (!movies || !movieObj) {
 
@@ -91,12 +90,12 @@ module.exports.watched = async (req, res, next) => {
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
     const movieData = await utilityFunctions.getMovie(tmdbId);
-
+    
     const movies = await getDocs(collection(doc(User, user.id), 'movies'));
     const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
     await updateDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id), { watched: true, watchLater: false });
-    await updateDoc(doc(Movie, movieData.id), { watched: increment(1), watchLater: movieObj.data().watchLater ? increment(-1) : increment(0) })
+    await updateDoc(doc(Movie, movieData.id), { watched: increment(1), watchLater: movieObj.data().watchLater ? increment(-1) : increment(0)})
 
     const updatedDoc = await getDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id));
     res.send(updatedDoc.data());
@@ -133,7 +132,7 @@ module.exports.favourite = async (req, res, next) => {
     await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), { favourite });
     const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
-        "favourite": increment(favourite === true ? 1 : 0)
+        "favourite": increment(favourite === "true" ? 1 : -1)
     }
     await updateDoc(doc(Movie, movieObj.id), movieUpdates);
     res.send(updatedDoc.data());
@@ -150,7 +149,7 @@ module.exports.watchLater = async (req, res, next) => {
     await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), { watchLater });
     const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
-        "watchLater": increment(watchLater === true ? 1 : 0)
+        "watchLater": increment(watchLater === "true" ? 1 : -1)
     }
     await updateDoc(doc(Movie, movieObj.id), movieUpdates);
     res.send(updatedDoc.data());

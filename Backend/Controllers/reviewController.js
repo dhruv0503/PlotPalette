@@ -1,6 +1,5 @@
-require("dotenv").config();
 const { db, auth } = require("../firebaseConfig");
-const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore/lite");
+const { collection, doc, addDoc, updateDoc, increment, getDoc, arrayUnion, arrayRemove, deleteDoc, deleteField, getDocs} = require("firebase/firestore");
 const User = collection(db, "User");
 const Movie = collection(db, "Movie");
 const Review = collection(db, "Review");
@@ -45,6 +44,7 @@ module.exports.updateReview = async(req, res, next) => {
 module.exports.getReview = async(req, res, next) => {
     const { tmdbId,reviewId } = req.query;
     const reviewDoc = await getDoc(doc(Review, reviewId))
+    if(!reviewDoc) return next(new expressError("No review with given reviewId found"), 404)
     res.send(reviewDoc.data());
 }
 
@@ -55,13 +55,13 @@ module.exports.deleteReview = async(req, res, next) => {
     const user = await utilityFunctions.getUser(userRef);
     const result = await utilityFunctions.getSubCollectionMovies(userRef, tmdbId)
 
-    await updateDoc(doc(collection(User, user.id, 'movies'), result.id),{
+    await updateDoc(doc(collection(doc(User, user.id), 'movies'), result.id),{
         reviewId : deleteField()
     });
 
     await updateDoc(doc(Movie, movie.id), {
         "reviewCount" : increment(-1),
-        "reviews" : arrayRemove(reviewId)
+        "reviews" : arrayRemove(reviewId)   
     })
 
     await deleteDoc(doc(Review, reviewId));
@@ -75,7 +75,7 @@ module.exports.upVote = async(req, res, next) => {
     const { reviewId } = req.query;
     const user = await utilityFunctions.getUser(userRef);
     
-    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    const userReviews = await getDocs(collection(doc(User, user.id), "reviews"));
     if(userReviews) {
         const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
         if (upvotedReview) next(new expressError("You can't upvote the same review multiple times", 400));
@@ -91,10 +91,10 @@ module.exports.downVote = async(req, res, next) => {
     const {reviewId} = req.query;
     const user = await utilityFunctions.getUser(userRef);
 
-    const userReviews = await getDocs(collection(User, user.id, "reviews"));
+    const userReviews = await getDocs(collection(doc(User, user.id), "reviews"));
     if(userReviews){
-        const upvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().upvote );
-        if(upvotedReview) next(new expressError("You can't downvote the same review multiple times", 400));
+        const downvotedReview = userReviews.docs.find( (rev) => rev.data().reviewId === reviewId && rev.data().downvote );
+        if(downvotedReview) return next(new expressError("You can't downvote the same review multiple times", 400));
     }    
     await updateDoc(doc(Review, reviewId), {votes : increment(-1)})
     await addDoc(collection(doc(User, user.id) , "reviews"), {reviewId, upvote : false, downvote : true})
