@@ -11,7 +11,8 @@ import NoPage from './NoPage'
 
 export default React.memo(function OthersPage() {
 
-    const { setUserDataId, otheruserData, setotheruserData } = useApi();
+    const { setUserDataId, otheruserData, setotheruserData, userData } = useApi();
+    console.log(userData);
 
     const { UserID } = useParams()
     useEffect(() => {
@@ -28,8 +29,6 @@ export default React.memo(function OthersPage() {
     }, []);
 
     setUserDataId(otheruserData?.id);
-
-
 
 
     const handleAddfriend = async () => {
@@ -127,12 +126,12 @@ export default React.memo(function OthersPage() {
                                                 <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center  ">
                                                     <div class="size-fit m-auto relative">
                                                         <div class="relative h-28 w-56 flex flex-col items-center">
-                                                            <Text size={"7"} className='text-custom-20' >{otheruserData?.name}</Text>                                                   <Button
+                                                            <Text size={"7"} className='text-custom-20' >{otheruserData?.name}</Text>        <Button
                                                                 variant='outline' onClick={() => navigate(`/account/${UserID}/friend`)} className=' text-custom-20  p-2 rounded-lg p-1 m-2 border border-custom-30'   > <Text>
                                                                     FriendCount: {otheruserData?.friendCount}</Text>
                                                             </Button>
                                                             <Text className='' >{formatDate(otheruserData?.joinedOn)}</Text>
-                                                            <button onClick={handleAddfriend} className='bg-custom-20 rounded-lg p-1 text-custom-30 flex items-center' >Add Friend <PlusIcon height={20} width={20} /></button>
+                                                            {!otheruserData.friendList.find((friend) => friend.userName == userData?.userName ) && <button onClick={handleAddfriend} className='bg-custom-20 rounded-lg p-1 text-custom-30 flex items-center' >Add Friend <PlusIcon height={20} width={20} /></button> }
 
                                                         </div>
 
@@ -154,7 +153,7 @@ export default React.memo(function OthersPage() {
                                                 {/* map this area */}
                                                 <div className="text-custom-20  col-span-full   overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
 
-                                                
+
                                                 {otheruserData?.movies?.map((movie, index) => (
                                                     <>
                                                         {movie.favourite ? (
@@ -167,7 +166,7 @@ export default React.memo(function OthersPage() {
                                                         )}
                                                     </>
                                                 ))}
-                                                
+
 
                                             </div>
                                         </div>

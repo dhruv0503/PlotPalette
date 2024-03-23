@@ -183,26 +183,7 @@ export default React.memo(function AccountPage() {
               <div class="mx-auto px-6 max-w-6xl text-gray-500">
                 <div class="relative">
                   <div class="relative z-10 grid gap-3 grid-cols-6">
-                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900 ">
-                      <div class="size-fit m-auto relative">
-                        <div class="relative h-24 w-56 flex flex-col items-center">
-                          <Text size={"7"} className="text-custom-20">
-                            {userData?.name}
-                          </Text>{" "}
-                          <Button variant="outline text-custom-20"
-                            onClick={() => navigate("/user/friends")}
-                            className="rounded-lg p-2 "
-                          >
-                            {" "}
-
-                            <Text>FriendCount: {userData?.friendCount}</Text>
-                          </Button>
-                          <Text className="text-custom-20" >{formatDate(userData?.joinedOn)}</Text>
-
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center ">
+                  <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900  justify-center ">
                       <div className="relative">
                         <div class=" items-center justify-center relative aspect-square rounded-full size-32 flex border mx-auto bg-white bg-white/5 border-white/10 before:absolute before:-inset-2 before:border before:border-white/5 before:bg-white/5 before:rounded-full">
                           <PersonIcon
@@ -213,7 +194,7 @@ export default React.memo(function AccountPage() {
                         </div>
                         <div class="mt-6 text-center relative z-10 space-y-2">
                           <h2 class="text-lg font-medium  transition group-hover:text-purple-950 text-white">
-                            {userData?.name} BIO
+                            {userData?.name}
                           </h2>
                           <p class="text-gray-300">
                             {userData?.bio}
@@ -221,9 +202,27 @@ export default React.memo(function AccountPage() {
                         </div>
                       </div>
                     </div>
+                    <div class="col-span-full lg:col-span-3  overflow-hidden flex relative p-8 rounded-xl  border  border-gray-800 bg-gray-900 ">
+                      <div class="size-fit m-auto relative">
+                        <div class="relative h-24 w-56 flex flex-col items-center">
+                          <Text size={"7"} className="text-custom-20 m-2">
+                            {userData?.name}
+                          </Text>{" "}
+                          <Button variant="outline text-custom-20"
+                            onClick={() => navigate("/user/friends")}
+                            className="rounded-lg p-2 "
+                          >
+                            {" "}
 
-                    <div className="text-custom-20  col-span-full  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >Favourites </Text> </div>
-                    {userData?.movies?.map((movie, index) => (
+                            <Text>Friends: {userData?.friendCount}</Text>
+                          </Button>
+                          <Text className="text-custom-20 m-2" >{formatDate(userData?.joinedOn)}</Text>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-custom-20  col-span-full  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 flex justify-center " > <Text size={"7"} >{userData?.movies.length !== 0 ? <p>Favourites</p> : <p>No Favourite Movies</p> } </Text> </div>
+                    {userData?.movies?.slice(0, 12).map((movie, index) => (
                       <>
                         {movie.favourite ? (
                           <div onClick={() => navigate(`/movies/${movie.tmdbId}`)} class=" text-custom-20 md:col-span-2 col-span-3  overflow-hidden relative p-8 rounded-xl  border-gray-800 bg-gray-900 ">
