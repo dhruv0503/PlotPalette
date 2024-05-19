@@ -26,7 +26,6 @@ module.exports.addFriend = async (req, res, next) => {
 }
 
 //Accept Request
-
 module.exports.acceptFriend = async(req,res, next) => {
     const {userId} = req.query;
 

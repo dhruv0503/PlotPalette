@@ -61,7 +61,7 @@ module.exports.deleteReview = async(req, res, next) => {
 
     await updateDoc(doc(Movie, movie.id), {
         "reviewCount" : increment(-1),
-        "reviews" : arrayRemove(reviewId)   
+        "reviews" : arrayRemove(reviewId)
     })
 
     await deleteDoc(doc(Review, reviewId));

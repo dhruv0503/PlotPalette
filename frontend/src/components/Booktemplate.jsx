@@ -155,11 +155,7 @@ export default React.memo(function Booktemplate() {
 
         <div className="shadow-md bg-custom-20   ">
           <div className=" rounded-lg overflow-hidden h-[550px] relative border border-white">
-            <img
-              src={`${moviedata.poster_path}`}
-              alt="movie image"
-              className="py-10 px-1 h-full w-full rounded-md object-cover"
-            />
+            <img src={`${moviedata.poster_path}`} alt="movie" className="py-10 px-1 h-full w-full rounded-md object-cover" />
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata?.watchedByUser ? (
                 <>
