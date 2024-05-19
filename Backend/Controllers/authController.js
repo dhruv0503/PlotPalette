@@ -29,6 +29,7 @@ module.exports.signUp = async (req, res, next) => {
       return next(new expressError("Error creating user", 500));
     }
   };
+  
 
 module.exports.signIn = async (req, res, next) => {
     try {

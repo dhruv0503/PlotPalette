@@ -11,5 +11,5 @@ router.route("/")
     .delete(isLoggedIn(), isWatched("review"), wrapAsync(reviewController.deleteReview))
 router.route("/upvote").put(isLoggedIn(), wrapAsync(reviewController.upVote))
 router.route("/downvote").put(isLoggedIn(), wrapAsync(reviewController.downVote))    
-    
+
 module.exports = router;

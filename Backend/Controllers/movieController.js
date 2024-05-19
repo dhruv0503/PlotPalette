@@ -21,6 +21,7 @@ module.exports.getMovie = async (req, res, next) => {
                 const movies = await getDocs(collection(doc(User, user.id), 'movies'))
                 const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
                 if (!movies || !movieObj) {
+
                     const obj = { watchedByUser: false, tmdbId, movieId: movieData.id, "title": movieData.data().title, rating: 0, favourite: false, watchLater: false, poster: movieData.data().poster_path };
 
                     await addDoc(collection(doc(User, user.id), 'movies'), obj);
@@ -89,7 +90,7 @@ module.exports.watched = async (req, res, next) => {
     const userRef = auth.currentUser;
     const user = await utilityFunctions.getUser(userRef);
     const movieData = await utilityFunctions.getMovie(tmdbId);
-    
+
     const movies = await getDocs(collection(doc(User, user.id), 'movies'));
     const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 

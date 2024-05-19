@@ -4,8 +4,8 @@ if(process.env.NODE_ENV !== 'PRODUCTION'){
 const express = require("express")
 const app = express();
 const cors = require('cors');
-const userRouter = require("./Routes/userRoutes")
 const authRouter = require("./Routes/authRoutes")
+const userRouter = require("./Routes/userRoutes")
 const movieRouter = require("./Routes/movieRoutes")
 const reviewRouter = require("./Routes/reviewRoutes")
 const friendRouter = require("./Routes/friendRoutes")
@@ -45,8 +45,8 @@ app.use((err, req, res, next) => {
     });
 })
 
-app.listen(3000, () => {
-    console.log(`App listening on port 3000`)
+app.listen(5000, () => {
+    console.log(`App listening on port 5000`)
 })
 
 module.exports = app;
