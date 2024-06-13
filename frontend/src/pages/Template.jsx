@@ -5,7 +5,7 @@ import Booktemplate from '../components/Booktemplate'
 function Template() {
   return (
       <div className='bg-custom-30' >
-      <div className='bg-gray-900'  ><Navbar className /></div>
+      <div className='bg-gray-900'  ><Navbar/></div>
       <Booktemplate /> 
       </div>
   )

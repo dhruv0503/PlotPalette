@@ -41,7 +41,7 @@ function Actors() {
     return (
 
         <div className='bg-custom-30 h-full'>
-            <div className='bg-gray-900'  ><Navbar className /></div>
+            <div className='bg-gray-900'  ><Navbar /></div>
 
 
             <Text size={"8"} className='font-bold text-custom-10 justify-center flex p-2'>{ActorInfo.name}</Text>

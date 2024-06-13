@@ -20,7 +20,7 @@ module.exports.signUp = async (req, res, next) => {
       });
 
       const userForResponse = {
-        id: docRef.id, username: data.userName, email: data.email, role: "User", joinedOn: formattedTime, friendCount: 0, friendList: [], requestList: [],
+        id: docRef.id, uid : docRef.uid, username: data.userName, email: data.email, role: "User", joinedOn: formattedTime, friendCount: 0, friendList: [], requestList: [],
       };
   
       res.send({ "msg": `User Added with id ${userForResponse.id}`, ...userForResponse });
