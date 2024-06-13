@@ -208,7 +208,7 @@ export default React.memo(function Booktemplate() {
                       width={32}
                     />
                     </button>
-                    {moviedata.watchLaterByUser=='true' ?
+                    {moviedata.watchLaterByUser ==='true' ?
                       <button onClick={removeWatchedLater}>
                         <MdOutlinePlaylistAddCheck  size={32} />
                       </button>
