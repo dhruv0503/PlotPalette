@@ -24,7 +24,7 @@ export default function SignIn() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/signin`, { email, password });
       setUserUid(response.data.data.uid);
-      localStorage.setItem("uid", response.data.data.uid)
+      localStorage.setItem("uid", response.data.id)
       setislogin(true)
       navigate('/');
     } catch (error) {

@@ -6,7 +6,7 @@ const { authorizeRoles, isLoggedIn } = require("../middleware");
 
 router.route("/options").get(isLoggedIn(), wrapAsync(userController.optionsList));
 
-router.route("/all").get(isLoggedIn(),wrapAsync(userController.getAllUsers));
+router.route("/all").get(isLoggedIn(), authorizeRoles("Admin"),  wrapAsync(userController.getAllUsers));
 
 router.route("/myProfile").get(isLoggedIn(), wrapAsync(userController.getProfile));
 

@@ -41,8 +41,6 @@ export default React.memo(function OthersPage() {
         }
     };
 
-
-
     const navigate = useNavigate();
     console.log(otheruserData)
 

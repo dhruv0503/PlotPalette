@@ -94,7 +94,7 @@ module.exports.watched = async (req, res, next) => {
     const movies = await getDocs(collection(doc(User, user.id), 'movies'));
     const movieObj = movies.docs.find(ele => ele.data().tmdbId == tmdbId);
 
-    await updateDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id), { watched: true, watchLater: false });
+    await updateDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id), { watched: true, watchLater: false, watchedByUser : true });
     await updateDoc(doc(Movie, movieData.id), { watched: increment(1), watchLater: movieObj.data().watchLater ? increment(-1) : increment(0)})
 
     const updatedDoc = await getDoc(doc(collection(doc(User, user.id), 'movies'), movieObj.id));
