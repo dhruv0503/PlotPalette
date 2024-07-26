@@ -39,7 +39,7 @@ module.exports.getMovie = async (req, res, next) => {
                     }
                 }
             }
-            res.send({ watchedByUser: false, loggedIn: false, id : querySnapshot.docs[0].id, ...movieData.data() });
+            res.send({ watchedByUser: false, loggedIn: false, id : movieData.id, ...movieData.data() });
         } else {
             const path = "https://image.tmdb.org/t/p/original"
             const movie = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_API_KEY}`)
@@ -132,7 +132,7 @@ module.exports.favourite = async (req, res, next) => {
     await updateDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id), { favourite });
     const updatedDoc = await getDoc(doc(collection(doc(User, userObj.id), 'movies'), result.id));
     const movieUpdates = {
-        "favourite": increment(favourite === "true" ? 1 : -1)
+        favourite : increment(favourite === "true" ? 1 : -1)
     }
     await updateDoc(doc(Movie, movieObj.id), movieUpdates);
     res.send(updatedDoc.data());

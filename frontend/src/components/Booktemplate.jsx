@@ -13,7 +13,10 @@ import { useParams } from "react-router-dom";
 import { Blockquote, Em, Text } from "@radix-ui/themes";
 import axios from "axios";
 import AvatarSlider from "./AvatarSlider.jsx";
-import { MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck } from "react-icons/md";
+import {
+  MdOutlinePlaylistAdd,
+  MdOutlinePlaylistAddCheck,
+} from "react-icons/md";
 
 export default React.memo(function Booktemplate() {
   const [favor, setFavor] = useState(false);
@@ -27,7 +30,7 @@ export default React.memo(function Booktemplate() {
         const MovDetails = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
         );
-        console.log(MovDetails.data);
+        // console.log(MovDetails.data);
         setmoviedata(MovDetails.data);
       } catch (error) {
         console.error("Error fetching movie:", error.message);
@@ -36,28 +39,23 @@ export default React.memo(function Booktemplate() {
     MovieDetails();
   }, []);
 
-
-
-
   const handleWatched = async () => {
     try {
       await axios.patch(
         `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
       );
       window.location.reload();
-      moviedata.watchedByUser("true");
-
+      setmoviedata((oldData) => {
+        return { ...oldData, watchedByUser: true };
+      });
     } catch (error) {
-      console.error("Error fetching movi:", error.message);
+      console.error("Error fetching movie", error.message);
     }
   };
 
   const movieWatchedLater = async () => {
-
     try {
-      await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`
-      );
+      await axios.get( `${ process.env.REACT_APP_BACKEND_URL }api/movies/watchLater?tmdbId=${movieId}&watchLater=${true}`);
 
       window.location.reload();
     } catch (error) {
@@ -65,10 +63,11 @@ export default React.memo(function Booktemplate() {
     }
   };
   const removeWatchedLater = async () => {
-
     try {
       await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
+        `${
+          process.env.REACT_APP_BACKEND_URL
+        }api/movies/watchLater?tmdbId=${movieId}&watchLater=${false}`
       );
 
       window.location.reload();
@@ -78,12 +77,12 @@ export default React.memo(function Booktemplate() {
   };
 
   const handleRating = async (starValue) => {
-    setRating(starValue)
+    setRating(starValue);
     try {
       await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}api/movies/rating?tmdbId=${movieId}&rating=${starValue}`
       );
-      setRating(parseInt(moviedata.ratingByUser))
+      setRating(parseInt(moviedata.ratingByUser));
 
       window.location.reload();
     } catch (error) {
@@ -91,11 +90,11 @@ export default React.memo(function Booktemplate() {
     }
   };
   const handlefav = async () => {
-
-
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
+      await axios.get(
+        `${
+          process.env.REACT_APP_BACKEND_URL
+        }api/movies/favourite?tmdbId=${movieId}&favourite=${true}`
       );
 
       window.location.reload();
@@ -104,11 +103,11 @@ export default React.memo(function Booktemplate() {
     }
   };
   const handleUnfav = async () => {
-
-
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
+      await axios.get(
+        `${
+          process.env.REACT_APP_BACKEND_URL
+        }api/movies/favourite?tmdbId=${movieId}&favourite=${false}`
       );
 
       window.location.reload();
@@ -117,79 +116,86 @@ export default React.memo(function Booktemplate() {
     }
   };
 
-  const handleClick = (newRating) => {
-    setRating(newRating);
-
-  };
   const handleFavor = () => {
     setFavor(!favor);
     handlefav();
-  }
-
+  };
 
   return (
     <div className="relative">
-
-      {!localStorage.getItem("uid") ?
-        <div className="p-7" > <Callout.Root>
-          <Callout.Icon>
-            <InfoCircledIcon />
-          </Callout.Icon>
-          <Callout.Text>
-            You have to login first
-          </Callout.Text>
-        </Callout.Root>
-        </div>
-        : (!moviedata.watchedByUser &&
-          <div className="p-7" > <Callout.Root>
+      {!localStorage.getItem("uid") ? (
+        <div className="p-7">
+          {" "}
+          <Callout.Root>
             <Callout.Icon>
               <InfoCircledIcon />
             </Callout.Icon>
-            <Callout.Text>
-              Click on the Eyebutton then you can comment
-            </Callout.Text>
-          </Callout.Root></div>)
-      }
+            <Callout.Text>You have to login first</Callout.Text>
+          </Callout.Root>
+        </div>
+      ) : (
+        !moviedata.watchedByUser && (
+          <div className="p-7">
+            {" "}
+            <Callout.Root>
+              <Callout.Icon>
+                <InfoCircledIcon />
+              </Callout.Icon>
+              <Callout.Text>
+                Click on the Eyebutton then you can comment
+              </Callout.Text>
+            </Callout.Root>
+          </div>
+        )
+      )}
 
       <div className="bg-cover bg-center p-10 gap-3 md:grid sm:grid-cols-3">
-
         <div className="shadow-md bg-custom-20   ">
           <div className=" rounded-lg overflow-hidden h-[550px] relative border border-white">
-            <img src={`${moviedata.poster_path}`} alt="movie" className="py-10 px-1 h-full w-full rounded-md object-cover" />
+            <img
+              src={`${moviedata.poster_path}`}
+              alt="movie"
+              className="py-10 px-1 h-full w-full rounded-md object-cover"
+            />
             <div className="absolute bottom-0 left-5 flex gap-3 rounded-lg mb-1 mr-10 text-custom-50">
               {moviedata?.watchedByUser ? (
                 <>
-                  {moviedata.favouriteByUser == "true" ?
-                    <HeartFilledIcon onClick={handleUnfav} height={32} width={32} />
-                    : <button onClick={handleFavor}>
+                  {moviedata.favouriteByUser === "true" ? (
+                    <HeartFilledIcon
+                      onClick={handleUnfav}
+                      height={32}
+                      width={32}
+                    />
+                  ) : (
+                    <button onClick={handleFavor}>
                       <HeartIcon height={32} width={32} />
                     </button>
-                  }
-                  {moviedata.ratingByUser ?
+                  )}
+                  {moviedata.ratingByUser ? (
                     <div className="flex items-center space-x-1">
-                      {[1, 2, 3, 4, 5].map((starValue) => (
-                        (moviedata.rating >= starValue) && (
-                          <span
-                            key={starValue}
-                            className="star cursor-pointer hover:text-yellow-500 active"
-                            data-rating={starValue}
-                          >
-                            <StarFilledIcon height={32} width={32} />
-                          </span>
-                        )
-                      ))}
+                      {[1, 2, 3, 4, 5].map(
+                        (starValue) =>
+                          moviedata.rating >= starValue && (
+                            <span
+                              key={starValue}
+                              className="star cursor-pointer hover:text-yellow-500 active"
+                              data-rating={starValue}
+                            >
+                              <StarFilledIcon height={32} width={32} />
+                            </span>
+                          )
+                      )}
                     </div>
-                    :
-                    <button >
-
+                  ) : (
+                    <button>
                       <div className="flex items-center space-x-1">
                         {[1, 2, 3, 4, 5].map((starValue) => (
                           <span
                             key={starValue}
-                            className={`star cursor-pointer hover:text-yellow-500 ${ratingn >= starValue ? 'active' : ''
-                              }`}
+                            className={`star cursor-pointer hover:text-yellow-500 ${
+                              ratingn >= starValue ? "active" : ""
+                            }`}
                             data-rating={starValue}
-
                             onClick={() => handleRating(starValue)}
                           >
                             <StarIcon height={32} width={32} />
@@ -197,7 +203,7 @@ export default React.memo(function Booktemplate() {
                         ))}
                       </div>
                     </button>
-                  }
+                  )}
                 </>
               ) : (
                 <>
@@ -207,16 +213,17 @@ export default React.memo(function Booktemplate() {
                       height={32}
                       width={32}
                     />
+                  </button>
+                  {moviedata.watchLaterByUser === "true" ? (
+                    <button onClick={removeWatchedLater}>
+                      <MdOutlinePlaylistAddCheck size={32} />
                     </button>
-                    {moviedata.watchLaterByUser ==='true' ?
-                      <button onClick={removeWatchedLater}>
-                        <MdOutlinePlaylistAddCheck  size={32} />
-                      </button>
-                      :
-                      <MdOutlinePlaylistAdd  onClick={movieWatchedLater} size={32} />
-
-
-                  }
+                  ) : (
+                    <MdOutlinePlaylistAdd
+                      onClick={movieWatchedLater}
+                      size={32}
+                    />
+                  )}
                 </>
               )}
             </div>
@@ -244,19 +251,20 @@ export default React.memo(function Booktemplate() {
             </Em>
             <Blockquote size={"5"}>{moviedata.overview}</Blockquote>
           </div>
-          {
-            moviedata.platforms?.buy &&
-            (<div className="flex m-2">
+          {moviedata.platforms?.buy && (
+            <div className="flex m-2">
               <Em className="text-custom-10">Watch on : </Em>
               {moviedata.platforms?.buy?.slice(0, 3).map((comp) => {
                 return (
                   <>
-                    <h1 className="text-custom-20 ml-3">{comp.provider_name} ,</h1>
+                    <h1 className="text-custom-20 ml-3">
+                      {comp.provider_name} ,
+                    </h1>
                   </>
                 );
               })}
-            </div>)
-          }
+            </div>
+          )}
         </div>
       </div>
 
@@ -265,8 +273,11 @@ export default React.memo(function Booktemplate() {
       </div>
 
       <div className="p-4 bg-custom-50 gap-3 items-center relative flex shadow-lg">
-        {/* // pass the function handleWatched */}
-        <CommentSection props={movieId} watched={moviedata.watchedByUser} watch={handleWatched} />
+        <CommentSection
+          props={movieId}
+          watched={moviedata.watchedByUser}
+          watch={handleWatched}
+        />
       </div>
     </div>
   );
