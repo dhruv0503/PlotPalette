@@ -28,8 +28,7 @@ export default React.memo(function Booktemplate() {
     const MovieDetails = async () => {
       try {
         const MovDetails = await axios.get(
-          // `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
-          `http://localhost:5000/api/movies?tmdbId=${movieId}`
+          `${process.env.REACT_APP_BACKEND_URL}api/movies?tmdbId=${movieId}`
         );
         console.log(MovDetails.data);
         setmoviedata(MovDetails.data);
