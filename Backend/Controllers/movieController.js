@@ -30,6 +30,7 @@ module.exports.getMovie = async (req, res, next) => {
                 }
                 else {
                     const uSMD = await utilityFunctions.getSubCollectionMovies(userRef, tmdbId)
+                    console.log(movieObj);
                     if (movieObj.data().watched) {
                         res.send({ watchedByUser: true, favouriteByUser: uSMD.favourite, ratingByUser : uSMD.rating, id : movieData.id, loggedIn: true, ...movieData.data() })
                         return;
